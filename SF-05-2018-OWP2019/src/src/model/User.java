@@ -10,6 +10,7 @@ public class User {
 	private String password;
 	private LocalDate registrationDate;
 	private UserRole userRole;
+	private boolean active;
 	
 	public User () {}
 
@@ -43,6 +44,14 @@ public class User {
 
 	public void setUserRole(UserRole userRole) {
 		this.userRole = userRole;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	
 	

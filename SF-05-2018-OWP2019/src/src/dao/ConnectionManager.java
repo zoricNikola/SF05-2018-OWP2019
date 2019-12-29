@@ -20,7 +20,7 @@ public class ConnectionManager {
 	
 	private static DataSource dataSource;
 	
-	private static void open() {
+	public static void open() {
 		try {
 			Properties dataSourceProperties = new Properties();
 			dataSourceProperties.setProperty("driverClassName", "org.sqlite.JDBC");
@@ -33,7 +33,7 @@ public class ConnectionManager {
 		}
 	}
 	
-	private static Connection getConnection() {
+	public static Connection getConnection() {
 		try {
 			return dataSource.getConnection();
 		} 
