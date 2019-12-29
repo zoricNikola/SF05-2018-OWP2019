@@ -9,4 +9,14 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>ConnectionManager</display-name>
+    <servlet-name>ConnectionManager</servlet-name>
+    <servlet-class>src.dao.ConnectionManager</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ConnectionManager</servlet-name>
+    <url-pattern>/ConnectionManager</url-pattern>
+  </servlet-mapping>
 </web-app>
