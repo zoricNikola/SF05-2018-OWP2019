@@ -1,13 +1,14 @@
 package src.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Movie {
 	private int id;
 	private String title;
 	private String director;
-	private ArrayList<String> actors;
-	private ArrayList<String> genres;
+	private List<String> actors;
+	private List<String> genres;
 	private int duration;
 	private String distributor;
 	private String country;
@@ -16,6 +17,22 @@ public class Movie {
 	private boolean active;
 	
 	public Movie() {}
+	
+	public Movie(int id, String title, String director, List<String> actors, List<String> genres,
+int duration, String distributor, String country, int year, String description, boolean active) {
+		
+		this.id = id;
+		this.title = title;
+		this.director = director;
+		this.actors = actors;
+		this.genres = genres;
+		this.duration = duration;
+		this.distributor = distributor;
+		this.country = country;
+		this.year = year;
+		this.description = description;
+		this.active = active;
+	}
 
 	public int getId() {
 		return id;
@@ -41,7 +58,7 @@ public class Movie {
 		this.director = director;
 	}
 
-	public ArrayList<String> getActors() {
+	public List<String> getActors() {
 		return actors;
 	}
 
@@ -49,7 +66,7 @@ public class Movie {
 		this.actors = actors;
 	}
 
-	public ArrayList<String> getGenres() {
+	public List<String> getGenres() {
 		return genres;
 	}
 
