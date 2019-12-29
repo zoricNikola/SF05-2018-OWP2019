@@ -1,4 +1,4 @@
-package src.searchModels;
+package cinema.searchModels;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

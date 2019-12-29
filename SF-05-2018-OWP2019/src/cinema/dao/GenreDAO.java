@@ -1,4 +1,4 @@
-package src.dao;
+package cinema.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
