@@ -17,7 +17,7 @@ public class GenreDAO {
 		ResultSet rset = null;
 		
 		try {
-			String query = "select * from Genres";
+			String query = "select distinct Genre from Genres";
 			
 			pstmt = connection.prepareStatement(query);
 			System.out.println(pstmt);

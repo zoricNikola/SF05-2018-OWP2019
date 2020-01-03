@@ -20,7 +20,7 @@ public class ActorDAO {
 		ResultSet rset = null;
 		
 		try {
-			String query = "select * from Actors";
+			String query = "select distinct Actor from Actors";
 			
 			pstmt = connection.prepareStatement(query);
 			System.out.println(pstmt);

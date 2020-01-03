@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.BasicDataSourceFactory;
 
+
 public class ConnectionManager {
 	
 	private static final String DATABASE_NAME = "cinema.db";

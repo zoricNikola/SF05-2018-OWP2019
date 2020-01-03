@@ -2,21 +2,19 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
   <display-name>SF-05-2018-OWP2019</display-name>
   <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
+    <welcome-file>Welcome.html</welcome-file>
   </welcome-file-list>
+  <listener>
+    <listener-class>cinema.InitListener</listener-class>
+  </listener>
   <servlet>
     <description></description>
-    <display-name>ConnectionManager</display-name>
-    <servlet-name>ConnectionManager</servlet-name>
-    <servlet-class>src.dao.ConnectionManager</servlet-class>
+    <display-name>MovieServlet</display-name>
+    <servlet-name>MovieServlet</servlet-name>
+    <servlet-class>cinema.MovieServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>ConnectionManager</servlet-name>
-    <url-pattern>/ConnectionManager</url-pattern>
+    <servlet-name>MovieServlet</servlet-name>
+    <url-pattern>/MovieServlet</url-pattern>
   </servlet-mapping>
 </web-app>
