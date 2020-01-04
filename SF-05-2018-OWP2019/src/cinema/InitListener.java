@@ -7,7 +7,9 @@ import javax.servlet.ServletContextListener;
 
 import cinema.dao.ConnectionManager;
 import cinema.dao.MovieDAO;
+import cinema.dao.UserDAO;
 import cinema.model.Movie;
+import cinema.model.User;
 
 public class InitListener implements ServletContextListener {
 
@@ -20,7 +22,7 @@ public class InitListener implements ServletContextListener {
     	System.out.println("Initilizing...");
     	
     	ConnectionManager.open();
-		
+    	
 		System.out.println("Done");
     }
 	

@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class MoviesSearchModel {
+public class MoviesSearchModel implements SearchModelInterface{
 	public String title;
 	public ArrayList<String> genres;
 	public Integer durationLow;

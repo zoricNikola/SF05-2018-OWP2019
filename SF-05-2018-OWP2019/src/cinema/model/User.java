@@ -14,6 +14,15 @@ public class User {
 	
 	public User () {}
 
+	public User(String username, String password, LocalDate registrationDate, 
+					UserRole userRole, boolean active) {
+		this.username = username;
+		this.password = password;
+		this.registrationDate = registrationDate;
+		this.userRole = userRole;
+		this.active = active;
+	}
+
 	public String getUsername() {
 		return username;
 	}
