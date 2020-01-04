@@ -9,7 +9,7 @@ public class UsersSearchModel implements SearchModelInterface{
 	
 	public String CreateQuery() {
 		StringBuilder query = new StringBuilder();
-		query.append("select * from Users where Active = 1 ");
+		query.append("select rowid, * from Users where Active = 1 ");
 		
 		if (username != null && !username.equals(""))
 			query.append("and Username like ? ");

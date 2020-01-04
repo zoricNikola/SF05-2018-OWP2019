@@ -34,13 +34,14 @@ public class UserDAO {
 			
 			while (rset.next()) {
 				int index = 1;
+				int id = rset.getInt(index++);
 				String username = rset.getString(index++);
 				String password = rset.getString(index++);
 				LocalDate registrationDate = LocalDate.parse(rset.getString(index++));
 				User.UserRole userRole = User.UserRole.valueOf(rset.getString(index++));
 				boolean active = rset.getInt(index++) == 1;
 				
-				User user = new User(username, password, registrationDate, userRole, active);
+				User user = new User(id, username, password, registrationDate, userRole, active);
 				
 				users.add(user);
 			}
@@ -60,7 +61,7 @@ public class UserDAO {
 		ResultSet rset = null;
 		
 		try {
-			String query = "select * from Users where Active = 1 and Username = ?";
+			String query = "select rowid, * from Users where Active = 1 and Username = ?";
 			pstmt = connection.prepareStatement(query);
 			pstmt.setString(1, UUsername);
 			System.out.println(pstmt);
@@ -69,13 +70,14 @@ public class UserDAO {
 			
 			if (rset.next()) {
 				int index = 1;
+				int id = rset.getInt(index++);
 				String username = rset.getString(index++);
 				String password = rset.getString(index++);
 				LocalDate registrationDate = LocalDate.parse(rset.getString(index++));
 				User.UserRole userRole = User.UserRole.valueOf(rset.getString(index++));
 				boolean active = rset.getInt(index++) == 1;
 				
-				return new User(username, password, registrationDate, userRole, active);
+				return new User(id, username, password, registrationDate, userRole, active);
 			}
 		} finally {
 			try { pstmt.close(); } catch (Exception e1) { e1.printStackTrace(); }

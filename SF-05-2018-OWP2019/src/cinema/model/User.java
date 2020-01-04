@@ -6,6 +6,7 @@ public class User {
 	
 	public enum UserRole{USER, ADMIN}
 	
+	private int id;
 	private String username;
 	private String password;
 	private LocalDate registrationDate;
@@ -14,8 +15,9 @@ public class User {
 	
 	public User () {}
 
-	public User(String username, String password, LocalDate registrationDate, 
+	public User(int id, String username, String password, LocalDate registrationDate, 
 					UserRole userRole, boolean active) {
+		this.setId(id);
 		this.username = username;
 		this.password = password;
 		this.registrationDate = registrationDate;
@@ -62,6 +64,12 @@ public class User {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-	
-	
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 }
