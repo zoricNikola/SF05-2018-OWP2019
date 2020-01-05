@@ -24,7 +24,6 @@ public class GenreDAO {
 			String query = "select distinct Genre from Genres";
 			
 			pstmt = connection.prepareStatement(query);
-			System.out.println(pstmt);
 			
 			rset = pstmt.executeQuery();
 			
@@ -53,7 +52,6 @@ public class GenreDAO {
 			String query = "select * from Genres where Movie = ?";
 			pstmt = connection.prepareStatement(query);
 			pstmt.setInt(1, id);
-			System.out.println(pstmt);
 			
 			rset = pstmt.executeQuery();
 			

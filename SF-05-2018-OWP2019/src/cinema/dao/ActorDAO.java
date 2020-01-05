@@ -23,7 +23,6 @@ public class ActorDAO {
 			String query = "select distinct Actor from Actors";
 			
 			pstmt = connection.prepareStatement(query);
-			System.out.println(pstmt);
 			
 			rset = pstmt.executeQuery();
 			
@@ -52,7 +51,6 @@ public class ActorDAO {
 			String query = "select * from Actors where Movie = ?";
 			pstmt = connection.prepareStatement(query);
 			pstmt.setInt(1, id);
-			System.out.println(pstmt);
 			
 			rset = pstmt.executeQuery();
 			

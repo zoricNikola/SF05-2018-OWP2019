@@ -30,7 +30,6 @@ public class UserDAO {
 		
 		try {
 			pstmt = model.PrepareStatement(connection);
-			System.out.println(pstmt);
 			
 			rset = pstmt.executeQuery();
 			
@@ -66,7 +65,6 @@ public class UserDAO {
 			String query = "select rowid, * from Users where Active = 1 and Username = ?";
 			pstmt = connection.prepareStatement(query);
 			pstmt.setString(1, UUsername);
-			System.out.println(pstmt);
 			
 			rset = pstmt.executeQuery();
 			
@@ -90,7 +88,7 @@ public class UserDAO {
 		return null;
 	}
 	
-	public static boolean addUser (User user) throws SQLException {
+	public static boolean addUser (User user) throws Exception {
 		Connection connection = ConnectionManager.getConnection();
 		
 		PreparedStatement pstmt = null;
@@ -111,7 +109,7 @@ public class UserDAO {
 		}
 	}
 	
-	public static boolean updateUser (User user) throws SQLException {
+	public static boolean updateUser (User user) throws Exception {
 		Connection connection = ConnectionManager.getConnection();
 		
 		PreparedStatement pstmt = null;
@@ -134,7 +132,7 @@ public class UserDAO {
 		}
 	}
 	
-	public static boolean deleteUser (User user) throws SQLException {
+	public static boolean deleteUser (User user) throws Exception {
 		Connection connection = ConnectionManager.getConnection();
 		
 		PreparedStatement pstmt = null;

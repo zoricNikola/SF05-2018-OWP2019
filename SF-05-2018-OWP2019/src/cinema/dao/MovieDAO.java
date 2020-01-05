@@ -31,7 +31,6 @@ public class MovieDAO {
 		
 		try {
 			pstmt = model.PrepareStatement(connection);
-			System.out.println(pstmt);
 			
 			rset = pstmt.executeQuery();
 			
@@ -75,7 +74,6 @@ public class MovieDAO {
 			String query = "select * from Movies where Active = 1 and ID = ? ";
 			pstmt = connection.prepareStatement(query);
 			pstmt.setInt(1, mID);
-			System.out.println(pstmt);
 			
 			rset = pstmt.executeQuery();
 			
@@ -108,7 +106,7 @@ public class MovieDAO {
 		return null;
 	}
 	
-	public static boolean addMovie (Movie movie) throws SQLException {
+	public static boolean addMovie (Movie movie) throws Exception {
 		Connection connection = ConnectionManager.getConnection();
 		
 		PreparedStatement pstmt = null;
@@ -182,7 +180,7 @@ public class MovieDAO {
 		return false;
 	}
 	
-	public static int getNextID() throws SQLException {
+	public static int getNextID() throws Exception {
 		Connection connection = ConnectionManager.getConnection();
 		
 		PreparedStatement pstmt = null;
@@ -208,4 +206,143 @@ public class MovieDAO {
 		return 0;
 	}
 	
+	public static boolean deleteMovie (Movie movie) throws Exception {
+		Connection connection = ConnectionManager.getConnection();
+		
+		PreparedStatement pstmt = null;
+		try {
+			String query = "update Movies set Active = 0 where ID = ?";
+			pstmt = connection.prepareStatement(query);
+			pstmt.setInt(1, movie.getId());
+			
+			return pstmt.executeUpdate() == 1;
+			
+		} finally {
+			try { pstmt.close(); } catch (Exception e1) { e1.printStackTrace(); }
+			try { connection.close(); } catch (Exception e1) { e1.printStackTrace(); }
+		}
+	}
+	
+	public static boolean updateMovie (Movie movie) throws Exception {
+		Connection connection = ConnectionManager.getConnection();
+		
+		PreparedStatement pstmt = null;
+		try {
+			connection.setAutoCommit(false);
+			connection.commit();
+			String query = "update Movies set Title = ?, Director = ?, Duration = ?, Distributor = ?, "
+					+ "Country = ?, Year = ?, Description = ?";
+			pstmt = connection.prepareStatement(query);
+			int index = 1;
+			pstmt.setString(index++, movie.getTitle());
+			pstmt.setString(index++, movie.getDirector());
+			pstmt.setInt(index++, movie.getDuration());
+			pstmt.setString(index++, movie.getDistributor());
+			pstmt.setString(index++, movie.getCountry());
+			pstmt.setInt(index++, movie.getYear());
+			pstmt.setString(index++, movie.getDescription());
+			
+			if (pstmt.executeUpdate() == 1) {
+				List<String> currentGenres = GenreDAO.getByMovieID(movie.getId());
+				
+				List<String> toDeleteGenres = new ArrayList<String>(currentGenres);
+				toDeleteGenres.removeAll(movie.getGenres());
+				
+				List<String> toAddGenres = new ArrayList<String>(movie.getGenres());
+				toAddGenres.removeAll(currentGenres);
+				
+				if (toDeleteGenres.size() > 0) {
+					pstmt.close();
+					query = "delete from Genres where Movie = ? and Genre = ? ";
+					for (int i = 1; i < toDeleteGenres.size(); i++) {
+						query += "or Genre = ? ";
+					}
+					pstmt = connection.prepareStatement(query);
+					index = 1;
+					pstmt.setInt(index++, movie.getId());
+					for (String genre : toDeleteGenres) {
+						pstmt.setString(index++, genre);
+					}
+					
+					pstmt.executeUpdate();
+				}
+				
+				if (toAddGenres.size() > 0) {
+					pstmt.close();
+					query = "insert into Genres values ";
+					for (int i = 0; i < toAddGenres.size(); i++) {
+						if (i == 0)
+							query += "(?, ?)";
+						else
+							query += ", (?, ?)";
+					}
+					pstmt = connection.prepareStatement(query);
+					index = 1;
+					for (String genre : toAddGenres) {
+						pstmt.setInt(index++, movie.getId());
+						pstmt.setString(index++, genre);
+					}
+					
+					pstmt.executeUpdate();
+				}
+				
+				List<String> currentActors = ActorDAO.getByMovieID(movie.getId());
+				
+				List<String> toDeleteActors = new ArrayList<String>(currentActors);
+				toDeleteActors.removeAll(movie.getActors());
+				
+				List<String> toAddActors = new ArrayList<String>(movie.getActors());
+				toAddActors.removeAll(currentActors);
+				
+				if (toDeleteActors.size() > 0) {
+					pstmt.close();
+					query = "delete from Actors where Movie = ? and Actor = ? ";
+					for (int i = 1; i < toDeleteActors.size(); i++) {
+						query += "or Actor = ? ";
+					}
+					pstmt = connection.prepareStatement(query);
+					index = 1;
+					pstmt.setInt(index++, movie.getId());
+					for (String actor : toDeleteActors) {
+						pstmt.setString(index++, actor);
+					}
+					
+					pstmt.executeUpdate();
+				}
+				
+				if (toAddActors.size() > 0) {
+					pstmt.close();
+					query = "insert into Actors values ";
+					for (int i = 0; i < toAddActors.size(); i++) {
+						if (i == 0)
+							query += "(?, ?)";
+						else
+							query += ", (?, ?)";
+					}
+					pstmt = connection.prepareStatement(query);
+					index = 1;
+					for (String actor : toAddActors) {
+						pstmt.setInt(index++, movie.getId());
+						pstmt.setString(index++, actor);
+					}
+					
+					pstmt.executeUpdate();
+				}
+				
+				connection.commit();
+				return true;
+			}
+			
+		} 
+		catch (Exception e) {
+			try { connection.rollback(); } catch (Exception e1) { e1.printStackTrace(); }
+			
+			throw e;
+		} 
+		finally {
+			try { pstmt.close(); } catch (Exception e1) { e1.printStackTrace(); }
+			try { connection.close(); } catch (Exception e1) { e1.printStackTrace(); }
+		}
+		return false;
+	}
 }
