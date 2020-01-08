@@ -35,14 +35,13 @@ public class UserDAO {
 			
 			while (rset.next()) {
 				int index = 1;
-				int id = rset.getInt(index++);
 				String username = rset.getString(index++);
 				String password = rset.getString(index++);
 				LocalDate registrationDate = LocalDate.parse(rset.getString(index++));
 				User.UserRole userRole = User.UserRole.valueOf(rset.getString(index++));
 				boolean active = rset.getInt(index++) == 1;
 				
-				User user = new User(id, username, password, registrationDate, userRole, active);
+				User user = new User(username, password, registrationDate, userRole, active);
 				
 				users.add(user);
 			}
@@ -62,7 +61,7 @@ public class UserDAO {
 		ResultSet rset = null;
 		
 		try {
-			String query = "select rowid, * from Users where Active = 1 and Username = ?";
+			String query = "select * from Users where Active = 1 and Username = ?";
 			pstmt = connection.prepareStatement(query);
 			pstmt.setString(1, UUsername);
 			
@@ -70,14 +69,13 @@ public class UserDAO {
 			
 			if (rset.next()) {
 				int index = 1;
-				int id = rset.getInt(index++);
 				String username = rset.getString(index++);
 				String password = rset.getString(index++);
 				LocalDate registrationDate = LocalDate.parse(rset.getString(index++));
 				User.UserRole userRole = User.UserRole.valueOf(rset.getString(index++));
 				boolean active = rset.getInt(index++) == 1;
 				
-				return new User(id, username, password, registrationDate, userRole, active);
+				return new User(username, password, registrationDate, userRole, active);
 			}
 		} finally {
 			try { pstmt.close(); } catch (Exception e1) { e1.printStackTrace(); }
@@ -114,15 +112,14 @@ public class UserDAO {
 		
 		PreparedStatement pstmt = null;
 		try {
-			String query = "update Users set Username = ?, Password = ?, RegistrationDate = ?, "
-					+ "Role = ? where rowid = ?";
+			String query = "update Users set Password = ?, RegistrationDate = ?, "
+					+ "Role = ? where Username = ?";
 			pstmt = connection.prepareStatement(query);
 			int index = 1;
-			pstmt.setString(index++, user.getUsername());
 			pstmt.setString(index++, user.getPassword());
 			pstmt.setDate(index++, Date.valueOf(user.getRegistrationDate()));
 			pstmt.setString(index++, user.getUserRole().toString());
-			pstmt.setInt(index++, user.getId());
+			pstmt.setString(index++, user.getUsername());
 			
 			return pstmt.executeUpdate() == 1;
 			
@@ -137,9 +134,9 @@ public class UserDAO {
 		
 		PreparedStatement pstmt = null;
 		try {
-			String query = "update Users set Active = 0 where rowid = ?";
+			String query = "update Users set Active = 0 where Username = ?";
 			pstmt = connection.prepareStatement(query);
-			pstmt.setInt(1, user.getId());
+			pstmt.setString(1, user.getUsername());
 			
 			return pstmt.executeUpdate() == 1;
 			

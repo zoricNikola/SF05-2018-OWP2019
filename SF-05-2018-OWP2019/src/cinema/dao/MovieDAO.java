@@ -187,7 +187,7 @@ public class MovieDAO {
 		ResultSet rset = null;
 		
 		try {
-			String query = "select max(ID) + 1 from Movies";
+			String query = "select ifnull(max(ID), 0) + 1 from Movies";
 			pstmt = connection.prepareStatement(query);
 			
 			rset = pstmt.executeQuery();
