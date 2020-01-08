@@ -43,6 +43,10 @@ $(document).ready(function() {
 					'password': password
 			}
 			
+			$.post('RegistrationServlet', params, function(data) {
+				console.log(data);
+				
+			});
 		}
 		
 		return false;
