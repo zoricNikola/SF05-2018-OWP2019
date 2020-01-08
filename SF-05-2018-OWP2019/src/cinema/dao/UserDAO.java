@@ -96,7 +96,7 @@ public class UserDAO {
 			int index = 1;
 			pstmt.setString(index++, user.getUsername());
 			pstmt.setString(index++, user.getPassword());
-			pstmt.setDate(index++, Date.valueOf(user.getRegistrationDate()));
+			pstmt.setString(index++, user.getRegistrationDate().toString());
 			pstmt.setString(index++, user.getUserRole().toString());
 			
 			return pstmt.executeUpdate() == 1;

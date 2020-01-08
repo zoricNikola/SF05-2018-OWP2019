@@ -27,4 +27,24 @@
     <servlet-name>RegistrationServlet</servlet-name>
     <url-pattern>/RegistrationServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>SuccessServlet</display-name>
+    <servlet-name>SuccessServlet</servlet-name>
+    <servlet-class>cinema.status.SuccessServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SuccessServlet</servlet-name>
+    <url-pattern>/SuccessServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>FailureServlet</display-name>
+    <servlet-name>FailureServlet</servlet-name>
+    <servlet-class>cinema.status.FailureServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FailureServlet</servlet-name>
+    <url-pattern>/FailureServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

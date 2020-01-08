@@ -46,6 +46,12 @@ $(document).ready(function() {
 			$.post('RegistrationServlet', params, function(data) {
 				console.log(data);
 				
+				if (data.status == 'failure') {
+					messageParagraph.text(data.message);
+				}
+				else if (data.status == 'success') {
+					window.location.replace('Welcome.html');
+				}
 			});
 		}
 		
