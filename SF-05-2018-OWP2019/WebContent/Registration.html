@@ -6,7 +6,8 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-	<title>Registracija</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Registracija</title>
 </head>
 <body style="height: 100vh; background-image: url('cover.jpg'); 
                             background-repeat: no-repeat;
@@ -32,7 +33,7 @@
 	  </div>
 	</div>
     
-    <div class="container-fluid h-100">
+    <div id="app" class="container-fluid h-100">
         <div class="row align-items-center h-100">
             <div class="card mx-auto" style="width: 400px;">
                 <div class="card-body">
@@ -40,12 +41,12 @@
                     <form>
                         <div class="form-group row justify-content-md-center">
                             <div class="col">
-                                <input type="text" class="form-control" id="usernameInput" placeholder="Korisničko ime" />
+                                <input v-model="username" type="text" class="form-control" id="usernameInput" placeholder="Korisničko ime" />
                             </div>
                         </div>
                         <div class="form-group row justify-content-md-center">
                             <div class="col">
-                                <input type="password" class="form-control" id="passwordInput" placeholder="Lozinka" />
+                                <input v-model="password" type="password" class="form-control" id="passwordInput" placeholder="Lozinka" />
                                 <small id="passwordHelpBlock" class="form-text text-muted">
                                     Lozinka može da se sastoji samo od slova i brojeva!
                                 </small>
@@ -53,26 +54,26 @@
                         </div>
                         <div class="form-group row justify-content-md-center">
                             <div class="col">
-                                <input type="password" class="form-control" id="repeatedPasswordInput" placeholder="Ponovljena lozinka" />
+                                <input v-model="repeatedPassword" type="password" class="form-control" id="repeatedPasswordInput" placeholder="Ponovljena lozinka" />
                             </div>
                         </div>
                         <div class="form-group row justify-content-around">
                             <div class="col-4">
-                                <button type="submit" class="btn btn-primary" id="registrationSubmit">Registracija</button>
+                                <button v-on:click.prevent="registrationSubmit" type="submit" class="btn btn-primary" id="registrationSubmit">Registracija</button>
                             </div>
                             <div class="col-4">
                                 <a class="btn btn-outline-danger" href="Welcome.html" role="button">Odustani</a>
                             </div>
                         </div>
                     </form>
-                    <div class="alert alert-danger d-none" role="alert" id="messageDiv">
-                        <p style="color: red;" id="messageParagraph"></p>
+                    <div v-if="showMessage" class="alert alert-danger" role="alert" id="messageDiv">
+                        <p style="color: red;" id="messageParagraph">{{ message }}</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-	
+
 	<script src="js/jquery-3.4.1.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
