@@ -17,8 +17,8 @@ public class UserServlet extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String username = request.getParameter("username");
 		try {
+			String username = request.getParameter("username");
 			User user = UserDAO.getUserByUsername(username);
 			
 			Map<String, Object> data = new LinkedHashMap<String, Object>();

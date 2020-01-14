@@ -57,4 +57,14 @@
     <servlet-name>UserServlet</servlet-name>
     <url-pattern>/UserServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>FilterUsersServlet</display-name>
+    <servlet-name>FilterUsersServlet</servlet-name>
+    <servlet-class>cinema.FilterUsersServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FilterUsersServlet</servlet-name>
+    <url-pattern>/FilterUsersServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

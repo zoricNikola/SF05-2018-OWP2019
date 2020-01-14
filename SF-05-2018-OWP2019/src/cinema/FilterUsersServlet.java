@@ -2,6 +2,7 @@ package cinema;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -9,21 +10,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cinema.dao.MovieDAO;
-import cinema.model.Movie;
+import cinema.dao.UserDAO;
+import cinema.model.User;
+import cinema.searchModels.UsersSearchModel;
 
 @SuppressWarnings("serial")
-public class MovieServlet extends HttpServlet {
+public class FilterUsersServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
-			String stringID = request.getParameter("id");
-			int id = Integer.parseInt(stringID);
-			Movie movie = MovieDAO.getMovieByID(id);
+			String username = request.getParameter("username");
+			String userRole = request.getParameter("userRole");
+			
+			UsersSearchModel model = new UsersSearchModel();
+			model.username = username;
+			model.userRole = userRole;
+			
+			List<User> filteredUsers = UserDAO.searchUsers(model);
 			
 			Map<String, Object> data = new LinkedHashMap<String, Object>();
-			data.put("movie", movie);
+			data.put("filteredUsers", filteredUsers);
 			
 			request.setAttribute("data", data);
 			request.getRequestDispatcher("./SuccessServlet").forward(request, response);
@@ -31,9 +38,12 @@ public class MovieServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
