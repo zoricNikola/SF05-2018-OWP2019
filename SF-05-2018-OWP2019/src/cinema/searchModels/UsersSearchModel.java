@@ -12,9 +12,9 @@ public class UsersSearchModel implements SearchModelInterface{
 		query.append("select * from Users where Active = 1 ");
 		
 		if (username != null && !username.equals(""))
-			query.append("and Username like ? ");
+			query.append("and Username like '%' || ? || '%' ");
 		if (userRole != null && !userRole.equals(""))
-			query.append("and Role like ? ");
+			query.append("and Role like '%' || ? || '%' ");
 		
 		return query.toString();
 	}

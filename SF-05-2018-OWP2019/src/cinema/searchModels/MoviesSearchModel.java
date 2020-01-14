@@ -20,7 +20,7 @@ public class MoviesSearchModel implements SearchModelInterface{
 		query.append("select * from Movies M where Active = 1 ");
 		
 		if (title != null && !title.equals(""))
-			query.append("and Title like ? ");
+			query.append("and Title like '%' || ? || '%' ");
 		if (genres != null && genres.size() > 0) {
 			query.append("and exists (select * from Genres where Movie = M.ID and ");
 			
@@ -38,9 +38,9 @@ public class MoviesSearchModel implements SearchModelInterface{
 		if (durationHigh != null && durationHigh > 0)
 			query.append("and Duration < ? ");
 		if (distributor != null && !distributor.equals(""))
-			query.append("and Distributor like ? ");
+			query.append("and Distributor like '%' || ? || '%' ");
 		if (country != null && !country.equals(""))
-			query.append("and Country like ? ");
+			query.append("and Country like '%' || ? || '%' ");
 		if (yearLow != null && yearLow > 0)
 			query.append("and Year > ? ");
 		if (yearHigh != null && yearHigh > 0)
