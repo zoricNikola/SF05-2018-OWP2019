@@ -61,7 +61,7 @@ public class UserDAO {
 		ResultSet rset = null;
 		
 		try {
-			String query = "select * from Users where Active = 1 and Username = ?";
+			String query = "select * from Users where and Username = ?";
 			pstmt = connection.prepareStatement(query);
 			pstmt.setString(1, UUsername);
 			

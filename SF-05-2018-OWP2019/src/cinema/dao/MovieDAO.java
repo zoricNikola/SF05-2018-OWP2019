@@ -71,7 +71,7 @@ public class MovieDAO {
 		ResultSet rset = null;
 		
 		try {
-			String query = "select * from Movies where Active = 1 and ID = ? ";
+			String query = "select * from Movies where and ID = ? ";
 			pstmt = connection.prepareStatement(query);
 			pstmt.setInt(1, mID);
 			
