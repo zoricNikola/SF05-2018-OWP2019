@@ -7,7 +7,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <title>Registracija</title>
+    <title>Korisnici</title>
 </head>
 <body style="height: 100vh; background-image: url('cover.jpg'); 
                             background-repeat: no-repeat;
@@ -17,24 +17,27 @@
     <div id="app" class="container-fluid h-100">
     
         <div class="row">
-            <div class="col-6 offset-3">
+            <div class="col-xl-6 offset-xl-3">
                 <h1 style="color: white">Korisnici</h1>
             </div>
         </div>
         <div class="row">
-            <div class="col-6 offset-3">
+            <div class="col-xl-6 offset-xl-3">
                 <div class="table-responsive">
                     <table class="table table-hover table-dark table-striped">
                         <thead>
                         <tr>
-                            <th scope="col"><input v-model="username" type="text" class="form-control" id="usernameInput" placeholder="Korisničko ime" /></th>
-                            <th scope="col">
-                                <select id="inputState" class="form-control">
-                                    <option selected>Sortiraj...</option>
-                                    <option>...</option>
+                            <th style="width: 40%"><input v-model="username" debounce="500" type="text" class="form-control" id="usernameInput" placeholder="Korisničko ime" /></th>
+                            <th style="width: 25%">
+                                <select v-model="selectedSort" id="sortInput" class="custom-select">
+                                    <option v-for="option in sortOptions" v-bind:value="option.value">{{ option.text }}</option>
                                 </select>
                             </th>
-                            <th scope="col"><input v-model="userRole" type="text" class="form-control" id="userRoleInput" placeholder="Uloga" /></th>
+                            <th style="width: 35%">
+                            	<select v-model="selectedUserRole" id="userRoleInput" class="custom-select">
+									<option v-for="option in userRoleOptions" v-bind:value="option.value">{{ option.text }}</option>
+								</select>
+                            </th>
                         </tr>
                         <tr>
                             <th scope="col">Korisničko ime</th>
@@ -60,6 +63,20 @@
     <script src="js/jquery-3.4.1.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src='https://cdn.jsdelivr.net/g/lodash@4(lodash.min.js+lodash.fp.min.js)'></script>
+    <script>
+		// Loading `lodash.fp.js` converts `_` to its fp variant.
+		_.defaults({ 'a': 2, 'b': 2 })({ 'a': 1 });
+		// ➜ { 'a': 1, 'b': 2 }
+		
+		// Use `noConflict` to restore the pre-fp variant.
+		var fp = _.noConflict();
+		
+		_.defaults({ 'a': 1 }, { 'a': 2, 'b': 2 });
+		// ➜ { 'a': 1, 'b': 2 }
+		fp.defaults({ 'a': 2, 'b': 2 })({ 'a': 1 });
+		// ➜ { 'a': 1, 'b': 2 }
+		</script>
     <script src="js/FilterUsers.js"></script>
 </body>
 </html>
