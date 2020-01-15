@@ -35,7 +35,9 @@ $(document).ready(function() {
                 $.get('FilterUsersServlet', params, function(data) {
                     console.log(data);
                     
-                    app.users = data.filteredUsers;
+                    if (data.status == 'success') {
+                    	app.users = data.filteredUsers;
+                    }
                     
                 });
             }
