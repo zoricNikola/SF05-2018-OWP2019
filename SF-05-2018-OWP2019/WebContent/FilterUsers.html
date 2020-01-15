@@ -7,6 +7,8 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="css/darkInputs.css">
+</style>
     <title>Korisnici</title>
 </head>
 <body style="height: 100vh; background-image: url('cover.jpg'); 
@@ -47,7 +49,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="user in orderedUsers">
-                                <td><a href="User.html?username=" class="badge badge-dark">{{ user.username }}</a></td>
+                                <td><a :href="'User.html?username=' + user.username" class="badge badge-dark">{{ user.username }}</a></td>
                                 <td>{{ user.registrationDate.dayOfMonth }}. 
                                 {{ user.registrationDate.month }} {{ user.registrationDate.year }}.</td>
                                 <td>{{ user.userRole }}</td>

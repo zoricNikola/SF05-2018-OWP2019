@@ -39,11 +39,6 @@ $(document).ready(function() {
                     
                 });
             }
-//            refresh: function(event) {
-//            	this.getUsers();
-//            	event.preventDefault();
-//        		return false;
-//            }
         },
         computed: {
             orderedUsers: function () {
@@ -75,13 +70,13 @@ $(document).ready(function() {
         return false;
         
     });
-    $('#sortInput').on('change', function (event) {
-        
-        
-        event.preventDefault();
-        return false;
-        
-    });
+//    $('#sortInput').on('change', function (event) {
+//        
+//        
+//        event.preventDefault();
+//        return false;
+//        
+//    });
     
     app.getUsers();
 });
