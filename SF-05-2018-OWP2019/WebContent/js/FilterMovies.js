@@ -68,6 +68,7 @@ $(document).ready(function() {
 
                     if (data.status == 'success') {
                         app.genreOptions = data.allGenres;
+//                        this.$nextTick(function(){ $('#genresInput').selectpicker('refresh'); });
                     }
                 })
             },
@@ -108,7 +109,12 @@ $(document).ready(function() {
             	else if (this.selectedSort === 'countryDESC')
             		return _.orderBy(this.movies, 'country').reverse();
             }
-        }
+        },
+        watch: {
+	    	genreOptions: function(newValues, oldValues){
+	    		this.$nextTick(function(){ $('#genresInput').selectpicker('refresh'); });
+	    	},
+	    }
     })
 
     $('#titleInput').on('change keyup copy paste cut', function(event) {

@@ -17,12 +17,12 @@ public class MoviesSearchModel implements SearchModelInterface{
 	
 	public String CreateQuery() {
 		StringBuilder query = new StringBuilder();
-		query.append("select * from Movies M where Active = 1 ");
+		query.append("select * from Movies as M where Active = 1 ");
 		
 		if (title != null && !title.equals(""))
 			query.append("and Title like '%' || ? || '%' ");
 		if (genres != null && genres.size() > 0) {
-			query.append("and exists (select * from Genres where Movie = M.ID and ");
+			query.append("and exists (select * from Genres where Movie = M.ID and (");
 			
 			for (int i = 0; i < genres.size(); i++)
 				if (i == 0)
@@ -30,7 +30,7 @@ public class MoviesSearchModel implements SearchModelInterface{
 				else
 					query.append("or Genre = ? ");
 			
-			query.append(") ");
+			query.append(")) ");
 		}
 		
 		if (durationLow != null && durationLow > 0)

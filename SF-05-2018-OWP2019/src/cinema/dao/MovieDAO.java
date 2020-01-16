@@ -231,7 +231,7 @@ public class MovieDAO {
 			connection.setAutoCommit(false);
 			connection.commit();
 			String query = "update Movies set Title = ?, Director = ?, Duration = ?, Distributor = ?, "
-					+ "Country = ?, Year = ?, Description = ?";
+					+ "Country = ?, Year = ?, Description = ? where ID = ?";
 			pstmt = connection.prepareStatement(query);
 			int index = 1;
 			pstmt.setString(index++, movie.getTitle());
@@ -241,6 +241,7 @@ public class MovieDAO {
 			pstmt.setString(index++, movie.getCountry());
 			pstmt.setInt(index++, movie.getYear());
 			pstmt.setString(index++, movie.getDescription());
+			pstmt.setInt(index++, movie.getId());
 			
 			if (pstmt.executeUpdate() == 1) {
 				List<String> currentGenres = GenreDAO.getByMovieID(movie.getId());

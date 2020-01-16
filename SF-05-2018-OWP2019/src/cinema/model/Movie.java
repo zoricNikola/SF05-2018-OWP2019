@@ -62,7 +62,7 @@ int duration, String distributor, String country, int year, String description, 
 		return actors;
 	}
 
-	public void setActors(ArrayList<String> actors) {
+	public void setActors(List<String> actors) {
 		this.actors = actors;
 	}
 
@@ -70,7 +70,7 @@ int duration, String distributor, String country, int year, String description, 
 		return genres;
 	}
 
-	public void setGenres(ArrayList<String> genres) {
+	public void setGenres(List<String> genres) {
 		this.genres = genres;
 	}
 

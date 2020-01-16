@@ -87,4 +87,14 @@
     <servlet-name>GenresServlet</servlet-name>
     <url-pattern>/GenresServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ActorServlet</display-name>
+    <servlet-name>ActorServlet</servlet-name>
+    <servlet-class>cinema.ActorServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ActorServlet</servlet-name>
+    <url-pattern>/ActorServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

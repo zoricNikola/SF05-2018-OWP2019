@@ -12,31 +12,21 @@ import javax.servlet.http.HttpServletResponse;
 
 import cinema.dao.ActorDAO;
 import cinema.dao.GenreDAO;
-import cinema.dao.UserDAO;
-import cinema.model.User;
-import cinema.searchModels.UsersSearchModel;
 
-public class GenresServlet extends HttpServlet {
-
+@SuppressWarnings("serial")
+public class ActorServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			String searchType = request.getParameter("searchType");
 			Map<String, Object> data = null;
 			
-			if (searchType.equals("all")) {
-				List<String> allGenres = GenreDAO.getAll();
-				data = new LinkedHashMap<String, Object>();
-				data.put("allGenres", allGenres);
-				request.setAttribute("data", data);
-				request.getRequestDispatcher("./SuccessServlet").forward(request, response);
-			}
-			else if (searchType.equals("movie")) {
+			if (searchType.equals("movie")) {
 				int id = 0;
 				id = Integer.parseInt(request.getParameter("movie"));
-				List<String> genres = GenreDAO.getByMovieID(id);
+				List<String> actors = ActorDAO.getByMovieID(id);
 				data = new LinkedHashMap<String, Object>();
-				data.put("genres", genres);
+				data.put("actors", actors);
 				request.setAttribute("data", data);
 				request.getRequestDispatcher("./SuccessServlet").forward(request, response);
 			}

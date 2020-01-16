@@ -49,7 +49,7 @@ public class MovieServlet extends HttpServlet {
 				genres = new ArrayList<String>(Arrays.asList(request.getParameterValues("genres[]")));
 			List<String> actors = new ArrayList<String>();
 			if (request.getParameterValues("actors[]") != null)
-				genres = new ArrayList<String>(Arrays.asList(request.getParameterValues("actors[]")));
+				actors = new ArrayList<String>(Arrays.asList(request.getParameterValues("actors[]")));
 			int duration = 0;
 			try {
 				String stringDuration = request.getParameter("duration");
@@ -76,11 +76,29 @@ public class MovieServlet extends HttpServlet {
 					break;
 				}
 				case "update": {
-					
+					Movie movie = MovieDAO.getMovieByID(Integer.parseInt(request.getParameter("id")));
+					if (movie != null) {
+						movie.setTitle(title);
+						movie.setDirector(director);
+						movie.setActors(actors);
+						movie.setGenres(genres);
+						movie.setDuration(duration);
+						movie.setDistributor(distributor);
+						movie.setCountry(country);
+						movie.setYear(year);
+						movie.setDescription(description);
+						
+						if (!MovieDAO.updateMovie(movie))
+							throw new Exception("Greška prilikom izmene filma u bazi");
+					}
 					break;
 				}
 				case "delete": {
-					
+					Movie movie = MovieDAO.getMovieByID(Integer.parseInt(request.getParameter("id")));
+					if (movie != null) {
+						if (!MovieDAO.deleteMovie(movie))
+							throw new Exception("Greška prilikom brisanja filma iz baze");
+					}
 					break;
 				}
 			}

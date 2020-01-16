@@ -8,7 +8,7 @@ $(document).ready(function() {
             movie: {}
         },
         methods: {
-            getMovie: function(event) {
+            getMovie: function() {
 
                 $.get('MovieServlet', {'id': id}, function(data) {
                     console.log(data);
@@ -21,13 +21,15 @@ $(document).ready(function() {
             },
             genresToString: function(genres) {
             	var genresString = '';
-                for (i = 0; i < genres.length; i++) {
-                    if (i == 0) {
-                        genresString = genres[i];
-                    } else {
-                        genresString = genresString.concat(', ', genres[i]);
-                    }
-                }
+            	if (typeof genres !== 'undefined') {
+	                for (i = 0; i < genres.length; i++) {
+	                    if (i == 0) {
+	                        genresString = genres[i];
+	                    } else {
+	                        genresString = genresString.concat(', ', genres[i]);
+	                    }
+	                }
+            	}
                 return genresString;
             }
         },

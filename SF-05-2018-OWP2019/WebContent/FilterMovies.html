@@ -47,7 +47,8 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text">Žanrovi</span>
                                 </div>
-                                <select v-model="selectedGenres" id="genresInput" class="selectpicker form-control" style="background: #22262a !important; color: #fff; border: 1px #FFF;" multiple data-selected-text-format="count">
+                                <select v-model="selectedGenres" id="genresInput" class="selectpicker form-control" 
+                                style="background: #22262a !important; color: #fff; border: 1px #FFF;" multiple data-selected-text-format="count > 3" title="Izaberi...">
                                     <option v-for="option in genreOptions" v-bind:value="option" style="background: #22262a; color: #FFF;">{{ option }}</option>
                                 </select>
                             </div>
