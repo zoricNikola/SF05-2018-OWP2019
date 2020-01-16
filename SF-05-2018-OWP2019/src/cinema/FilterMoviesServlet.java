@@ -24,13 +24,15 @@ public class FilterMoviesServlet extends HttpServlet {
 		
 		try {
 			String title = request.getParameter("title");
-			List<String> genres = Arrays.asList(request.getParameterValues("genres"));
+			List<String> genres = new ArrayList<String>();
+			if (request.getParameterValues("genres[]") != null)
+				genres = new ArrayList<String>(Arrays.asList(request.getParameterValues("genres[]")));
 			int durationLow = 0;
 			try {
 				String stringDurationLow = request.getParameter("durationLow");
 				durationLow = Integer.parseInt(stringDurationLow);
 			} catch (Exception e) {}
-			int durationHigh = Integer.MAX_VALUE;
+			int durationHigh = 0;
 			try {
 				String stringDurationHigh = request.getParameter("durationHigh");
 				durationHigh = Integer.parseInt(stringDurationHigh);
@@ -42,7 +44,7 @@ public class FilterMoviesServlet extends HttpServlet {
 				String stringYearLow = request.getParameter("yearLow");
 				yearLow = Integer.parseInt(stringYearLow);
 			} catch (Exception e) {}
-			int yearHigh = Integer.MAX_VALUE;
+			int yearHigh = 0;
 			try {
 				String stringYearHigh = request.getParameter("yearHigh");
 				yearHigh = Integer.parseInt(stringYearHigh);
@@ -50,6 +52,7 @@ public class FilterMoviesServlet extends HttpServlet {
 			
 			MoviesSearchModel model = new MoviesSearchModel();
 			model.title = title;
+			model.genres = (ArrayList<String>) genres;
 			model.durationLow = durationLow;
 			model.durationHigh = durationHigh;
 			model.distributor = distributor;

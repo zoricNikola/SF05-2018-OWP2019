@@ -1,4 +1,4 @@
-input, textarea, select{
+input, textarea, .input-group-text, select{
     background-color: #22262a !important;
     color: #FFF !important;
 }

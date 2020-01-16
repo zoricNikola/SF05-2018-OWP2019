@@ -34,17 +34,17 @@ public class MoviesSearchModel implements SearchModelInterface{
 		}
 		
 		if (durationLow != null && durationLow > 0)
-			query.append("and Duration > ? ");
+			query.append("and Duration >= ? ");
 		if (durationHigh != null && durationHigh > 0)
-			query.append("and Duration < ? ");
+			query.append("and Duration <= ? ");
 		if (distributor != null && !distributor.equals(""))
 			query.append("and Distributor like '%' || ? || '%' ");
 		if (country != null && !country.equals(""))
 			query.append("and Country like '%' || ? || '%' ");
 		if (yearLow != null && yearLow > 0)
-			query.append("and Year > ? ");
+			query.append("and Year >= ? ");
 		if (yearHigh != null && yearHigh > 0)
-			query.append("and Year < ? ");
+			query.append("and Year <= ? ");
 		
 		query.append("order by ID");
 		return query.toString();

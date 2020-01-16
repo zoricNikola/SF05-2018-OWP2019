@@ -77,4 +77,14 @@
     <servlet-name>FilterMoviesServlet</servlet-name>
     <url-pattern>/FilterMoviesServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>GenresServlet</display-name>
+    <servlet-name>GenresServlet</servlet-name>
+    <servlet-class>cinema.GenresServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GenresServlet</servlet-name>
+    <url-pattern>/GenresServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

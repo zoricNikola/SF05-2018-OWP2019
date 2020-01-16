@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+    <!-- <link rel="stylesheet" href="css/darkInputs.css"> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="css/darkInputs.css">
+    <style>
+         button {
+            background-color: #22262a !important;
+            color: #FFF !important;
+         }
+    </style>
+</style>
+    <title>Filmovi</title>
+</head>
+<body style="height: 100vh; background-image: url('cover.jpg'); 
+                            background-repeat: no-repeat;
+                            background-attachment: fixed;
+                            background-size: cover;">
+
+    <div id="app" class="container-fluid h-100">
+    
+        <div class="row">
+            <div class="col offset-xl-3">
+                <h1 style="color: white">Filmovi</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <form style="background-color: #22262a !important;
+                color: #FFF !important;
+                padding-top: 10px;
+                padding-left: 10px;
+                padding-right: 10px;">
+                    <div class="form-row">
+                        <div class="form-group col-xl-4">
+                            <input v-model="title" debounce="500" type="text" class="form-control" id="titleInput" placeholder="Naziv"/>
+                        </div>
+                        <div class="form-group col-xl-4">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text">Žanrovi</span>
+                                </div>
+                                <select v-model="selectedGenres" id="genresInput" class="selectpicker form-control" style="background: #22262a !important; color: #fff; border: 1px #FFF;" multiple data-selected-text-format="count">
+                                    <option v-for="option in genreOptions" v-bind:value="option" style="background: #22262a; color: #FFF;">{{ option }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-6 col-xl-1">
+                            <input v-model.number="durationLow" debounce="500" type="number" class="form-control" id="durationLowInput" placeholder="Trajanje od"/>
+                        </div>
+                        <div class="form-group col-6 col-xl-1">
+                            <input v-model.number="durationHigh" debounce="500" type="number" class="form-control" id="durationHighInput" placeholder="Trajanje do"/>
+                        </div>
+                        <div class="form-group col-6 col-xl-1">
+                            <input v-model.number="yearLow" debounce="500" type="number" class="form-control" id="yearLowInput" placeholder="Godina od"/>
+                        </div>
+                        <div class="form-group col-6 col-xl-1">
+                            <input v-model.number="yearHigh" debounce="500" type="number" class="form-control" id="yearHighInput" placeholder="Godina do"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-xl-4">
+                            <input v-model="distributor" debounce="500" type="text" class="form-control" id="distributorInput" placeholder="Distributer"/>
+                        </div>
+                        <div class="form-group col-xl-4">
+                            <input v-model="country" debounce="500" type="text" class="form-control" id="countryInput" placeholder="Država"/>
+                        </div>
+                        
+                        <div class="form-group col-xl-4">
+                            <select v-model="selectedSort" id="sortInput" class="selectpicker form-control" style="border: 1px #FFF">
+                                <option v-for="option in sortOptions" v-bind:value="option.value" style="background: #22262a; color: #FFF;">{{ option.text }}</option>
+                              </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div v-for="movie in orderedMovies" class="row mt-5">
+            <div class="col-xl-10 offset-xl-1">
+                <div class="card text-white bg-dark mb-3">
+                    <div class="row no-gutters">
+                      <div class="col-md-4">
+                        <img src="movie.jpg" class="card-img" alt="..." style="height: 100%;">
+                      </div>
+                      <div class="col-md-8">
+                        <div class="card-body">
+                          <h4 class="card-title">{{ movie.title }}</h4>
+                          <ul class="list-group list-group-flush">
+                            <li class="list-group-item bg-dark"><p class="card-text"><b>Žanr:</b> {{ genresToString(movie.genres) }}</p></li>
+                            <li class="list-group-item bg-dark"><p class="card-text"><b>Trajanje:</b> {{ movie.duration }} min</p></li>
+                            <li class="list-group-item bg-dark"><p class="card-text"><b>Distributer:</b> {{ movie.distributor }}</p></li>
+                            <li class="list-group-item bg-dark"><p class="card-text"><b>Zemlja porekla:</b> {{ movie.country }}</p></li>
+                            <li class="list-group-item bg-dark"><p class="card-text"><b>Godina proizvodnje:</b> {{ movie.year }}.</p></li>
+                          </ul>
+                          <div class="card-body">
+                            <a :href="'Movie.html?id=' + movie.id" class="btn btn-danger stretched-link">Detaljnije</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    
+    </div>
+
+    <script src="js/jquery-3.4.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src='https://cdn.jsdelivr.net/g/lodash@4(lodash.min.js+lodash.fp.min.js)'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+    <script>
+		// Loading `lodash.fp.js` converts `_` to its fp variant.
+		_.defaults({ 'a': 2, 'b': 2 })({ 'a': 1 });
+		// ➜ { 'a': 1, 'b': 2 }
+		
+		// Use `noConflict` to restore the pre-fp variant.
+		var fp = _.noConflict();
+		
+		_.defaults({ 'a': 1 }, { 'a': 2, 'b': 2 });
+		// ➜ { 'a': 1, 'b': 2 }
+		fp.defaults({ 'a': 2, 'b': 2 })({ 'a': 1 });
+		// ➜ { 'a': 1, 'b': 2 }
+		</script>
+    <script src="js/FilterMovies.js"></script>
+</body>
+</html>

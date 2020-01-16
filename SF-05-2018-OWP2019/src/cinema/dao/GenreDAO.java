@@ -28,7 +28,7 @@ public class GenreDAO {
 			rset = pstmt.executeQuery();
 			
 			while (rset.next()) {
-				String genre = rset.getString(2);
+				String genre = rset.getString(1);
 				genres.add(genre);
 			}
 		} finally {
