@@ -1,10 +1,5 @@
 $(document).ready(function() {
 
-    $('#genresInput').on('change', function(e) {
-        e.preventDefault();
-        console.log($('#genresInput').val());
-    });
-
     var app = new Vue({
         el: '#app',
         data: {

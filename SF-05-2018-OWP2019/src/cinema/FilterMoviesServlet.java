@@ -70,6 +70,7 @@ public class FilterMoviesServlet extends HttpServlet {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.getRequestDispatcher("./FailureServlet").forward(request, response);
 		}
 	}
 

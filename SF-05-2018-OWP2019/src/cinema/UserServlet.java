@@ -29,6 +29,7 @@ public class UserServlet extends HttpServlet {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.getRequestDispatcher("./FailureServlet").forward(request, response);
 		}
 	}
 
