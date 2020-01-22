@@ -1,4 +1,3 @@
-drop table Users;
 
 create table Users(
     Username varchar(30) primary key,
@@ -12,7 +11,6 @@ insert into Users values('admin', 'admin', date('now'), 'ADMIN', 1);
 insert into Users values('pera', 'pera', date('now'), 'USER', 1);
 insert into Users values('sima', 'sima', date('now'), 'USER', 1);
 
-drop table Movies;
 
 create table Movies (
     ID integer primary key,
@@ -30,7 +28,6 @@ insert into Movies (Title, Director, Duration, Distributor, Country, Year, Descr
 insert into Movies (Title, Director, Duration, Distributor, Country, Year, Description, Active) values('Prerušeni špijuni', 'Nick Bruno, Troy Quane', 102, 'MegaCom Film', 'USA', 2019, '...', 1);
 insert into Movies (Title, Director, Duration, Distributor, Country, Year, Description, Active) values('Dulitl 3D', 'Stephen Gaghan', 101, 'Taramount', 'USA', 2020, '...', 1);
 
-drop table Actors;
 
 create table Actors (
     Movie int not null,
@@ -41,7 +38,6 @@ create table Actors (
 insert into Actors values(1, 'Marlon Brando');
 insert into Actors values(1, 'Al Pacino');
 
-drop table Genres;
 
 create table Genres (
     Movie int not null,
