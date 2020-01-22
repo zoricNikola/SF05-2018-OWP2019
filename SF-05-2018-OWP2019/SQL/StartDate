@@ -1,0 +1,54 @@
+drop table Users;
+
+create table Users(
+    Username varchar(30) primary key,
+    Password varchar(30) not null,
+    RegistrationDate date not null,
+    Role varchar(10) not null,
+    Active integer not null
+);
+
+insert into Users values('admin', 'admin', date('now'), 'ADMIN', 1);
+insert into Users values('pera', 'pera', date('now'), 'USER', 1);
+insert into Users values('sima', 'sima', date('now'), 'USER', 1);
+
+drop table Movies;
+
+create table Movies (
+    ID integer primary key,
+    Title varchar(80) not null,
+    Director varchar(80),
+    Duration int check(Duration > 0) not null,
+    Distributor varchar(80) not null,
+    Country varchar(80) not null,
+    Year int check(Year > 0) not null,
+    Description varchar(200),
+    Active integer not null
+);
+
+insert into Movies (Title, Director, Duration, Distributor, Country, Year, Description, Active) values('The Godfather', 'Francis Ford Copola', 175, 'Paramount Pictures', 'USA', 1972, 'The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.', 1);
+insert into Movies (Title, Director, Duration, Distributor, Country, Year, Description, Active) values('Prerušeni špijuni', 'Nick Bruno, Troy Quane', 102, 'MegaCom Film', 'USA', 2019, '...', 1);
+insert into Movies (Title, Director, Duration, Distributor, Country, Year, Description, Active) values('Dulitl 3D', 'Stephen Gaghan', 101, 'Taramount', 'USA', 2020, '...', 1);
+
+drop table Actors;
+
+create table Actors (
+    Movie int not null,
+    Actor varchar(80) not null,
+    foreign key(Movie) references Movies(ID)
+);
+
+insert into Actors values(1, 'Marlon Brando');
+insert into Actors values(1, 'Al Pacino');
+
+drop table Genres;
+
+create table Genres (
+    Movie int not null,
+    Genre varchar(50) not null,
+    foreign key(Movie) references Movies(ID)
+);
+
+insert into Genres values (1, 'Crime'), (1, 'Historical');
+insert into Genres values (2, 'Animirani');
+insert into Genres values (3, 'Komedija'), (3, 'Avantura');
