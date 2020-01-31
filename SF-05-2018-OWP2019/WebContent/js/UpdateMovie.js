@@ -199,6 +199,12 @@ $(document).ready(function() {
                     }
                     
                 });
+            },
+            checkNumber: function(event) {
+            	if (app.duration <= 0 || app.duration > 600)
+                    app.duration = undefined;
+            	if (app.year <= 0 || app.year > 2500)
+                    app.year = undefined;
             }
 	    },
 	    watch: {
@@ -218,23 +224,23 @@ $(document).ready(function() {
 	    }
     })
     
-    $('#durationInput').on('change keyup copy paste cut', function(event) {
-        event.preventDefault();
-
-        if (app.duration <= 0 || app.duration > 600)
-            app.duration = undefined;
-
-        return false;
-    });
-
-    $('#yearInput').on('change keyup copy paste cut', function(event) {
-        event.preventDefault();
-
-        if (app.year <= 0 || app.year > 2500)
-            app.year = undefined;
-
-        return false;
-    });
+//    $('#durationInput').on('change keyup copy paste cut', function(event) {
+//        event.preventDefault();
+//
+//        if (app.duration <= 0 || app.duration > 600)
+//            app.duration = undefined;
+//
+//        return false;
+//    });
+//
+//    $('#yearInput').on('change keyup copy paste cut', function(event) {
+//        event.preventDefault();
+//
+//        if (app.year <= 0 || app.year > 2500)
+//            app.year = undefined;
+//
+//        return false;
+//    });
     
     app.getGenres();
     app.getActors();

@@ -29,14 +29,14 @@
                     <table class="table table-hover table-dark table-striped">
                         <thead>
                         <tr>
-                            <th style="width: 40%"><input v-model="username" debounce="500" type="text" class="form-control" id="usernameInput" placeholder="Korisničko ime" /></th>
+                            <th style="width: 40%"><input v-model="username" v-on:keyup="refreshUsers" debounce="500" type="text" class="form-control" id="usernameInput" placeholder="Korisničko ime" /></th>
                             <th style="width: 25%">
                                 <select v-model="selectedSort" id="sortInput" class="custom-select">
                                     <option v-for="option in sortOptions" v-bind:value="option.value">{{ option.text }}</option>
                                 </select>
                             </th>
                             <th style="width: 35%">
-                            	<select v-model="selectedUserRole" id="userRoleInput" class="custom-select">
+                            	<select v-model="selectedUserRole"  v-on:change="refreshUsers" id="userRoleInput" class="custom-select">
 									<option v-for="option in userRoleOptions" v-bind:value="option.value">{{ option.text }}</option>
 								</select>
                             </th>

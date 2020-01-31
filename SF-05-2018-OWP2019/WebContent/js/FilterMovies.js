@@ -1,5 +1,5 @@
 $(document).ready(function() {
-
+	
     var app = new Vue({
         el: '#app',
         data: {
@@ -82,6 +82,23 @@ $(document).ready(function() {
                     }
                 }
                 return genresString;
+            },
+            refreshMovies: function(event){
+            	
+            	if (app.durationLow <= 0 || app.durationLow > 600) {
+                    app.durationLow = undefined;
+                }
+            	if (app.durationHigh <= 0 || app.durationHigh > 600) {
+                    app.durationHigh = undefined;
+                }
+            	if (app.yearLow <= 0 || app.yearLow > 2500) {
+                    app.yearLow = undefined;
+                }
+            	if (app.yearHigh <= 0 || app.yearHigh > 2500) {
+                    app.yearHigh = undefined;
+                }
+            	
+            	this.getMovies();
             }
         },
         computed: {
@@ -96,6 +113,10 @@ $(document).ready(function() {
             		return _.orderBy(this.movies, 'duration');
             	else if (this.selectedSort === 'durationDESC')
                     return _.orderBy(this.movies, 'duration').reverse();
+            	else if (this.selectedSort === 'genresASC')
+            		return _.orderBy(this.movies, 'genres[0]');
+            	else if (this.selectedSort === 'genresDESC')
+                    return _.orderBy(this.movies, 'genres[0]').reverse();
                 else if (this.selectedSort === 'yearASC')
             		return _.orderBy(this.movies, 'year');
             	else if (this.selectedSort === 'yearDESC')
@@ -117,84 +138,80 @@ $(document).ready(function() {
 	    }
     })
 
-    $('#titleInput').on('change keyup copy paste cut', function(event) {
-        event.preventDefault();
-        
-        app.getMovies();
-		
-		return false;
-    });
+//    $('#titleInput').on('change keyup copy paste cut', function(event) {
+//        event.preventDefault();
+//        
+//        app.getMovies();
+//		
+//		return false;
+//    });
     
-    $('#distributorInput').on('change keyup copy paste cut', function(event) {
-		event.preventDefault();
-        
-        app.getMovies();
-		
-		return false;
-    });
+//    $('#distributorInput').on('change keyup copy paste cut', function(event) {
+//		event.preventDefault();
+//        
+//        app.getMovies();
+//		
+//		return false;
+//    });
     
-    $('#countryInput').on('change keyup copy paste cut', function(event) {
-		event.preventDefault();
-        
-        app.getMovies();
-		
-		return false;
-    });
+//    $('#countryInput').on('change keyup copy paste cut', function(event) {
+//		event.preventDefault();
+//        
+//        app.getMovies();
+//		
+//		return false;
+//    });
     
-    $('#durationLowInput').on('change keyup copy paste cut', function(event) {
-        event.preventDefault();
-
-        if (app.durationLow <= 0 || app.durationLow > 600) {
-            app.durationLow = undefined;
-        } else {
-            app.getMovies();
-        }	
-
-        return false;
-    });
+//    $('#durationLowInput').on('change keyup copy paste cut', function(event) {
+//        event.preventDefault();
+//
+//        if (app.durationLow <= 0 || app.durationLow > 600) {
+//            app.durationLow = undefined;
+//        }
+//        app.getMovies();
+//
+//        return false;
+//    });
     
-    $('#durationHighInput').on('change keyup copy paste cut', function(event) {
-		event.preventDefault();
-
-        if (app.durationHigh <= 0 || app.durationHigh > 600) {
-            app.durationHigh = undefined;
-        } else {
-            app.getMovies();
-        }	
-        
-        return false;
-    });
+//    $('#durationHighInput').on('change keyup copy paste cut', function(event) {
+//		event.preventDefault();
+//
+//        if (app.durationHigh <= 0 || app.durationHigh > 600) {
+//            app.durationHigh = undefined;
+//        }
+//        app.getMovies();
+//        
+//        return false;
+//    });
     
-    $('#yearLowInput').on('change keyup copy paste cut', function(event) {
-		event.preventDefault();
-
-        if (app.yearLow <= 0 || app.yearLow > 2500) {
-            app.yearLow = undefined;
-        } else {
-            app.getMovies();
-        }	
-        
-        return false;
-    });
+//    $('#yearLowInput').on('change keyup copy paste cut', function(event) {
+//		event.preventDefault();
+//
+//        if (app.yearLow <= 0 || app.yearLow > 2500) {
+//            app.yearLow = undefined;
+//        }
+//        app.getMovies();
+//        
+//        return false;
+//    });
     
-    $('#yearHighInput').on('change keyup copy paste cut', function(event) {
-		event.preventDefault();
-
-        if (app.yearHigh <= 0 || app.yearHigh > 2500) {
-            app.yearHigh = undefined;
-        } else {
-            app.getMovies();
-        }	
-        
-        return false;
-	});
+//    $('#yearHighInput').on('change keyup copy paste cut', function(event) {
+//		event.preventDefault();
+//
+//        if (app.yearHigh <= 0 || app.yearHigh > 2500) {
+//            app.yearHigh = undefined;
+//        }
+//        app.getMovies();
+//        
+//        return false;
+//	});
     
-    $('#genresInput').on('change', function (event) {
-        app.getMovies();
-        
-        event.preventDefault();
-        return false;
-    });
+//    $('#genresInput').on('change', function (event) {
+//        app.getMovies();
+//        
+//        event.preventDefault();
+//        return false;
+//    });
     
     app.getGenres();
     app.getMovies();

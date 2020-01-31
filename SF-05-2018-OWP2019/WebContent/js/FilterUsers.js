@@ -40,6 +40,9 @@ $(document).ready(function() {
                     }
                     
                 });
+            },
+            refreshUsers: function(event) {
+            	this.getUsers();
             }
         },
         computed: {
@@ -58,20 +61,20 @@ $(document).ready(function() {
         }
     })
     
-    $('#usernameInput').on('keyup', function(event) {
-		app.getUsers();
-
-		event.preventDefault();
-		return false;
-	});
-    
-    $('#userRoleInput').on('change', function (event) {
-        app.getUsers();
-        
-        event.preventDefault();
-        return false;
-        
-    });
+//    $('#usernameInput').on('keyup', function(event) {
+//		app.getUsers();
+//
+//		event.preventDefault();
+//		return false;
+//	});
+//    
+//    $('#userRoleInput').on('change', function (event) {
+//        app.getUsers();
+//        
+//        event.preventDefault();
+//        return false;
+//        
+//    });
 //    $('#sortInput').on('change', function (event) {
 //        
 //        

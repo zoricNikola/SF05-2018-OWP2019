@@ -123,10 +123,10 @@
                             </div>
                             <div class="form-row mt-2">
                                 <div class="form-group col-6 col-md-3">
-                                    <input v-model.number="duration" type="number" class="form-control bg-dark" id="durationInput" placeholder="Trajanje (min)"/>
+                                    <input v-model.number="duration" v-on:keyup="checkNumber" type="number" class="form-control bg-dark" id="durationInput" placeholder="Trajanje (min)"/>
                                 </div>
                                 <div class="form-group col-6 col-md-3">
-                                    <input v-model.number="year" type="number" class="form-control bg-dark" id="yearInput" placeholder="Godina proizvodnje"/>
+                                    <input v-model.number="year" v-on:keyup="checkNumber" type="number" class="form-control bg-dark" id="yearInput" placeholder="Godina proizvodnje"/>
                                 </div>
                                 <div class="form-group col-12 col-md-6">    
                                     <input v-model="country" type="text" class="form-control text-white bg-dark" id="countryInput" placeholder="Zemlja porekla" />
