@@ -1,5 +1,18 @@
 $(document).ready(function() {
 	
+	$.get('LoggedInUserServlet', function(data) {
+        console.log(data);
+        
+        if (data.status != 'success') {
+            window.location.replace('Login.html');
+            return;
+        }
+        if (data.loggedInUserRole != 'ADMIN') {
+            window.location.replace('Welcome.html');
+            return;
+        }
+    });
+	
 	var id = window.location.search.slice(1).split('&')[0].split('=')[1];
 	console.log(id);
 

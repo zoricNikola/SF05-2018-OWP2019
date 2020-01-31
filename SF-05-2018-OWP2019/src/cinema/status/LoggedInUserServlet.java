@@ -32,10 +32,8 @@ public class LoggedInUserServlet extends HttpServlet {
 				return;
 			}
 			
-			String userRole = request.getParameter("userRole");
-			
 			Map<String, Object> data = new LinkedHashMap<String, Object>();
-			data.put("loggedInUserRole", userRole);
+			data.put("loggedInUserRole", loggedInUser.getUserRole().toString());
 			
 			request.setAttribute("data", data);
 			request.getRequestDispatcher("./SuccessServlet").forward(request, response);
