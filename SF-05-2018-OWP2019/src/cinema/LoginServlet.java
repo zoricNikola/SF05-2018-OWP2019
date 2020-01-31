@@ -1,7 +1,6 @@
 package cinema;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -29,10 +28,10 @@ public class LoginServlet extends HttpServlet {
 			User user = UserDAO.getUserByUsername(username);
 			
 			if (user == null) {
-				throw new Exception("Pogrešno korisničko ime!");
+				throw new Exception("username");
 			}
 			if (!user.getPassword().equals(password)) {
-				throw new Exception("Pogrešna lozinka!");
+				throw new Exception("password");
 			}
 			
 			request.getSession().setAttribute("loggedInUsername", user.getUsername());
