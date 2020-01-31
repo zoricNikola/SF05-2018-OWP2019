@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import cinema.dao.UserDAO;
 import cinema.model.User;
+import cinema.model.User.UserRole;
 import cinema.searchModels.UsersSearchModel;
 
 @SuppressWarnings("serial")
@@ -19,7 +20,23 @@ public class FilterUsersServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		String loggedInUsername = (String) request.getSession().getAttribute("loggedInUsername");
+		if (loggedInUsername == null) {
+			request.getRequestDispatcher("./UnauthorizedServlet").forward(request, response);
+			return;
+		}
 		try {
+			
+			User loggedInUser = UserDAO.getUserByUsername(loggedInUsername);
+			if (loggedInUser == null) {
+				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+				return;
+			}
+			else if (loggedInUser.getUserRole() != UserRole.ADMIN) {
+				request.getRequestDispatcher("./UnauthorizedServlet").forward(request, response);
+				return;
+			}
+			
 			String username = request.getParameter("username");
 			String userRole = request.getParameter("userRole");
 			

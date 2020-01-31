@@ -35,6 +35,16 @@ $(document).ready(function() {
                 $.get('FilterUsersServlet', params, function(data) {
                     console.log(data);
                     
+                    if (data.status == 'unauthenticated') {
+                    	window.location.replace('Login.html');
+                    	return;
+                    }
+                    
+                    if (data.status == 'unauthorized') {
+                    	window.location.replace('Welcome.html');
+                    	return;
+                    }
+                    
                     if (data.status == 'success') {
                     	app.users = data.filteredUsers;
                     }

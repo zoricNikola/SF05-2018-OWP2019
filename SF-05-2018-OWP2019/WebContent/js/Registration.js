@@ -39,7 +39,7 @@ $(document).ready(function() {
 	                    else if (data.status == 'success') {
 	                        $('#messageModal').modal('show');
 	                        $('#messageModal').on('hidden.bs.modal', function (e) {
-	                            window.location.replace('Welcome.html');
+	                            window.location.replace('Login.html');
 	                        });
 	                    }
 	                });
