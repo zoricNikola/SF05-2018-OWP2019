@@ -1,21 +1,9 @@
 $(document).ready(function() {
 	
-	$.get('LoggedInUserServlet', function(data) {
-        console.log(data);
-        
-        if (data.status != 'success') {
-            window.location.replace('Login.html');
-            return;
-        }
-        if (data.loggedInUserRole != 'ADMIN') {
-            window.location.replace('Welcome.html');
-            return;
-        }
-    });
-
 	var app = new Vue({
 	    el: '#app',
 	    data: {
+	    	loggedInUser: { username: '', userRole: ''},
             title: '',
             director: '',
             selectedGenres: [],
@@ -33,6 +21,25 @@ $(document).ready(function() {
             showMessage: false
 	    },
 	    methods: {
+	    	getLoggedInUser: function() {
+	    		$.get('LoggedInUserServlet', function(data) {
+	    	        console.log(data);
+	    	        
+	    	        if (data.status != 'success') {
+	    	            window.location.replace('Login.html');
+	    	            return;
+	    	        }
+	    	        if (data.loggedInUser.userRole != 'ADMIN') {
+	    	            window.location.replace('Welcome.html');
+	    	            return;
+	    	        }
+	    	        if (data.status == 'success') {
+	    	        	app.loggedInUser.username = data.loggedInUser.username;
+	    	            app.loggedInUser.userRole = data.loggedInUser.userRole;
+	    	            return;
+	    	        }
+	    	    });
+	    	},
 	        addMovieSubmit: function(event) {
 	            console.log('title: ' + this.title);
 	        	console.log('director: ' + this.director);
@@ -170,6 +177,7 @@ $(document).ready(function() {
 //        return false;
 //    });
 
+	app.getLoggedInUser();
     app.getGenres();
 
 });

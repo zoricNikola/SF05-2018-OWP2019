@@ -1,24 +1,12 @@
 $(document).ready(function() {
 	
-	$.get('LoggedInUserServlet', function(data) {
-        console.log(data);
-        
-        if (data.status != 'success') {
-            window.location.replace('Login.html');
-            return;
-        }
-        if (data.loggedInUserRole != 'ADMIN') {
-            window.location.replace('Welcome.html');
-            return;
-        }
-    });
-	
 	var id = window.location.search.slice(1).split('&')[0].split('=')[1];
 	console.log(id);
 
 	var app = new Vue({
 	    el: '#app',
 	    data: {
+	    	loggedInUser: { username: '', userRole: ''},
             title: '',
             director: '',
             selectedGenres: [],
@@ -37,6 +25,25 @@ $(document).ready(function() {
             action: ''
 	    },
 	    methods: {
+	    	getLoggedInUser: function() {
+	    		$.get('LoggedInUserServlet', function(data) {
+	    	        console.log(data);
+	    	        
+	    	        if (data.status != 'success') {
+	    	            window.location.replace('Login.html');
+	    	            return;
+	    	        }
+	    	        if (data.loggedInUser.userRole != 'ADMIN') {
+	    	            window.location.replace('Welcome.html');
+	    	            return;
+	    	        }
+	    	        if (data.status == 'success') {
+	    	        	app.loggedInUser.username = data.loggedInUser.username;
+	    	            app.loggedInUser.userRole = data.loggedInUser.userRole;
+	    	            return;
+	    	        }
+	    	    });
+	    	},
 	        updateMovieSubmit: function(event) {
 	        	console.log('ID: ' + id);
 	            console.log('title: ' + this.title);
@@ -255,6 +262,7 @@ $(document).ready(function() {
 //        return false;
 //    });
     
+	app.getLoggedInUser();
     app.getGenres();
     app.getActors();
     app.getMovie();

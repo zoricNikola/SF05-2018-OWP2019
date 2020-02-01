@@ -3,6 +3,7 @@ $(document).ready(function() {
     var app = new Vue({
         el: '#app',
         data: {
+        	loggedInUser: { username: '', userRole: '' },
             title: '',
             selectedGenres: [],
             distributor: '',
@@ -32,6 +33,17 @@ $(document).ready(function() {
             movies: []
         },
         methods: {
+        	getLoggedInUser: function() {
+	    		$.get('LoggedInUserServlet', function(data) {
+	    	        console.log(data);
+	    	        
+	    	        if (data.status == 'success') {
+	    	        	app.loggedInUser.username = data.loggedInUser.username;
+	    	            app.loggedInUser.userRole = data.loggedInUser.userRole;
+	    	            return;
+	    	        }
+	    	    });
+	    	},
             getMovies: function(event) {
                 console.log('title: ' + this.title);
                 console.log('selectedGenres: ' + this.selectedGenres);
@@ -213,6 +225,7 @@ $(document).ready(function() {
 //        return false;
 //    });
     
+    app.getLoggedInUser();
     app.getGenres();
     app.getMovies();
 })

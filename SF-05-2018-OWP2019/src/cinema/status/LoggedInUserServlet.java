@@ -26,14 +26,19 @@ public class LoggedInUserServlet extends HttpServlet {
 		}
 		try {
 			
-			User loggedInUser = UserDAO.getUserByUsername(loggedInUsername);
-			if (loggedInUser == null) {
+			User user = UserDAO.getUserByUsername(loggedInUsername);
+			if (user == null) {
 				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
 				return;
 			}
 			
 			Map<String, Object> data = new LinkedHashMap<String, Object>();
-			data.put("loggedInUserRole", loggedInUser.getUserRole().toString());
+			Map<String, Object> loggedInUser = new LinkedHashMap<String, Object>();
+			
+			loggedInUser.put("username", user.getUsername());
+			loggedInUser.put("userRole", user.getUserRole().toString());
+			
+			data.put("loggedInUser", loggedInUser);
 			
 			request.setAttribute("data", data);
 			request.getRequestDispatcher("./SuccessServlet").forward(request, response);
