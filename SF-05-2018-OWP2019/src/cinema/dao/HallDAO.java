@@ -29,9 +29,8 @@ public class HallDAO {
 			while (rset.next()) {
 				int id = rset.getInt(1);
 				String name = rset.getString(2);
-				Hall hall = new Hall(id, name, new ArrayList<ProjectionType>());
-				hall.setProjectionTypes(ProjectionTypeDAO.getByHallID(id));
-				halls.add(hall);
+				halls.add(new Hall(id, name, ProjectionTypeDAO.getByHallID(id)));
+				
 			}
 		} finally {
 			try { pstmt.close(); } catch (Exception e1) { e1.printStackTrace(); }
@@ -40,6 +39,35 @@ public class HallDAO {
 		}
 		
 		return halls;
+	}
+	
+	public static Hall getHallByID(int hId) throws Exception {
+		
+		Connection connection = ConnectionManager.getConnection();
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		try {
+			String query = "select * from Halls where ID = ?";
+			
+			pstmt = connection.prepareStatement(query);
+			pstmt.setInt(1, hId);
+			
+			rset = pstmt.executeQuery();
+			
+			if (rset.next()) {
+				int id = rset.getInt(1);
+				String name = rset.getString(2);
+				return new Hall(id, name, ProjectionTypeDAO.getByHallID(id));
+			}
+		} finally {
+			try { pstmt.close(); } catch (Exception e1) { e1.printStackTrace(); }
+			try { rset.close(); } catch (Exception e1) { e1.printStackTrace(); }
+			try { connection.close(); } catch (Exception e1) { e1.printStackTrace(); }
+		}
+		
+		return null;
 	}
 
 }
