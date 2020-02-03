@@ -40,4 +40,35 @@ public class ProjectionTypeDAO {
 		return projectionTypes;
 	}
 	
+	public static List<ProjectionType> getByHallID(int hId) throws Exception {
+		List<ProjectionType> projectionTypes = new ArrayList<ProjectionType>();
+		
+		Connection connection = ConnectionManager.getConnection();
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		try {
+			String query = "select P.ID, P.Name from ProjectionTypes P, HallTypes H "
+					+ "where P.ID = H.ProjectionType and H.Hall = ?";
+			pstmt = connection.prepareStatement(query);
+			pstmt.setInt(1, hId);
+			
+			rset = pstmt.executeQuery();
+			
+			while (rset.next()) {
+				int id = rset.getInt(1);
+				String name = rset.getString(2);
+				ProjectionType type = new ProjectionType(id, name);
+				projectionTypes.add(type);
+			}
+		} finally {
+			try { pstmt.close(); } catch (Exception e1) { e1.printStackTrace(); }
+			try { rset.close(); } catch (Exception e1) { e1.printStackTrace(); }
+			try { connection.close(); } catch (Exception e1) { e1.printStackTrace(); }
+		}
+		
+		return projectionTypes;
+	}
+	
 }
