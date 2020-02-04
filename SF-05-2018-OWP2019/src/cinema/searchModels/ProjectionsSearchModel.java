@@ -20,7 +20,7 @@ public class ProjectionsSearchModel implements SearchModelInterface {
 	@Override
 	public String CreateQuery() {
 		StringBuilder query = new StringBuilder();
-		query.append("select P.ID, P.Movie, P.ProjectionType, P.Hall, P.Time, P.Price, P.Admin, P.Active from Projections as P, Movies as M where P.Movie = M.ID ");
+		query.append("select P.ID, P.Movie, P.ProjectionType, P.Hall, P.Time, P.Price, P.Admin, P.Active from Projections as P, Movies as M where P.Active = 1 and P.Movie = M.ID ");
 		
 		if (movie != null && !movie.equals(""))
 			query.append("and M.Title like '%' || ? || '%' ");
