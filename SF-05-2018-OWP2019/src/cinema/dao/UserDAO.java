@@ -5,12 +5,15 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
 import cinema.model.User;
 import cinema.searchModels.UsersSearchModel;
+import cinema.util.DateTimeUtil;
 
 public class UserDAO {
 	
@@ -37,7 +40,11 @@ public class UserDAO {
 				int index = 1;
 				String username = rset.getString(index++);
 				String password = rset.getString(index++);
-				LocalDate registrationDate = LocalDate.parse(rset.getString(index++));
+
+//				LocalDate registrationDate = LocalDate.parse(rset.getString(index++));
+				int timeStamp = rset.getInt(index++);
+				LocalDate registrationDate = DateTimeUtil.UnixTimeStampToLocalDate(timeStamp);
+				
 				User.UserRole userRole = User.UserRole.valueOf(rset.getString(index++));
 				boolean active = rset.getInt(index++) == 1;
 				
@@ -71,7 +78,11 @@ public class UserDAO {
 				int index = 1;
 				String username = rset.getString(index++);
 				String password = rset.getString(index++);
-				LocalDate registrationDate = LocalDate.parse(rset.getString(index++));
+				
+//				LocalDate registrationDate = LocalDate.parse(rset.getString(index++));
+				int timeStamp = rset.getInt(index++);
+				LocalDate registrationDate = DateTimeUtil.UnixTimeStampToLocalDate(timeStamp);
+				
 				User.UserRole userRole = User.UserRole.valueOf(rset.getString(index++));
 				boolean active = rset.getInt(index++) == 1;
 				
@@ -96,7 +107,7 @@ public class UserDAO {
 			int index = 1;
 			pstmt.setString(index++, user.getUsername());
 			pstmt.setString(index++, user.getPassword());
-			pstmt.setString(index++, user.getRegistrationDate().toString());
+			pstmt.setInt(index++, DateTimeUtil.LocalDateToUnixTimeStamp(user.getRegistrationDate()));
 			pstmt.setString(index++, user.getUserRole().toString());
 			
 			return pstmt.executeUpdate() == 1;
@@ -117,7 +128,7 @@ public class UserDAO {
 			pstmt = connection.prepareStatement(query);
 			int index = 1;
 			pstmt.setString(index++, user.getPassword());
-			pstmt.setDate(index++, Date.valueOf(user.getRegistrationDate()));
+			pstmt.setInt(index++, DateTimeUtil.LocalDateToUnixTimeStamp(user.getRegistrationDate()));
 			pstmt.setString(index++, user.getUserRole().toString());
 			pstmt.setString(index++, user.getUsername());
 			
