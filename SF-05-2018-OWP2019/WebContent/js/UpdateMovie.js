@@ -1,3 +1,4 @@
+$("#staticBackdrop").modal('show');
 $(document).ready(function() {
 	
 	var id = window.location.search.slice(1).split('&')[0].split('=')[1];
@@ -266,5 +267,6 @@ $(document).ready(function() {
     app.getGenres();
     app.getActors();
     app.getMovie();
+    setTimeout(function(){ $("#staticBackdrop").modal('hide'); }, 1000);
 
 });

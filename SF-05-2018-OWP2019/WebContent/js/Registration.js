@@ -1,3 +1,4 @@
+$("#staticBackdrop").modal('show');
 $(document).ready(function() {
 
 	var app = new Vue({
@@ -73,4 +74,5 @@ $(document).ready(function() {
 	        }
 	    }
 	})
+	setTimeout(function(){ $("#staticBackdrop").modal('hide'); }, 1000);
 });

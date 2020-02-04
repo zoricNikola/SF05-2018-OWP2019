@@ -1,3 +1,4 @@
+$("#staticBackdrop").modal('show');
 $(document).ready(function() {
 	
     var app = new Vue({
@@ -5,32 +6,33 @@ $(document).ready(function() {
         data: {
         	loggedInUser: { username: '', userRole: '' },
             title: '',
-            selectedGenres: [],
             distributor: '',
             country: '',
             durationLow: undefined,
             durationHigh: undefined,
             yearLow: undefined,
             yearHigh: undefined,
-            selectedSort: '',
             sortOptions: [
-            	{ text: 'Sortiraj...', value: ''},
-            	{ text: 'Automatski', value: ''},
-            	{ text: 'Naziv rastuće', value: 'titleASC'},
-            	{ text: 'Naziv opadajuće', value: 'titleDESC'},
-            	{ text: 'Žanrovi rastuće', value: 'genresASC'},
-                { text: 'Žanrovi opadajuće', value: 'genresDESC'},
-                { text: 'Trajanje rastuće', value: 'durationASC' },
-                { text: 'Trajanje opadajuće', value: 'durationDESC' },
-                { text: 'Godina rastuće', value: 'yearASC' },
-                { text: 'Godina opadajuće', value: 'yearDESC' },
-                { text: 'Distributer rastuće', value: 'distributorASC' },
-                { text: 'Distributer opadajuće', value: 'distributorDESC' },
-                { text: 'Država rastuće', value: 'countryASC' },
-                { text: 'Država opadajuće', value: 'countryDESC' },
+            	'Automatski',
+            	'Naziv rastuće',
+            	'Naziv opadajuće',
+            	'Žanrovi rastuće',
+                'Žanrovi opadajuće',
+                'Trajanje rastuće',
+                'Trajanje opadajuće',
+                'Godina rastuće',
+                'Godina opadajuće',
+                'Distributer rastuće',
+                'Distributer opadajuće',
+                'Država rastuće',
+                'Država opadajuće',
             ],
+            selectedSort: 'Automatski',
             genreOptions: [],
-            movies: []
+            selectedGenres: [],
+            movies: [],
+            genreOption: '',
+            sortOption: { text: '', value: '' }
         },
         methods: {
         	getLoggedInUser: function() {
@@ -115,31 +117,31 @@ $(document).ready(function() {
         },
         computed: {
             orderedMovies: function() {
-                if (this.selectedSort === '')
+                if (this.selectedSort === 'Automatski')
             		return this.movies;
-            	else if (this.selectedSort === 'titleASC')
+            	else if (this.selectedSort === 'Naziv rastuće')
             		return _.orderBy(this.movies, 'title');
-            	else if (this.selectedSort === 'titleDESC')
+            	else if (this.selectedSort === 'Naziv opadajuće')
                     return _.orderBy(this.movies, 'title').reverse();
-                else if (this.selectedSort === 'durationASC')
+                else if (this.selectedSort === 'Trajanje rastuće')
             		return _.orderBy(this.movies, 'duration');
-            	else if (this.selectedSort === 'durationDESC')
+            	else if (this.selectedSort === 'Trajanje opadajuće')
                     return _.orderBy(this.movies, 'duration').reverse();
-            	else if (this.selectedSort === 'genresASC')
+            	else if (this.selectedSort === 'Žanrovi rastuće')
             		return _.orderBy(this.movies, 'genres[0]');
-            	else if (this.selectedSort === 'genresDESC')
+            	else if (this.selectedSort === 'Žanrovi opadajuće')
                     return _.orderBy(this.movies, 'genres[0]').reverse();
-                else if (this.selectedSort === 'yearASC')
+                else if (this.selectedSort === 'Godina rastuće')
             		return _.orderBy(this.movies, 'year');
-            	else if (this.selectedSort === 'yearDESC')
+            	else if (this.selectedSort === 'Godina opadajuće')
                     return _.orderBy(this.movies, 'year').reverse();
-                else if (this.selectedSort === 'distributorASC')
+                else if (this.selectedSort === 'Distributer rastuće')
             		return _.orderBy(this.movies, 'distributor');
-            	else if (this.selectedSort === 'distributorDESC')
+            	else if (this.selectedSort === 'Distributer opadajuće')
                     return _.orderBy(this.movies, 'distributor').reverse();
-                else if (this.selectedSort === 'countryASC')
+                else if (this.selectedSort === 'Država rastuće')
             		return _.orderBy(this.movies, 'country');
-            	else if (this.selectedSort === 'countryDESC')
+            	else if (this.selectedSort === 'Država opadajuće')
             		return _.orderBy(this.movies, 'country').reverse();
             }
         },
@@ -228,4 +230,5 @@ $(document).ready(function() {
     app.getLoggedInUser();
     app.getGenres();
     app.getMovies();
+    setTimeout(function(){ $("#staticBackdrop").modal('hide'); }, 1000);
 })

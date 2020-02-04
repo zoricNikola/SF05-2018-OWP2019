@@ -1,3 +1,4 @@
+$("#staticBackdrop").modal('show');
 $(document).ready(function() {
     var username = window.location.search.slice(1).split('&')[0].split('=')[1];
 	console.log(username);
@@ -49,4 +50,5 @@ $(document).ready(function() {
     
     app.getLoggedInUser();
     app.getUser();
+    setTimeout(function(){ $("#staticBackdrop").modal('hide'); }, 1000);
 });

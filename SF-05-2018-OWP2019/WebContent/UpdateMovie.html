@@ -2,6 +2,9 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+	<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+	<meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
+	<meta HTTP-EQUIV="Expires" CONTENT="0">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
@@ -9,6 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <link rel="stylesheet" href="css/darkInputs.css">
+    <link rel="stylesheet" href="css/loading.css">
     <style>
         button {
            background-color: #22262a !important;
@@ -21,6 +25,19 @@
                             background-repeat: no-repeat;
                             background-attachment: fixed;
                             background-size: cover;">
+                            
+    <div class="modal fade bd-example-modal-lg" data-backdrop="static" data-keyboard="false" id="staticBackdrop" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content" style="width: 48px">
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-light" role="status">
+                    <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                            
 	<div id="app" class="container-fluid h-100">
 	
 	<!-- NAVIGACIJA -->

@@ -2,6 +2,9 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+	<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+	<meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
+	<meta HTTP-EQUIV="Expires" CONTENT="0">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
@@ -10,19 +13,31 @@
     <!-- <link rel="stylesheet" href="css/darkInputs.css"> -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <link rel="stylesheet" href="css/darkInputs.css">
+    <link rel="stylesheet" href="css/loading.css">
     <style>
          button {
             background-color: #22262a !important;
             color: #FFF !important;
          }
     </style>
-</style>
     <title>Filmovi</title>
 </head>
 <body style=" background-image: url('cover.jpg'); 
                             background-repeat: no-repeat;
                             background-attachment: fixed;
                             background-size: cover;">
+
+	<div class="modal fade bd-example-modal-lg" data-backdrop="static" data-keyboard="false" id="staticBackdrop" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content" style="width: 48px">
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-light" role="status">
+                    <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id="app" class="container-fluid h-100">
     
@@ -48,9 +63,9 @@
                             </a>
                             <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
                                 <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Login.html">Prijava</a>
-                                <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Registration.html">Registracija</a v-if="loggedInUserRole == ''">
-                                <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" :href="'User.html?username=' + loggedInUser.username">Moj nalog</a v-if="loggedInUserRole == ''">
-                                <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" href="LogoutServlet">Odjava</a v-if="loggedInUserRole != ''">
+                                <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Registration.html">Registracija</a>
+                                <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" :href="'User.html?username=' + loggedInUser.username">Moj nalog</a>
+                                <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" href="LogoutServlet">Odjava</a>
                             </div>
                         </li>
                     </ul>
@@ -81,9 +96,9 @@
                                 </a>
                                 <div class="dropdown-menu bg-dark w-50" aria-labelledby="navbarDropdown">
                                     <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Login.html">Prijava</a>
-                                    <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Registration.html">Registracija</a v-if="loggedInUserRole == ''">
-                                    <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" :href="'User.html?username=' + loggedInUser.username">Moj nalog</a v-if="loggedInUserRole == ''">
-                                    <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" href="LogoutServlet">Odjava</a v-if="loggedInUserRole != ''">
+                                    <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Registration.html">Registracija</a>
+                                    <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" :href="'User.html?username=' + loggedInUser.username">Moj nalog</a>
+                                    <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" href="LogoutServlet">Odjava</a>
                                 </div>
                             </li>
                         </ul>
@@ -112,7 +127,7 @@
                                 </div>
                                 <select v-model="selectedGenres" v-on:change="refreshMovies" id="genresInput" class="selectpicker form-control" 
                                 style="background: #22262a !important; color: #fff; border: 1px #FFF;" multiple data-selected-text-format="count > 3" title="Izaberi...">
-                                    <option v-for="option in genreOptions" v-bind:value="option" style="background: #22262a; color: #FFF;">{{ option }}</option>
+                                    <option v-for="genreOption in genreOptions" v-bind:value="genreOption" style="background: #22262a; color: #FFF;">{{ genreOption }}</option>
                                 </select>
                             </div>
                         </div>
@@ -138,8 +153,8 @@
                         </div>
                         
                         <div class="form-group col-xl-4">
-                            <select v-model="selectedSort" id="sortInput" class="selectpicker form-control" style="border: 1px #FFF">
-                                <option v-for="option in sortOptions" v-bind:value="option.value" style="background: #22262a; color: #FFF;">{{ option.text }}</option>
+                            <select v-model="selectedSort" title="Sortiraj..." id="sortInput" class="selectpicker form-control" style="border: 1px #FFF">
+                                <option v-for="sortOption in sortOptions" v-bind:value="sortOption" style="background: #22262a; color: #FFF;">{{ sortOption }}</option>
                               </select>
                         </div>
                     </div>

@@ -1,3 +1,4 @@
+$("#staticBackdrop").modal('show');
 $(document).ready(function() {
     var id = window.location.search.slice(1).split('&')[0].split('=')[1];
 	console.log(id);
@@ -43,6 +44,19 @@ $(document).ready(function() {
 	                }
             	}
                 return genresString;
+            },
+            actorsToString: function(actors) {
+            	var actorsString = '';
+            	if (typeof actors !== 'undefined') {
+	                for (i = 0; i < actors.length; i++) {
+	                    if (i == 0) {
+	                    	actorsString = actors[i];
+	                    } else {
+	                    	actorsString = actorsString.concat(', ', actors[i]);
+	                    }
+	                }
+            	}
+                return actorsString;
             }
         },
 
@@ -50,4 +64,5 @@ $(document).ready(function() {
     
     app.getLoggedInUser();
     app.getMovie();
+    setTimeout(function(){ $("#staticBackdrop").modal('hide'); }, 1000);
 });

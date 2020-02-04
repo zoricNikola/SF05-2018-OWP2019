@@ -1,3 +1,4 @@
+$("#staticBackdrop").modal('show');
 $(document).ready(function() {
 	
 	$.get('LoggedInUserServlet', function(data) {
@@ -77,4 +78,6 @@ $(document).ready(function() {
 	        }
 	    }
 	})
+	
+	setTimeout(function(){ $("#staticBackdrop").modal('hide'); }, 1000);
 });

@@ -26,6 +26,10 @@ public class SuccessServlet extends HttpServlet {
 		String jsonData = objectMapper.writeValueAsString(data);
 		System.out.println(jsonData);
 		
+		response.setHeader("Cache-Control", "private, no-cache, no-store, must-revalidate");
+		response.setHeader("Pragma", "no-cache");
+		response.setDateHeader("Expires", 0);
+		
 		response.setContentType("application/json");
 		response.getWriter().write(jsonData);
 	}

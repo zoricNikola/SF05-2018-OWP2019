@@ -1,3 +1,4 @@
+$("#staticBackdrop").modal('show');
 $(document).ready(function() {
 	
     var app = new Vue({
@@ -107,4 +108,5 @@ $(document).ready(function() {
     
     app.getLoggedInUser();
     app.getUsers();
+    setTimeout(function(){ $("#staticBackdrop").modal('hide'); }, 1000);
 });

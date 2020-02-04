@@ -2,11 +2,15 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+	<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+	<meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
+	<meta HTTP-EQUIV="Expires" CONTENT="0">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="css/darkInputs.css">
+    <link rel="stylesheet" href="css/loading.css">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <title>Film</title>
 </head>
@@ -14,6 +18,18 @@
                             background-repeat: no-repeat;
                             background-attachment: fixed;
                             background-size: cover;">
+
+	<div class="modal fade bd-example-modal-lg" data-backdrop="static" data-keyboard="false" id="staticBackdrop" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content" style="width: 48px">
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-light" role="status">
+                    <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id="app" class="container-fluid h-100">
     
@@ -96,11 +112,14 @@
                         <div class="card-body">
                             <h4 class="card-title">{{ movie.title }}</h4>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item bg-dark"><p class="card-text"><b>Žanr:</b> {{ genresToString(movie.genres) }}</p></li>
+                            	<li class="list-group-item bg-dark"><p class="card-text"><b>Žanr:</b> {{ genresToString(movie.genres) }}</p></li>
+                                <li class="list-group-item bg-dark"><p class="card-text"><b>Režiser:</b> {{ movie.director }}</p></li>
                                 <li class="list-group-item bg-dark"><p class="card-text"><b>Trajanje:</b> {{ movie.duration }} min</p></li>
+                                <li class="list-group-item bg-dark"><p class="card-text"><b>Glumci:</b> {{ actorsToString(movie.actors) }}</p></li>
                                 <li class="list-group-item bg-dark"><p class="card-text"><b>Distributer:</b> {{ movie.distributor }}</p></li>
                                 <li class="list-group-item bg-dark"><p class="card-text"><b>Zemlja porekla:</b> {{ movie.country }}</p></li>
                                 <li class="list-group-item bg-dark"><p class="card-text"><b>Godina proizvodnje:</b> {{ movie.year }}.</p></li>
+                                <li class="list-group-item bg-dark"><p class="card-text"><b>Opis:</b> {{ movie.description }}</p></li>
                             </ul>
                             <div v-if="loggedInUser.userRole == 'ADMIN'" class="card-body">
                             	<a :href="'UpdateMovie.html?id=' + movie.id" class="btn btn-danger">Izmeni</a>

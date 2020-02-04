@@ -1,3 +1,4 @@
+$("#staticBackdrop").modal('show');
 $(document).ready(function() {
 	
 	var app = new Vue({
@@ -156,6 +157,11 @@ $(document).ready(function() {
             	if (app.year <= 0 || app.year > 2500)
                     app.year = undefined;
             }
+	    },
+        watch: {
+	    	genreOptions: function(newValues, oldValues){
+	    		this.$nextTick(function(){ $('#genresInput').selectpicker('refresh'); });
+	    	},
 	    }
     })
     
@@ -179,5 +185,6 @@ $(document).ready(function() {
 
 	app.getLoggedInUser();
     app.getGenres();
+    setTimeout(function(){ $("#staticBackdrop").modal('hide'); }, 1000);
 
 });
