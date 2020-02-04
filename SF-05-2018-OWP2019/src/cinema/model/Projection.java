@@ -8,14 +8,14 @@ public class Projection {
 	private ProjectionType projectionType;
 	private Hall hall;
 	private LocalDateTime time;
-	private int price;
+	private double price;
 	private User admin;
 	private boolean active;
 	
 	public Projection() {}
 	
-	public Projection(int id, Movie movie, ProjectionType projectionType, Hall hall, LocalDateTime time, int price,
-			User admin, boolean active) {
+	public Projection(int id, Movie movie, ProjectionType projectionType, Hall hall, 
+			LocalDateTime time, double price, User admin, boolean active) {
 		super();
 		this.id = id;
 		this.movie = movie;
@@ -67,11 +67,11 @@ public class Projection {
 		this.time = time;
 	}
 
-	public int getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(double price) {
 		if (price > 0)
 			this.price = price;
 	}

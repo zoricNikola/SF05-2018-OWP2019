@@ -7,11 +7,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cinema.model.Projection;
+import cinema.searchModels.ProjectionsSearchModel;
 import cinema.util.DateTimeUtil;
 
 public class ProjectionDAO {
 	
 	public static List<Projection> getAll() throws Exception {
+		ProjectionsSearchModel model = new ProjectionsSearchModel();
+		
+		return searchProjections(model);
+	}
+	
+	public static List<Projection> searchProjections(ProjectionsSearchModel model) throws Exception {
 		List<Projection> projections = new ArrayList<Projection>();
 		
 		Connection connection = ConnectionManager.getConnection();
@@ -20,9 +27,7 @@ public class ProjectionDAO {
 		ResultSet rset = null;
 		
 		try {
-			String query = "select * from Projections where Active = 1";
-			
-			pstmt = connection.prepareStatement(query);
+			pstmt = model.PrepareStatement(connection);
 			
 			rset = pstmt.executeQuery();
 			
@@ -33,7 +38,7 @@ public class ProjectionDAO {
 				int projectionTypeID = rset.getInt(index++);
 				int hallID = rset.getInt(index++);
 				int timeStamp = rset.getInt(index++);
-				int price = rset.getInt(index++);
+				double price = rset.getDouble(index++);
 				String adminUsername = rset.getString(index++);
 				boolean active = rset.getInt(index++) == 1;
 				Projection projection = new Projection(id, MovieDAO.getMovieByID(movieID), 
@@ -75,7 +80,7 @@ public class ProjectionDAO {
 				int projectionTypeID = rset.getInt(index++);
 				int hallID = rset.getInt(index++);
 				int timeStamp = rset.getInt(index++);
-				int price = rset.getInt(index++);
+				double price = rset.getDouble(index++);
 				String adminUsername = rset.getString(index++);
 				boolean active = rset.getInt(index++) == 1;
 				Projection projection = new Projection(id, MovieDAO.getMovieByID(movieID), 
