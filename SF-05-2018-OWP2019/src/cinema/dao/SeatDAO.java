@@ -40,4 +40,35 @@ public class SeatDAO {
 		return seats;
 	}
 	
+	public static List<Seat> getByHallID(int hId) throws Exception {
+		List<Seat> seats = new ArrayList<Seat>();
+		
+		Connection connection = ConnectionManager.getConnection();
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		try {
+			String query = "select * from Seats where Hall = ?";
+			
+			pstmt = connection.prepareStatement(query);
+			pstmt.setInt(1, hId);
+			
+			rset = pstmt.executeQuery();
+			
+			Hall hall = HallDAO.getHallByID(hId);
+			
+			while (rset.next()) {
+				int number = rset.getInt(1);
+				seats.add(new Seat(number, hall));
+			}
+		} finally {
+			try { pstmt.close(); } catch (Exception e1) { e1.printStackTrace(); }
+			try { rset.close(); } catch (Exception e1) { e1.printStackTrace(); }
+			try { connection.close(); } catch (Exception e1) { e1.printStackTrace(); }
+		}
+		
+		return seats;
+	}
+	
 }

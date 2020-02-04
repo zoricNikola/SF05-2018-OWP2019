@@ -71,4 +71,32 @@ public class ProjectionTypeDAO {
 		return projectionTypes;
 	}
 	
+	public static ProjectionType getByID(int ptId) throws Exception {
+		
+		Connection connection = ConnectionManager.getConnection();
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		try {
+			String query = "select * from ProjectionTypes where ID = ?";
+			pstmt = connection.prepareStatement(query);
+			pstmt.setInt(1, ptId);
+			
+			rset = pstmt.executeQuery();
+			
+			if (rset.next()) {
+				int id = rset.getInt(1);
+				String name = rset.getString(2);
+				return new ProjectionType(id, name);
+			}
+		} finally {
+			try { pstmt.close(); } catch (Exception e1) { e1.printStackTrace(); }
+			try { rset.close(); } catch (Exception e1) { e1.printStackTrace(); }
+			try { connection.close(); } catch (Exception e1) { e1.printStackTrace(); }
+		}
+		
+		return null;
+	}
+	
 }
