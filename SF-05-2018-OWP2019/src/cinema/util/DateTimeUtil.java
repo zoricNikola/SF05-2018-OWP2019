@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class DateTimeUtil {
@@ -32,6 +33,12 @@ public class DateTimeUtil {
 		ZoneId zoneId = ZoneId.systemDefault();
 		long timeStamp = localDateTime.atZone(zoneId).toEpochSecond();
 		return (int)timeStamp;
+	}
+	
+	public static LocalDateTime StringToLocalDateTime(String stringDate) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		LocalDateTime dateTime = LocalDateTime.parse(stringDate, formatter);
+		return dateTime;
 	}
 
 }

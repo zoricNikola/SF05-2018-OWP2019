@@ -12,27 +12,13 @@ $(document).ready(function() {
             durationHigh: undefined,
             yearLow: undefined,
             yearHigh: undefined,
-            sortOptions: [
-            	'Automatski',
-            	'Naziv rastuće',
-            	'Naziv opadajuće',
-            	'Žanrovi rastuće',
-                'Žanrovi opadajuće',
-                'Trajanje rastuće',
-                'Trajanje opadajuće',
-                'Godina rastuće',
-                'Godina opadajuće',
-                'Distributer rastuće',
-                'Distributer opadajuće',
-                'Država rastuće',
-                'Država opadajuće',
-            ],
-            selectedSort: 'Automatski',
+            sortOptions: [''],
+            selectedSort: '',
             genreOptions: [],
             selectedGenres: [],
             movies: [],
             genreOption: '',
-            sortOption: { text: '', value: '' }
+            sortOption: ''
         },
         methods: {
         	getLoggedInUser: function() {
@@ -85,6 +71,24 @@ $(document).ready(function() {
 //                        this.$nextTick(function(){ $('#genresInput').selectpicker('refresh'); });
                     }
                 })
+            },
+            getSortOptions: function() {
+            	this.sortOptions = [
+                	'Automatski',
+                	'Naziv rastuće',
+                	'Naziv opadajuće',
+                	'Žanrovi rastuće',
+                    'Žanrovi opadajuće',
+                    'Trajanje rastuće',
+                    'Trajanje opadajuće',
+                    'Godina rastuće',
+                    'Godina opadajuće',
+                    'Distributer rastuće',
+                    'Distributer opadajuće',
+                    'Država rastuće',
+                    'Država opadajuće',
+                ];
+            	this.selectedSort = 'Automatski';
             },
             genresToString: function(genres) {
                 var genresString = '';
@@ -149,6 +153,9 @@ $(document).ready(function() {
 	    	genreOptions: function(newValues, oldValues){
 	    		this.$nextTick(function(){ $('#genresInput').selectpicker('refresh'); });
 	    	},
+	    	sortOptions: function(newValues, oldValues){
+	    		this.$nextTick(function(){ $('#sortInput').selectpicker('refresh'); });
+	    	}
 	    }
     })
 
@@ -229,6 +236,7 @@ $(document).ready(function() {
     
     app.getLoggedInUser();
     app.getGenres();
+    app.getSortOptions();
     app.getMovies();
     setTimeout(function(){ $("#staticBackdrop").modal('hide'); }, 1000);
 })

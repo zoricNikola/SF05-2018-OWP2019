@@ -83,7 +83,7 @@
                                 <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Login.html">Prijava</a>
                                 <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Registration.html">Registracija</a v-if="loggedInUserRole == ''">
                                 <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" :href="'User.html?username=' + loggedInUser.username">Moj nalog</a v-if="loggedInUserRole == ''">
-                                <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" href="LogoutServlet">Odjava</a v-if="loggedInUserRole != ''">
+                                <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" href="Logout.html">Odjava</a v-if="loggedInUserRole != ''">
                             </div>
                         </li>
                     </ul>
@@ -116,7 +116,7 @@
                                     <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Login.html">Prijava</a>
                                     <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Registration.html">Registracija</a v-if="loggedInUserRole == ''">
                                     <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" :href="'User.html?username=' + loggedInUser.username">Moj nalog</a v-if="loggedInUserRole == ''">
-                                    <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" href="LogoutServlet">Odjava</a v-if="loggedInUserRole != ''">
+                                    <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" href="Logout.html">Odjava</a v-if="loggedInUserRole != ''">
                                 </div>
                             </li>
                         </ul>

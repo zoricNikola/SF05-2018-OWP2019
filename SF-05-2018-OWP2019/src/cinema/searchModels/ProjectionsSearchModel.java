@@ -3,6 +3,7 @@ package cinema.searchModels;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import cinema.model.Hall;
 import cinema.model.ProjectionType;
@@ -10,8 +11,8 @@ import cinema.util.DateTimeUtil;
 
 public class ProjectionsSearchModel implements SearchModelInterface {
 	public String movie;
-	public ProjectionType projectionType;
-	public Hall hall;
+	public List<ProjectionType> projectionTypes;
+	public List<Hall> halls;
 	public Double priceLow;
 	public Double priceHigh;
 	public LocalDateTime timeLow;
@@ -24,10 +25,28 @@ public class ProjectionsSearchModel implements SearchModelInterface {
 		
 		if (movie != null && !movie.equals(""))
 			query.append("and M.Title like '%' || ? || '%' ");
-		if (projectionType != null)
-			query.append("and P.ProjectionType = ? ");
-		if (hall != null)
-			query.append("and P.Hall = ? ");
+		if (projectionTypes != null && projectionTypes.size() > 0) {
+			query.append("and ( ");
+			
+			for (int i = 0; i < projectionTypes.size(); i++)
+				if (i == 0)
+					query.append("P.ProjectionType = ? ");
+				else
+					query.append("or P.ProjectionType = ? ");
+			
+			query.append(") ");
+		}
+		if (halls != null && halls.size() > 0) {
+			query.append("and ( ");
+			
+			for (int i = 0; i < halls.size(); i++)
+				if (i == 0)
+					query.append("P.Hall = ? ");
+				else
+					query.append("or P.Hall = ? ");
+			
+			query.append(") ");
+		}
 		if (priceLow != null && priceLow > 0)
 			query.append("and P.Price >= ? ");
 		if (priceHigh != null && priceHigh > 0)
@@ -48,10 +67,14 @@ public class ProjectionsSearchModel implements SearchModelInterface {
 		int index = 1;
 		if (movie != null && !movie.equals(""))
 			pstmt.setString(index++, movie);
-		if (projectionType != null)
-			pstmt.setInt(index++, projectionType.getId());
-		if (hall != null)
-			pstmt.setInt(index++, hall.getId());
+		if (projectionTypes != null && projectionTypes.size() > 0) {
+			for (int i = 0; i < projectionTypes.size(); i++)
+				pstmt.setInt(index++, projectionTypes.get(i).getId());
+		}
+		if (halls != null && halls.size() > 0) {
+			for (int i = 0; i < halls.size(); i++)
+				pstmt.setInt(index++, halls.get(i).getId());
+		}
 		if (priceLow != null && priceLow > 0)
 			pstmt.setDouble(index++, priceLow);
 		if (priceHigh != null && priceHigh > 0)

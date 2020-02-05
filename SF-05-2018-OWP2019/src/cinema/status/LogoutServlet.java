@@ -30,6 +30,7 @@ public class LogoutServlet extends HttpServlet {
 		
 		response.setContentType("application/json");
 		response.getWriter().write(jsonData);
+//		response.sendRedirect("Welcome.html");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
