@@ -137,4 +137,34 @@
     <servlet-name>LoggedInUserServlet</servlet-name>
     <url-pattern>/LoggedInUserServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>FilterProjectionsServlet</display-name>
+    <servlet-name>FilterProjectionsServlet</servlet-name>
+    <servlet-class>cinema.FilterProjectionsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FilterProjectionsServlet</servlet-name>
+    <url-pattern>/FilterProjectionsServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ProjectionTypeServlet</display-name>
+    <servlet-name>ProjectionTypeServlet</servlet-name>
+    <servlet-class>cinema.ProjectionTypeServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProjectionTypeServlet</servlet-name>
+    <url-pattern>/ProjectionTypeServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>HallServlet</display-name>
+    <servlet-name>HallServlet</servlet-name>
+    <servlet-class>cinema.HallServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>HallServlet</servlet-name>
+    <url-pattern>/HallServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

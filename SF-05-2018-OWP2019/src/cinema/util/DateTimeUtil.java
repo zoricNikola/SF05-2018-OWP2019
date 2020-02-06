@@ -38,6 +38,7 @@ public class DateTimeUtil {
 	public static LocalDateTime StringToLocalDateTime(String stringDate) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		LocalDateTime dateTime = LocalDateTime.parse(stringDate, formatter);
+		System.out.println(dateTime);
 		return dateTime;
 	}
 

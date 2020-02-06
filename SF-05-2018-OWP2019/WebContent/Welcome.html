@@ -130,7 +130,7 @@
                                 </div>
                                 <select v-model="selectedProjectionTypes" v-on:change="refreshProjections" id="projectionTypesInput" class="selectpicker form-control" 
                                 style="background: #22262a !important; color: #fff; border: 1px #FFF;" multiple data-selected-text-format="count > 3" title="Izaberi...">
-                                    <option v-for="projectionTypeOption in projectionTypeOptions" v-bind:value="projectionTypeOption" style="background: #22262a; color: #FFF;">{{ projectionTypeOption }}</option>
+                                    <option v-for="projectionTypeOption in projectionTypeOptions" v-bind:value="projectionTypeOption.id" style="background: #22262a; color: #FFF;">{{ projectionTypeOption.name }}</option>
                                 </select>
                             </div>
                         </div>
@@ -141,7 +141,7 @@
                                 </div>
                                 <select v-model="selectedHalls" v-on:change="refreshProjections" id="hallsInput" class="selectpicker form-control" 
                                 style="background: #22262a !important; color: #fff; border: 1px #FFF;" multiple data-selected-text-format="count > 3" title="Izaberi...">
-                                    <option v-for="hallOption in hallOptions" v-bind:value="hallOption" style="background: #22262a; color: #FFF;">{{ hallOption }}</option>
+                                    <option v-for="hallOption in hallOptions" v-bind:value="hallOption.id" style="background: #22262a; color: #FFF;">{{ hallOption.name }}</option>
                                 </select>
                             </div>
                         </div>
@@ -183,32 +183,56 @@
         	<a href="AddProjection.html" class="btn btn-primary">Dodaj novu projekciju</a>
         </div>
 
-        <!-- <div v-for="movie in orderedMovies" class="row mt-5">
-            <div class="col-xl-10 offset-xl-1">
+        <div v-for="projectionsList in projectionsMap" class="row mt-5">
+            <div class="col">
                 <div class="card text-white bg-dark mb-3">
                     <div class="row no-gutters">
-                      <div class="col-md-4">
-                        <img src="movie.jpg" class="card-img" alt="..." style="height: 100%;">
-                      </div>
-                      <div class="col-md-8">
-                        <div class="card-body">
-                          <h4 class="card-title">{{ movie.title }}</h4>
-                          <ul class="list-group list-group-flush">
-                            <li class="list-group-item bg-dark"><p class="card-text"><b>Žanr:</b> {{ genresToString(movie.genres) }}</p></li>
-                            <li class="list-group-item bg-dark"><p class="card-text"><b>Trajanje:</b> {{ movie.duration }} min</p></li>
-                            <li class="list-group-item bg-dark"><p class="card-text"><b>Distributer:</b> {{ movie.distributor }}</p></li>
-                            <li class="list-group-item bg-dark"><p class="card-text"><b>Zemlja porekla:</b> {{ movie.country }}</p></li>
-                            <li class="list-group-item bg-dark"><p class="card-text"><b>Godina proizvodnje:</b> {{ movie.year }}.</p></li>
-                          </ul>
-                          <div class="card-body">
-                            <a :href="'Movie.html?id=' + movie.id" class="btn btn-danger stretched-link">Detaljnije</a>
-                          </div>
+                        <div class="col-xl-4">
+                            <img src="movie.jpg" class="card-img" alt="..." style="height: 100%;">
                         </div>
-                      </div>
+                        <div class="col-xl-4">
+                            <div class="card-body">
+                                <h4 class="card-title"> {{ projectionsList[0].movie.title }} </h4>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item bg-dark"><p class="card-text"><b>Žanr:</b> {{ genresToString(projectionsList[0].movie.genres) }} </p></li>
+                                    <li class="list-group-item bg-dark"><p class="card-text"><b>Režiser:</b> {{ projectionsList[0].movie.director }}</p></li>
+                                    <li class="list-group-item bg-dark"><p class="card-text"><b>Trajanje:</b> {{ projectionsList[0].movie.duration }} min</p></li>
+                                    <li class="list-group-item bg-dark"><p class="card-text"><b>Glumci:</b> {{ actorsToString(projectionsList[0].movie.actors) }}</p></li>
+                                    <li class="list-group-item bg-dark"><p class="card-text"><b>Distributer:</b> {{ projectionsList[0].movie.distributor }} </p></li>
+                                    <li class="list-group-item bg-dark"><p class="card-text"><b>Zemlja porekla:</b> {{ projectionsList[0].movie.country }} </p></li>
+                                    <li class="list-group-item bg-dark"><p class="card-text"><b>Godina proizvodnje:</b> {{ projectionsList[0].movie.year }}.</p></li>
+                                    <li class="list-group-item bg-dark"><p class="card-text"><b>Opis:</b> {{ projectionsList[0].movie.description }}</p></li>
+                                </ul>
+                                <div class="card-body">
+                                    <a :href="'Movie.html?id=' + projectionsList[0].movie.id" class="btn btn-outline-danger stretched-link text-white">Detaljnije</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4">
+                            <div class="card-body">
+                                <h4 class="card-title"> Projekcije </h4>
+                                <div class="container">
+                                    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-xl-2" style="height: 500px; overflow-y: auto;">
+                                        <div v-for="projection in projectionsList" class="col mt-2 mb-2">
+                                            <div class="card text-white bg-dark border-danger" style="text-align: center;">
+                                                <div class="card-body" style="text-align: center; padding-left: 5px; padding-right: 5px;">
+                                                    <p class="card-text"> {{ projection.time.dayOfMonth }}.{{ projection.time.monthValue  }}.{{ projection.time.year }}.</p>
+                                                    <h4 class="card-text">{{ projection.time.hour }}:{{ projection.time.minute }}</h4>
+                                                    <p class="card-text"> {{ projection.projectionType.name }} </p>
+                                                    <p class="card-text">Sala: {{ projection.hall.name }} </p>
+                                                    <p class="card-text"> {{ projection.price }} din</p>
+                                                    <a :href="'BuyTicket.html?id=' + projection.id" class="btn btn-outline-danger stretched-link text-white">Kupi kartu</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                   </div>
             </div>
-        </div> -->
+        </div>
     
     </div>
 
