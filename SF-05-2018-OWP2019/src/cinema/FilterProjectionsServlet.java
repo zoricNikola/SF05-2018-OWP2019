@@ -76,13 +76,13 @@ public class FilterProjectionsServlet extends HttpServlet {
 			
 			
 			List<Projection> filteredProjections = ProjectionDAO.searchProjections(model);
-			Map<Integer, List<Projection>> projectionsMap = new LinkedHashMap<Integer, List<Projection>>();
+			Map<String, List<Projection>> projectionsMap = new LinkedHashMap<String, List<Projection>>();
 			
 			for (Projection projection : filteredProjections) {
-				if (projectionsMap.get(projection.getMovie().getId()) == null)
-					projectionsMap.put(projection.getMovie().getId(), new ArrayList<Projection>());
+				if (projectionsMap.get(projection.getMovie().getTitle()) == null)
+					projectionsMap.put(projection.getMovie().getTitle(), new ArrayList<Projection>());
 				
-				projectionsMap.get(projection.getMovie().getId()).add(projection);
+				projectionsMap.get(projection.getMovie().getTitle()).add(projection);
 			}
 			
 			Map<String, Object> data = new LinkedHashMap<String, Object>();

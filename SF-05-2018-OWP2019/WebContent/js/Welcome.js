@@ -65,12 +65,6 @@ $(document).ready(function() {
                     
                     if (data.status == 'success') {
                     	app.projectionsMap = data.projectionsMap;
-                    	for (var key in app.projectionsMap){
-                    		  console.log( key );
-                    		  console.log(app.projectionsMap[key]);
-                    		  console.log(app.projectionsMap[key][0]);
-                    		  console.log(app.projectionsMap[key][0].time);
-                    		}
                     }
                     
                 });
@@ -121,51 +115,98 @@ $(document).ready(function() {
             getSortoptions: function() {
                 this.sortOptions = [
                     'Automatski',
-                    'Naziv rastuće',
-                    'Naziv opadajuće',
-                    'Žanrovi rastuće',
-                    'Žanrovi opadajuće',
-                    'Trajanje rastuće',
-                    'Trajanje opadajuće',
-                    'Godina rastuće',
-                    'Godina opadajuće',
-                    'Distributer rastuće',
-                    'Distributer opadajuće',
-                    'Država rastuće',
-                    'Država opadajuće',
+                    'Naziv filma rastuće',
+                    'Naziv filma opadajuće',
+                    'Cena rastuće',
+                    'Cena opadajuće',
+                    'Tipovi projekcija rastuće',
+                    'Tipovi projekcija opadajuće',
+                    'Sale rastuće',
+                    'Sale opadajuće',
+                    'Vreme rastuće',
+                    'Vreme opadajuće',
                 ];
-                this.sortOption = 'Automatski';
+                this.selectedSort = 'Automatski';
+            },
+            sortedProjections: function(projections){
+        		if (this.selectedSort === 'Automatski')
+        			return _.sortBy(projections, ['time.year', 'time.monthValue', 'time.dayOfMonth', 'time.hour', 'time.minute']);
+        		else if (this.selectedSort === 'Cena rastuće')
+        			return _.orderBy(projections, 'price');
+        		else if (this.selectedSort === 'Cena opadajuće')
+        			return _.orderBy(projections, 'price').reverse();
+        		else if (this.selectedSort === 'Tipovi projekcija rastuće')
+        			return _.orderBy(projections, 'projectionType.id');
+        		else if (this.selectedSort === 'Tipovi projekcija opadajuće')
+        			return _.orderBy(projections, 'projectionType.id').reverse();
+        		else if (this.selectedSort === 'Sale rastuće')
+        			return _.orderBy(projections, 'hall.id');
+        		else if (this.selectedSort === 'Sale opadajuće')
+        			return _.orderBy(projections, 'hall.id').reverse();
+        		else if (this.selectedSort === 'Vreme rastuće')
+        			return _.sortBy(projections, ['time.year', 'time.monthValue', 'time.dayOfMonth', 'time.hour', 'time.minute']);
+        		else if (this.selectedSort === 'Vreme opadajuće')
+        			return _.sortBy(projections, ['time.year', 'time.monthValue', 'time.dayOfMonth', 'time.hour', 'time.minute']).reverse();
+            },
+            setTimesAtStart: function() {
+            	var dateLow = new Date();
+                dateLow.setHours(8);
+                dateLow.setMinutes(0);
+                
+                var months = (dateLow.getMonth()+1).toString();
+                if (dateLow.getMonth()+1 < 10)
+                    months = '0' + months;
+
+                var days = (dateLow.getDate()).toString();
+                if (dateLow.getDate() < 10)
+                    days = '0' + days;
+
+                var hours = (dateLow.getHours()).toString();
+                if (dateLow.getHours() < 10)
+                    hours = '0' + hours;
+
+                var minutes = (dateLow.getMinutes()).toString();
+                if (dateLow.getMinutes() < 10)
+                    minutes = '0' + minutes;
+                
+                app.timeLow = dateLow.getFullYear().toString() + '-' + months + '-' + days + ' ' + hours + ':' + minutes;
+                
+                var dateHigh = new Date();
+                dateHigh.setHours(23);
+                dateHigh.setMinutes(59);
+                
+                months = (dateHigh.getMonth()+1).toString();
+                if (dateHigh.getMonth()+1 < 10)
+                    months = '0' + months;
+
+                days = (dateHigh.getDate()).toString();
+                if (dateHigh.getDate() < 10)
+                    days = '0' + days;
+
+                hours = (dateHigh.getHours()).toString();
+                if (dateHigh.getHours() < 10)
+                    hours = '0' + hours;
+
+                minutes = (dateHigh.getMinutes()).toString();
+                if (dateHigh.getMinutes() < 10)
+                    minutes = '0' + minutes;
+                
+                app.timeHigh = dateHigh.getFullYear().toString() + '-' + months + '-' + days + ' ' + hours + ':' + minutes;
+                
             }
         },
         computed: {
             orderedMovies: function() {
+            	
                 if (this.selectedSort === 'Automatski')
-            		return this.movies;
-            	else if (this.selectedSort === 'Naziv rastuće')
-            		return _.orderBy(this.movies, 'title');
-            	else if (this.selectedSort === 'Naziv opadajuće')
-                    return _.orderBy(this.movies, 'title').reverse();
-                else if (this.selectedSort === 'Trajanje rastuće')
-            		return _.orderBy(this.movies, 'duration');
-            	else if (this.selectedSort === 'Trajanje opadajuće')
-                    return _.orderBy(this.movies, 'duration').reverse();
-            	else if (this.selectedSort === 'Žanrovi rastuće')
-            		return _.orderBy(this.movies, 'genres[0]');
-            	else if (this.selectedSort === 'Žanrovi opadajuće')
-                    return _.orderBy(this.movies, 'genres[0]').reverse();
-                else if (this.selectedSort === 'Godina rastuće')
-            		return _.orderBy(this.movies, 'year');
-            	else if (this.selectedSort === 'Godina opadajuće')
-                    return _.orderBy(this.movies, 'year').reverse();
-                else if (this.selectedSort === 'Distributer rastuće')
-            		return _.orderBy(this.movies, 'distributor');
-            	else if (this.selectedSort === 'Distributer opadajuće')
-                    return _.orderBy(this.movies, 'distributor').reverse();
-                else if (this.selectedSort === 'Država rastuće')
-            		return _.orderBy(this.movies, 'country');
-            	else if (this.selectedSort === 'Država opadajuće')
-            		return _.orderBy(this.movies, 'country').reverse();
-            }
+            		return this.projectionsMap;
+            	else if (this.selectedSort === 'Naziv filma rastuće')
+            		return _.orderBy(this.projectionsMap, 'keys').reverse();
+            	else if (this.selectedSort === 'Naziv filma opadajuće')
+                    return _.orderBy(this.projectionsMap, 'keys');
+            	else
+            		return this.projectionsMap;
+            },
         },
         watch: {
             sortOptions: function(newValues, oldValues){
@@ -181,6 +222,7 @@ $(document).ready(function() {
     })
 
     app.getLoggedInUser();
+    app.setTimesAtStart();
     app.getSortoptions();
     app.getProjectionTypes();
     app.getHalls();
@@ -189,6 +231,9 @@ $(document).ready(function() {
     setTimeout(function(){ $("#staticBackdrop").modal('hide'); }, 1000);
 
     $.datetimepicker.setDateFormatter('moment');
+    var dateLow = new Date();
+    dateLow.setHours(8);
+    dateLow.setMinutes(0);
     $('#picker1').datetimepicker({
         timepicker: true,
         datepicker: true,
@@ -197,6 +242,7 @@ $(document).ready(function() {
         yearEnd: 2030,
         minTime: 8,
         theme: 'dark',
+        value: dateLow,
         defaultDate: new Date(),
         defaultTime: '8:00',
         step: 5,
@@ -237,6 +283,9 @@ $(document).ready(function() {
     $('#toggle1').on('click', function(e) {
         $("#picker1").datetimepicker('toggle');
     })
+    var dateHigh = new Date();
+    dateHigh.setHours(23);
+    dateHigh.setMinutes(59);
     $('#picker2').datetimepicker({
         timepicker: true,
         datepicker: true,
@@ -245,6 +294,7 @@ $(document).ready(function() {
         yearEnd: 2030,
         minTime: 8,
         theme: 'dark',
+        value: dateHigh,
         defaultDate: new Date(),
         defaultTime: '23:59',
         step: 5,
@@ -286,4 +336,7 @@ $(document).ready(function() {
     $('#toggle2').on('click', function(e) {
         $("#picker2").datetimepicker('toggle');
     })
+    
+    
+    
 })
