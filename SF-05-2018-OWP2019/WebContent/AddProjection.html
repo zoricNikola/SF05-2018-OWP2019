@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+	<meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
+	<meta HTTP-EQUIV="Expires" CONTENT="0">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+    <link rel="stylesheet" href="css/jquery.datetimepicker.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="css/darkInputs.css">
+    <link rel="stylesheet" href="css/loading.css">
+    <style>
+        button {
+           background-color: #22262a !important;
+           color: #FFF !important;
+        }
+   </style>
+    <title>Projekcija</title>
+</head>
+<body style="height: 100vh; background-image: url('cover.jpg'); 
+                            background-repeat: no-repeat;
+                            background-attachment: fixed;
+                            background-size: cover;">
+
+	<div class="modal fade bd-example-modal-lg" data-backdrop="static" data-keyboard="false" id="staticBackdrop" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content" style="width: 48px">
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-light" role="status">
+                    <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="app" class="container-fluid h-100">
+    
+    <!-- NAVIGACIJA -->
+        <div class="row">
+            <div class="col d-none d-lg-block">
+                <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+                    <a class="navbar-brand font-weight-bold" href="Welcome.html">Bioskop</a>
+                  
+                    <ul class="navbar-nav ml-auto mr-auto">
+                        <li class="nav-item active mr-5">
+                            <a class="nav-link font-weight-bold" href="Welcome.html">Početna</a>
+                        </li>
+                        <li class="nav-item active mr-5">
+                            <a class="nav-link font-weight-bold" href="FilterMovies.html">Filmovi</a>
+                        </li>
+                        <li v-if="loggedInUser.userRole == 'ADMIN'" class="nav-item active mr-5">
+                            <a class="nav-link font-weight-bold" href="FilterUsers.html">Korisnici</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle font-weight-bold text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Moj nalog
+                            </a>
+                            <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
+                                <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Login.html">Prijava</a>
+                                <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Registration.html">Registracija</a v-if="loggedInUserRole == ''">
+                                <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" :href="'User.html?username=' + loggedInUser.username">Moj nalog</a v-if="loggedInUserRole == ''">
+                                <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" href="Logout.html">Odjava</a v-if="loggedInUserRole != ''">
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col d-lg-none">
+                <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                    <a class="navbar-brand font-weight-bold" href="Welcome.html">Bioskop</a>
+
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                    </button>
+                  
+                    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                            <li class="nav-item active mr-5">
+                                <a class="nav-link font-weight-bold" href="Welcome.html">Početna</a>
+                            </li>
+                            <li class="nav-item active mr-5">
+                                <a class="nav-link font-weight-bold" href="FilterMovies.html">Filmovi</a>
+                            </li>
+                            <li v-if="loggedInUser.userRole == 'ADMIN'" class="nav-item active mr-5">
+                                <a class="nav-link font-weight-bold" href="FilterUsers.html">Korisnici</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle font-weight-bold text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Moj nalog
+                                </a>
+                                <div class="dropdown-menu bg-dark w-50" aria-labelledby="navbarDropdown">
+                                    <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Login.html">Prijava</a>
+                                    <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Registration.html">Registracija</a v-if="loggedInUserRole == ''">
+                                    <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" :href="'User.html?username=' + loggedInUser.username">Moj nalog</a v-if="loggedInUserRole == ''">
+                                    <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" href="Logout.html">Odjava</a v-if="loggedInUserRole != ''">
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            
+        </div>
+        <div style="height: 10%;" class="row"></div>
+        <!-- KRAJ NAVIGACIJE -->
+        
+        <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content text-white bg-dark">
+            <div class="modal-header">
+            <h5 class="modal-title">Dodavanje nove projekcije</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            	{{ message }}
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Zatvori</button>
+            </div>
+        </div>
+        </div>
+    </div>
+        
+        <div class="row align-items-center" style="height: 90%"> 
+            <div class="card mx-auto text-white bg-dark">
+                <div class="row">
+                    <div class="col">
+                        <div class="card-header">
+                            <h3 class="title">Dodavanje nove projekcije</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="col mb-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Film</span>
+                                        </div>
+                                        <select v-model="selectedMovie" id="movieInput" class="selectpicker form-control" style="background: #22262a !important; color: #fff; border: 1px #FFF;" title="Izaberi...">
+                                            <option v-for="movie in filteredMovies" v-bind:value="movie.id" style="background: #22262a; color: #FFF;">{{ movie.title }}</option>
+                                        </select>
+                                        <div class="dropdown">
+                                            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pretraži</button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <input v-model="movieTitleSearch" type="text" class="form-control text-white bg-dark dropdown-item" id="movieTitleSearchInput" placeholder="Naziv" />
+                                                <button v-on:click.prevent="searchMovies" id="btnSearchMovies" type="button" class="btn dropdown-item">Ok</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row mt-2">
+                                <div class="col col-md-6">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button type="button" id="toggle1" class="input-group-text"><i class="fa fa-calendar-alt"></i></button>
+                                        </div>
+                                        <input type="text" id="picker1" class="form-control" placeholder="Vreme">
+                                    </div>    
+                                </div>
+                                <div class="form-group col col-md-6">
+                                    <input v-model.number="price" v-on:keyup="checkNumber" v-on:change="checkNumber" type="number" class="form-control bg-dark" id="priceInput" placeholder="Cena (din)"/>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col col-lg-6">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                          <span class="input-group-text">Tip projekcije</span>
+                                        </div>
+                                        <select v-on:change="refreshHalls" v-model="selectedProjectionType" id="projectionTypeInput" class="selectpicker form-control" 
+                                        style="background: #22262a !important; color: #fff; border: 1px #FFF;" title="Izaberi...">
+                                            <option v-for="projectionTypeOption in filteredProjectionTypes" v-bind:value="projectionTypeOption.id" style="background: #22262a; color: #FFF;">{{ projectionTypeOption.name }}</option>
+                                        </select>
+                                    </div>    
+                                </div>
+                                <div class="col col-lg-6">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                          <span class="input-group-text">Sala</span>
+                                        </div>
+                                        <select v-on:change="refreshProjectionTypes" v-model="selectedHall" id="hallInput" class="selectpicker form-control" 
+                                        style="background: #22262a !important; color: #fff; border: 1px #FFF;" title="Izaberi...">
+                                            <option v-for="hallOption in filteredHalls" v-bind:value="hallOption.id" style="background: #22262a; color: #FFF;">{{ hallOption.name }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row justify-items-center mt-3">
+                                <div class="col-2 mx-auto">
+                                    <p v-on:click.prevent="addProjectionSubmit" class="btn btn-primary">Dodaj</p>
+                                </div>
+                                <div class="col-2 mx-auto">
+                                    <p v-on:click.prevent="resetSelections" class="btn btn-danger">Reset</p>
+                                </div>
+                            </div>
+                            <div v-if="showMessage" class="alert alert-danger" role="alert" id="messageDiv">
+                                <p style="color: red;" id="messageParagraph">{{ message }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jquery-3.4.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment-with-locales.min.js"></script>
+    <script src="js/jquery.datetimepicker.full.js"></script>
+    <script src="js/AddProjection.js"></script>
+</body>
+</html>

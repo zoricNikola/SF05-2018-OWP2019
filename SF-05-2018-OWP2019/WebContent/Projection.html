@@ -102,6 +102,46 @@
         <div style="height: 15%;" class="row d-none d-lg-block"></div>
         <div style="height: 2%;" class="row d-lg-none"></div>
         <!-- KRAJ NAVIGACIJE -->
+        
+        <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-hidden="true">
+	        <div class="modal-dialog" role="document">
+	        <div class="modal-content text-white bg-dark">
+	            <div class="modal-header">
+	            <h5 class="modal-title">Brisanje projekcije</h5>
+	            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                <span aria-hidden="true">&times;</span>
+	            </button>
+	            </div>
+	            <div class="modal-body">
+	            	{{ message }}
+	            </div>
+	            <div class="modal-footer">
+	            	<p class="btn btn-primary" data-dismiss="modal">Zatvori</p>
+	            </div>
+	        </div>
+	        </div>
+	    </div>
+	    
+	    <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-hidden="true">
+	        <div class="modal-dialog" role="document">
+	        <div class="modal-content text-white bg-dark">
+	            <div class="modal-header">
+	            <h5 class="modal-title">Brisanje projekcije</h5>
+	            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                <span aria-hidden="true">&times;</span>
+	            </button>
+	            </div>
+	            <div class="modal-body">
+	            	Da li ste sigurni da želite da obrišete ovu projekciju?
+	            </div>
+	            <div class="modal-footer">
+	            	<p v-on:click.prevent="deleteProjectionSubmit" class="btn btn-danger" data-dismiss="modal">Da</p>
+	            	<p class="btn btn-success" data-dismiss="modal">Ne</p>
+	            </div>
+	        </div>
+	        </div>
+	    </div>
+        
         <div class="row align-items-center">
             <div class="card mx-auto text-white bg-dark">
                 <div class="card-header">
@@ -120,7 +160,7 @@
                     </ul>
                     <div class="card-body">
                         <a v-if=" !inPast && loggedInUser.userRole == 'USER' && remainingTickets > 0" :href="'Movie.html?id='" class="btn btn-outline-danger text-white">Kupi kartu</a>
-                        <a v-if="loggedInUser.userRole == 'ADMIN'" :href="'Movie.html?id='" class="btn btn-danger text-white">Obriši</a>
+                        <a v-if="loggedInUser.userRole == 'ADMIN'" v-on:click.prevent="deleteProjection" class="btn btn-danger text-white">Obriši</a>
                         <p v-if="loggedInUser.userRole == ''"><b class="list-group-item list-group-item-info" style=" font-size: large;">Prijavite se da bi mogli kupiti karte</b></p>
                     </div>
                 </div>

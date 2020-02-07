@@ -1,6 +1,9 @@
 package cinema.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import cinema.dao.ProjectionDAO;
 
 public class Projection {
 	private int id;
@@ -90,6 +93,20 @@ public class Projection {
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+	
+	public static boolean timeOverlaps (Projection newProjection) throws Exception {
+		List<Projection> projections = ProjectionDAO.getAll();
+		LocalDateTime endOfNewProjection = newProjection.getTime().plusMinutes(newProjection.getMovie().getDuration() + 15);
+		for (Projection projection : projections) {
+			if (projection.getTime().isAfter(LocalDateTime.now()) && newProjection.hall.getId() == projection.getHall().getId()) {
+				LocalDateTime endOfProjection = projection.getTime().plusMinutes(projection.getMovie().getDuration() + 15);
+				if (newProjection.getTime().isBefore(endOfProjection) && projection.getTime().isBefore(endOfNewProjection)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 }

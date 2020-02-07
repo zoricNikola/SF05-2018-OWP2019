@@ -7,9 +7,10 @@ $(document).ready(function() {
         el: '#app',
         data: {
         	loggedInUser: { username: '', userRole: ''},
-            projection: { movie: {}, time: {}, hall: {} },
+            projection: { movie: {}, time: {}, hall: {}, projectionType: {} },
             remainingTickets: 1,
-            inPast: false
+            inPast: false,
+            message: ''
         },
         methods: {
         	getLoggedInUser: function() {
@@ -35,6 +36,33 @@ $(document).ready(function() {
                     
                 });
             },
+            deleteProjection: function(event) {
+	        	$('#confirmDelete').modal('show');
+	        },
+	        deleteProjectionSubmit: function(event) {
+	        	console.log('ID: ' + id);
+	        	
+	        	var params = {
+                        'action': 'delete',
+                        'id': id,
+                }
+                
+                $.post('ProjectionServlet', params, function(data) {
+                    console.log(data);
+                    
+                    if (data.status == 'failure') {
+                        app.message = data.message;
+                        $('#messageModal').modal('show');
+                    }
+                    else if (data.status == 'success') {
+                    	app.message = 'Uspešno ste obrisali projekciju!';
+                        $('#messageModal').modal('show');
+                        $('#messageModal').on('hidden.bs.modal', function (e) {
+                            window.location.replace('Welcome.html');
+                        });
+                    }
+                });
+	        },
         },
 
     })
