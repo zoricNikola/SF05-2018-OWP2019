@@ -191,8 +191,11 @@
                             <img src="movie.jpg" class="card-img" alt="..." style="height: 100%;">
                         </div>
                         <div class="col-xl-4">
+	                        <div class="card-header">
+	                    		<h3 class="title">{{ projectionsList[0].movie.title }}</h3>
+	               			</div>
                             <div class="card-body">
-                                <h4 class="card-title"> {{ projectionsList[0].movie.title }} </h4>
+                                
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item bg-dark"><p class="card-text"><b>Žanr:</b> {{ genresToString(projectionsList[0].movie.genres) }} </p></li>
                                     <li class="list-group-item bg-dark"><p class="card-text"><b>Režiser:</b> {{ projectionsList[0].movie.director }}</p></li>
@@ -208,8 +211,11 @@
                             </div>
                         </div>
                         <div class="col-xl-4">
+                        	<div class="card-header">
+	                    		<h3 class="title">Projekcije</h3>
+	               			</div>
                             <div class="card-body">
-                                <h4 class="card-title"> Projekcije </h4>
+                                
                                 <div class="container">
                                     <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-xl-2" style="height: 400px; overflow-y: auto;">
                                         <div v-for="projection in sortedProjections(projectionsList)" class="col mt-2 mb-2">
@@ -220,7 +226,7 @@
                                                     <p class="card-text"> {{ projection.projectionType.name }} </p>
                                                     <p class="card-text">Sala: {{ projection.hall.name }} </p>
                                                     <p class="card-text"> {{ projection.price }} din</p>
-                                                    <a :href="'BuyTicket.html?id=' + projection.id" class="btn btn-outline-danger stretched-link text-white">Kupi kartu</a>
+                                                    <a :href="'Projection.html?id=' + projection.id" class="btn btn-outline-danger stretched-link text-white">Kupi kartu</a>
                                                 </div>
                                             </div>
                                         </div>

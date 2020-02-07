@@ -127,7 +127,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="user in orderedUsers">
-                                <td><a :href="'User.html?username=' + user.username" class="badge badge-dark">{{ user.username }}</a></td>
+                                <td><a :href="'User.html?username=' + user.username" class="badge badge-dark" style="font-size: medium;">{{ user.username }}</a></td>
                                 <td>{{ user.registrationDate.dayOfMonth }}. 
                                 {{ user.registrationDate.month }} {{ user.registrationDate.year }}.</td>
                                 <td>{{ user.userRole }}</td>

@@ -167,4 +167,14 @@
     <servlet-name>HallServlet</servlet-name>
     <url-pattern>/HallServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ProjectionServlet</display-name>
+    <servlet-name>ProjectionServlet</servlet-name>
+    <servlet-class>cinema.ProjectionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProjectionServlet</servlet-name>
+    <url-pattern>/ProjectionServlet</url-pattern>
+  </servlet-mapping>
 </web-app>
