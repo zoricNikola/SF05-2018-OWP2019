@@ -30,7 +30,27 @@ public class FilterProjectionsServlet extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			String movie = request.getParameter("movie");
+			
+			if (request.getParameter("movieID") != null) {
+				ProjectionsSearchModel model = new ProjectionsSearchModel();
+				model.movieID = Integer.parseInt(request.getParameter("movieID"));
+				LocalDateTime timeLow = null;
+				try {
+					timeLow = DateTimeUtil.StringToLocalDateTime(request.getParameter("timeLow"));
+					System.out.println(timeLow);
+				} catch (Exception e) {}
+				model.timeLow = timeLow;
+				
+				List<Projection> projections = ProjectionDAO.searchProjections(model);
+				Map<String, Object> data = new LinkedHashMap<String, Object>();
+				data.put("projections", projections);
+				
+				request.setAttribute("data", data);
+				request.getRequestDispatcher("./SuccessServlet").forward(request, response);
+				return;
+			}
+			
+			String movieTitle = request.getParameter("movieTitle");
 			List<ProjectionType> projectionTypes = new ArrayList<ProjectionType>();
 			if (request.getParameterValues("projectionTypes[]") != null) {
 				for (String s : request.getParameterValues("projectionTypes[]")) {
@@ -66,7 +86,7 @@ public class FilterProjectionsServlet extends HttpServlet {
 			
 			ProjectionsSearchModel model = new ProjectionsSearchModel();
 			
-			model.movie = movie;
+			model.movieTitle = movieTitle;
 			model.projectionTypes = projectionTypes;
 			model.halls = halls;
 			model.priceLow = priceLow;

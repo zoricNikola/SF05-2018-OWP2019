@@ -10,7 +10,8 @@ import cinema.model.ProjectionType;
 import cinema.util.DateTimeUtil;
 
 public class ProjectionsSearchModel implements SearchModelInterface {
-	public String movie;
+	public String movieTitle;
+	public Integer movieID;
 	public List<ProjectionType> projectionTypes;
 	public List<Hall> halls;
 	public Double priceLow;
@@ -23,7 +24,7 @@ public class ProjectionsSearchModel implements SearchModelInterface {
 		StringBuilder query = new StringBuilder();
 		query.append("select P.ID, P.Movie, P.ProjectionType, P.Hall, P.Time, P.Price, P.Admin, P.Active from Projections as P, Movies as M where P.Active = 1 and P.Movie = M.ID ");
 		
-		if (movie != null && !movie.equals(""))
+		if (movieTitle != null && !movieTitle.equals(""))
 			query.append("and M.Title like '%' || ? || '%' ");
 		if (projectionTypes != null && projectionTypes.size() > 0) {
 			query.append("and ( ");
@@ -47,6 +48,8 @@ public class ProjectionsSearchModel implements SearchModelInterface {
 			
 			query.append(") ");
 		}
+		if (movieID != null && movieID > 0)
+			query.append("and P.Movie = ?");
 		if (priceLow != null && priceLow > 0)
 			query.append("and P.Price >= ? ");
 		if (priceHigh != null && priceHigh > 0)
@@ -65,8 +68,8 @@ public class ProjectionsSearchModel implements SearchModelInterface {
 		PreparedStatement pstmt = connection.prepareStatement(CreateQuery());
 		
 		int index = 1;
-		if (movie != null && !movie.equals(""))
-			pstmt.setString(index++, movie);
+		if (movieTitle != null && !movieTitle.equals(""))
+			pstmt.setString(index++, movieTitle);
 		if (projectionTypes != null && projectionTypes.size() > 0) {
 			for (int i = 0; i < projectionTypes.size(); i++)
 				pstmt.setInt(index++, projectionTypes.get(i).getId());
@@ -75,6 +78,8 @@ public class ProjectionsSearchModel implements SearchModelInterface {
 			for (int i = 0; i < halls.size(); i++)
 				pstmt.setInt(index++, halls.get(i).getId());
 		}
+		if (movieID != null && movieID > 0)
+			pstmt.setInt(index++, movieID);
 		if (priceLow != null && priceLow > 0)
 			pstmt.setDouble(index++, priceLow);
 		if (priceHigh != null && priceHigh > 0)

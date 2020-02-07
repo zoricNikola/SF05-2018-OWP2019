@@ -51,7 +51,7 @@ $(document).ready(function() {
             getProjections: function(event) {
 
                 var params = {
-                    'movie': this.movie,
+                    'movieTitle': this.movie,
                     'projectionTypes': this.selectedProjectionTypes,
                     'halls': this.selectedHalls,
                     'timeLow': this.timeLow,
@@ -147,6 +147,8 @@ $(document).ready(function() {
         			return _.sortBy(projections, ['time.year', 'time.monthValue', 'time.dayOfMonth', 'time.hour', 'time.minute']);
         		else if (this.selectedSort === 'Vreme opadajuće')
         			return _.sortBy(projections, ['time.year', 'time.monthValue', 'time.dayOfMonth', 'time.hour', 'time.minute']).reverse();
+        		else
+        			return _.sortBy(projections, ['time.year', 'time.monthValue', 'time.dayOfMonth', 'time.hour', 'time.minute']);
             },
             setTimesAtStart: function() {
             	var dateLow = new Date();

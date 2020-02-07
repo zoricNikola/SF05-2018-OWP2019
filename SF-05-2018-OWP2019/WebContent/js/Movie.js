@@ -7,7 +7,9 @@ $(document).ready(function() {
         el: '#app',
         data: {
         	loggedInUser: { username: '', userRole: ''},
-            movie: {}
+            movie: {},
+            projections: [],
+            timeLow: ''
         },
         methods: {
         	getLoggedInUser: function() {
@@ -57,6 +59,46 @@ $(document).ready(function() {
 	                }
             	}
                 return actorsString;
+            },
+            getProjections: function(event) {
+
+                var params = {
+                    'movieID': id,
+                    'timeLow': this.timeLow
+                }
+
+                $.get('FilterProjectionsServlet', params, function(data) {
+                    console.log(data);
+                    
+                    if (data.status == 'success') {
+                    	app.projections = _.sortBy(data.projections, ['time.year', 'time.monthValue', 'time.dayOfMonth', 'time.hour', 'time.minute']);
+                    }
+                    
+                });
+
+            },
+            setTimesAtStart: function() {
+            	var dateLow = new Date();
+                dateLow.setHours(8);
+                dateLow.setMinutes(0);
+                
+                var months = (dateLow.getMonth()+1).toString();
+                if (dateLow.getMonth()+1 < 10)
+                    months = '0' + months;
+
+                var days = (dateLow.getDate()).toString();
+                if (dateLow.getDate() < 10)
+                    days = '0' + days;
+
+                var hours = (dateLow.getHours()).toString();
+                if (dateLow.getHours() < 10)
+                    hours = '0' + hours;
+
+                var minutes = (dateLow.getMinutes()).toString();
+                if (dateLow.getMinutes() < 10)
+                    minutes = '0' + minutes;
+                
+                app.timeLow = dateLow.getFullYear().toString() + '-' + months + '-' + days + ' ' + hours + ':' + minutes;          
             }
         },
 
@@ -64,5 +106,7 @@ $(document).ready(function() {
     
     app.getLoggedInUser();
     app.getMovie();
+    app.setTimesAtStart();
+    app.getProjections();
     setTimeout(function(){ $("#staticBackdrop").modal('hide'); }, 1000);
 });

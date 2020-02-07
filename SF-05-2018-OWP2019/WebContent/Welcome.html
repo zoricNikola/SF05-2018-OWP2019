@@ -201,7 +201,6 @@
                                     <li class="list-group-item bg-dark"><p class="card-text"><b>Distributer:</b> {{ projectionsList[0].movie.distributor }} </p></li>
                                     <li class="list-group-item bg-dark"><p class="card-text"><b>Zemlja porekla:</b> {{ projectionsList[0].movie.country }} </p></li>
                                     <li class="list-group-item bg-dark"><p class="card-text"><b>Godina proizvodnje:</b> {{ projectionsList[0].movie.year }}.</p></li>
-                                    <li class="list-group-item bg-dark"><p class="card-text"><b>Opis:</b> {{ projectionsList[0].movie.description }}</p></li>
                                 </ul>
                                 <div class="card-body">
                                     <a :href="'Movie.html?id=' + projectionsList[0].movie.id" class="btn btn-outline-danger stretched-link text-white">Detaljnije</a>
@@ -212,7 +211,7 @@
                             <div class="card-body">
                                 <h4 class="card-title"> Projekcije </h4>
                                 <div class="container">
-                                    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-xl-2" style="height: 500px; overflow-y: auto;">
+                                    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-xl-2" style="height: 400px; overflow-y: auto;">
                                         <div v-for="projection in sortedProjections(projectionsList)" class="col mt-2 mb-2">
                                             <div class="card text-white bg-dark border-danger" style="text-align: center;">
                                                 <div class="card-body" style="text-align: center; padding-left: 5px; padding-right: 5px;">
