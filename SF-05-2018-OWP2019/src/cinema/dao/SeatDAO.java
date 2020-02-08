@@ -58,7 +58,7 @@ public class SeatDAO {
 			
 			Hall hall = HallDAO.getHallByID(hId);
 			
-			while (rset.next()) {
+			while (rset.next() && hall != null) {
 				int number = rset.getInt(1);
 				seats.add(new Seat(number, hall));
 			}
@@ -69,6 +69,37 @@ public class SeatDAO {
 		}
 		
 		return seats;
+	}
+	
+	public static Seat getByNumberAndHallID(int sNumber, int hID) throws Exception {
+		
+		Connection connection = ConnectionManager.getConnection();
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		try {
+			String query = "select * from Seats where Number = ? and Hall = ?";
+			
+			pstmt = connection.prepareStatement(query);
+			pstmt.setInt(1, sNumber);
+			pstmt.setInt(2, sNumber);
+			
+			rset = pstmt.executeQuery();
+			
+			Hall hall = HallDAO.getHallByID(hID);
+			
+			if (rset.next()) {
+				int number = rset.getInt(1);
+				return new Seat(number, hall);
+			}
+		} finally {
+			try { pstmt.close(); } catch (Exception e1) { e1.printStackTrace(); }
+			try { rset.close(); } catch (Exception e1) { e1.printStackTrace(); }
+			try { connection.close(); } catch (Exception e1) { e1.printStackTrace(); }
+		}
+		
+		return null;
 	}
 	
 }
