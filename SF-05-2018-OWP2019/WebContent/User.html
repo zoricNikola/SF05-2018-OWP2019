@@ -9,9 +9,16 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
     <link rel="stylesheet" href="css/darkInputs.css">
     <link rel="stylesheet" href="css/loading.css">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+         button {
+            background-color: #22262a !important;
+            color: #FFF !important;
+         }
+    </style>
     <title>Korisnik</title>
 </head>
 <body style="height: 100vh; background-image: url('cover.jpg'); 
@@ -102,6 +109,67 @@
         <div style="height: 20%;" class="row d-none d-lg-block"></div>
         <div style="height: 2%;" class="row d-lg-none"></div>
         <!-- KRAJ NAVIGACIJE -->
+        
+        <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-hidden="true">
+	        <div class="modal-dialog" role="document">
+	        <div class="modal-content text-white bg-dark">
+	            <div class="modal-header">
+	            <h5 class="modal-title">Izmena naloga</h5>
+	            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                <span aria-hidden="true">&times;</span>
+	            </button>
+	            </div>
+	            <div class="modal-body">
+	            	{{ message }}
+	            </div>
+	            <div class="modal-footer">
+	            	<p class="btn btn-primary" data-dismiss="modal">Zatvori</p>
+	            </div>
+	        </div>
+	        </div>
+	    </div>
+	    
+	    <div class="modal fade" id="confirmUpdate" tabindex="-1" role="dialog" aria-hidden="true">
+	        <div class="modal-dialog" role="document">
+	        <div class="modal-content text-white bg-dark">
+	            <div class="modal-header">
+	            <h5 class="modal-title">Izmena naloga</h5>
+	            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                <span aria-hidden="true">&times;</span>
+	            </button>
+	            </div>
+	            <div class="modal-body">
+	            	Da li ste sigurni da želite da izmenite nalog?
+	            </div>
+	            <div class="modal-footer">
+	            	<p v-on:click.prevent="updateUserSubmit" class="btn btn-danger" data-dismiss="modal">Da</p>
+	            	<p class="btn btn-success" data-dismiss="modal">Ne</p>
+	            </div>
+	        </div>
+	        </div>
+	    </div>
+	    
+	    <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-hidden="true">
+	        <div class="modal-dialog" role="document">
+	        <div class="modal-content text-white bg-dark">
+	            <div class="modal-header">
+	            <h5 class="modal-title">Brisanje naloga</h5>
+	            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                <span aria-hidden="true">&times;</span>
+	            </button>
+	            </div>
+	            <div class="modal-body">
+	            	Da li ste sigurni da želite da obrišete nalog?
+	            </div>
+	            <div class="modal-footer">
+	            	<p v-on:click.prevent="deleteUserSubmit" class="btn btn-danger" data-dismiss="modal">Da</p>
+	            	<p class="btn btn-success" data-dismiss="modal">Ne</p>
+	            </div>
+	        </div>
+	        </div>
+	    </div>
+        
+        
         <div class="row align-items-center">
             <div class="card mx-auto text-white bg-dark">
                 <div class="card-header">
@@ -129,7 +197,11 @@
                             <label class="my-1">Tip korisnika:</label>
                         </div>
                         <div class="col-md-7">
-                        <input disabled v-model="user.userRole" type="text" class="form-control mb-2 mr-sm-2 bg-dark text-white" id="userRole">
+                        	<select v-if="loggedInUser.userRole == 'ADMIN' && loggedInUser.username != user.username" v-model="selectedUserRole" id="userRoleInput" class="selectpicker form-control" 
+                                style="background: #22262a !important; color: #fff; border: 1px #FFF;">
+                                    <option v-for="userRoleOption in userRoleOptions" v-bind:value="userRoleOption" style="background: #22262a; color: #FFF;">{{ userRoleOption }}</option>
+                            </select>
+                        	<input v-else disabled v-model="user.userRole" type="text" class="form-control mb-2 mr-sm-2 bg-dark text-white" id="userRole">
                         </div>
                     </div>
                     <div class="row">
@@ -139,18 +211,44 @@
                     </div>
                     <div class="row">
                         <div class="col-md-7">
-                            <input v-model="newPassword" type="text" class="form-control mb-2 mr-sm-2 bg-dark text-white" id="newPassword" placeholder="Nova šifra">
+                            <input v-model="newPassword" type="password" class="form-control mb-2 mr-sm-2 bg-dark text-white" id="newPassword" placeholder="Nova šifra">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-7">
-                            <input v-model="repeatedNewPassword" type="text" class="form-control mb-2 mr-sm-2 bg-dark text-white" id="repeatedNewPassword" placeholder="Ponovljena nova šifra">
+                            <input v-model="repeatedNewPassword" type="password" class="form-control mb-2 mr-sm-2 bg-dark text-white" id="repeatedNewPassword" placeholder="Ponovljena nova šifra">
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row justify-content-between">
                         <div class="col-4">
-                            <button v-on:click.prevent="changePasswordSubmit" type="submit" class="btn btn-primary" id="changePasswordSubmit">Potvrdi</button>
+                            <a v-on:click.prevent="updateUser" type="submit" class="btn btn-primary" id="changePasswordSubmit">Potvrdi</a>
                         </div>
+                        <div v-if="loggedInUser.userRole == 'ADMIN' && loggedInUser.username != user.username" class="col-4">
+                            <a v-on:click.prevent="deleteUser" type="submit" class="btn btn-danger" id="changePasswordSubmit">Obriši</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div v-if="loggedInUser.userRole == 'ADMIN'" class="card mx-auto text-white bg-dark mt-2" style="width: 70%;">
+                <div class="card-header">
+                    <h3 class="title">Kupljene karte</h3>
+                </div>
+                <div v-if="orderedTickets.length < 1" class="card-body"><h2>Nema kupljenih karata</h2></div>
+                <div v-else class="card-body">
+                	<div class="container">
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4" style="height: 500px; overflow-y: auto;">
+                            <div v-for="ticket in orderedTickets" class="col mt-2 mb-2" style="">
+                                <div class="card text-white bg-dark border-danger" style="text-align: center;">
+                                    <div class="card-body" style="text-align: center; padding-left: 5px; padding-right: 5px;">
+                                        <p class="card-text"><b>Korisnik:</b></p>
+                                        <p class="card-text"><a class="badge badge-dark text-white" style="font-size: medium;" :href="'User.html?username=' + ticket.user.username" > {{ ticket.user.username }} </a></p>
+                                        <p class="card-text"><b>Vreme prodaje:</b></p>
+                                        <p class="card-text"><a class="badge badge-dark text-white" style="font-size: medium;" :href="'Ticket.html?id=' + ticket.id" > {{ ticket.time.dayOfMonth }}.{{ ticket.time.monthValue  }}.{{ ticket.time.year }}. {{ ticket.time.hour }}:{{ ticket.time.minute }} </a></p>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
                     </div>
                 </div>
             </div>
@@ -163,6 +261,21 @@
     <script src="js/jquery-3.4.1.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/g/lodash@4(lodash.min.js+lodash.fp.min.js)'></script>
+    <script>
+		// Loading `lodash.fp.js` converts `_` to its fp variant.
+		_.defaults({ 'a': 2, 'b': 2 })({ 'a': 1 });
+		// ➜ { 'a': 1, 'b': 2 }
+		
+		// Use `noConflict` to restore the pre-fp variant.
+		var fp = _.noConflict();
+		
+		_.defaults({ 'a': 1 }, { 'a': 2, 'b': 2 });
+		// ➜ { 'a': 1, 'b': 2 }
+		fp.defaults({ 'a': 2, 'b': 2 })({ 'a': 1 });
+		// ➜ { 'a': 1, 'b': 2 }
+    </script>
     <script src="js/User.js"></script>
 </body>
 </html>

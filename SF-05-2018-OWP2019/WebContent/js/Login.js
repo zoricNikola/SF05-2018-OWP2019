@@ -49,6 +49,9 @@ $(document).ready(function() {
                                 app.message = 'Pogrešna lozinka!';
                                 app.password = '';
                             }
+                            else if (data.message == 'deactivated') {
+                            	app.message = 'Vaš nalog je deaktiviran!';
+                            }
                             else
                                 app.message = data.message;
                                 

@@ -33,6 +33,8 @@ public class LoginServlet extends HttpServlet {
 			if (!user.getPassword().equals(password)) {
 				throw new Exception("password");
 			}
+			if (!user.isActive())
+				throw new Exception("deactivated");
 			
 			request.getSession().setAttribute("loggedInUsername", user.getUsername());
 			request.getRequestDispatcher("./SuccessServlet").forward(request, response);
