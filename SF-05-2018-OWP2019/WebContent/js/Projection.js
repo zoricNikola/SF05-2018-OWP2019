@@ -8,8 +8,8 @@ $(document).ready(function() {
         data: {
         	loggedInUser: { username: '', userRole: ''},
             projection: { movie: {}, time: {}, hall: {}, projectionType: {} },
-            remainingTickets: 1,
-            inPast: false,
+            remainingTickets: 0,
+            inPast: true,
             message: ''
         },
         methods: {
@@ -20,7 +20,6 @@ $(document).ready(function() {
 	    	        if (data.status == 'success') {
 	    	        	app.loggedInUser.username = data.loggedInUser.username;
                         app.loggedInUser.userRole = data.loggedInUser.userRole;
-                        app.inPast = data.inPast;
 	    	            return;
 	    	        }
 	    	    });
@@ -32,6 +31,19 @@ $(document).ready(function() {
                     
                     if (data.status == 'success') {
                         app.projection = data.projection;
+                        app.inPast = data.inPast;
+                        app.getSeats();
+                    }
+                    
+                });
+            },
+            getSeats: function() {
+
+                $.get('SeatServlet', {'action': 'remainingSeats', 'projectionID': app.projection.id ,'hallID': app.projection.hall.id}, function(data) {
+                    console.log(data);
+                    
+                    if (data.status == 'success') {
+                        app.remainingTickets = data.seats.length;
                     }
                     
                 });

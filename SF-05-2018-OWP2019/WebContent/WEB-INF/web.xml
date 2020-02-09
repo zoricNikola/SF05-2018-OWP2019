@@ -177,4 +177,24 @@
     <servlet-name>ProjectionServlet</servlet-name>
     <url-pattern>/ProjectionServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>SeatServlet</display-name>
+    <servlet-name>SeatServlet</servlet-name>
+    <servlet-class>cinema.SeatServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SeatServlet</servlet-name>
+    <url-pattern>/SeatServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>TicketServlet</display-name>
+    <servlet-name>TicketServlet</servlet-name>
+    <servlet-class>cinema.TicketServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TicketServlet</servlet-name>
+    <url-pattern>/TicketServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

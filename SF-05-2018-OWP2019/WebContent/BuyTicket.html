@@ -9,10 +9,17 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
     <link rel="stylesheet" href="css/darkInputs.css">
     <link rel="stylesheet" href="css/loading.css">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <title>Projekcija</title>
+    <style>
+        button {
+           background-color: #22262a !important;
+           color: #FFF !important;
+        }
+   </style>
+    <title>Kupovina karte</title>
 </head>
 <body style="height: 100vh; background-image: url('cover.jpg'); 
                             background-repeat: no-repeat;
@@ -122,48 +129,78 @@
 	        </div>
 	    </div>
 	    
-	    <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-hidden="true">
+	    <div class="modal fade" id="confirmBuy" tabindex="-1" role="dialog" aria-hidden="true">
 	        <div class="modal-dialog" role="document">
 	        <div class="modal-content text-white bg-dark">
 	            <div class="modal-header">
-	            <h5 class="modal-title">Brisanje projekcije</h5>
+	            <h5 class="modal-title">Potvrda kupovine</h5>
 	            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	                <span aria-hidden="true">&times;</span>
 	            </button>
 	            </div>
 	            <div class="modal-body">
-	            	Da li ste sigurni da želite da obrišete ovu projekciju?
+	            	<div class="card mx-auto text-white bg-dark" style="width: 400px;">
+                <div class="card-header">
+                    <h3 class="title">Kupovina karte</h3>
+                </div>
+                <div class="card-body">
+                                
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item bg-dark"><p class="card-text"><b>Film:</b> <a class="badge badge-dark text-white" style="font-size: medium;" :href="'Movie.html?id=' + projection.movie.id" > {{ projection.movie.title }} </a> </p></li>
+                        <li class="list-group-item bg-dark"><p class="card-text"><b>Vreme:</b> <a class="badge badge-dark text-white" style="font-size: medium;" :href="'Projection.html?id=' + projection.id" >  {{ projection.time.dayOfMonth }}.{{ projection.time.monthValue }}.{{ projection.time.year }}. {{ projection.time.hour }} : {{ projection.time.minute }} </a> </p></li>
+                        <li class="list-group-item bg-dark"><p class="card-text"><b>Tip projekcije:</b> {{ projection.projectionType.name }} </p></li>
+                        <li class="list-group-item bg-dark"><p class="card-text"><b>Sala:</b> {{ projection.hall.name }} </p></li>
+                        <li class="list-group-item bg-dark"><p class="card-text"><b>Cena:</b> {{ projection.price }} </p></li>
+                        <li class="list-group-item bg-dark"><p class="card-text"><b>Izabrana sedišta:</b> {{ seatsToString() }} </p></li>
+                        <li class="list-group-item bg-dark"><p class="card-text"><b>Ukupna cena:</b> {{ projection.price*selectedSeats.length }} </p></li>
+                    </ul>
+                </div>
+            </div>
 	            </div>
 	            <div class="modal-footer">
-	            	<p v-on:click.prevent="deleteProjectionSubmit" class="btn btn-danger" data-dismiss="modal">Da</p>
-	            	<p class="btn btn-success" data-dismiss="modal">Ne</p>
+	            	<p v-on:click.prevent="buyTicketSubmit" class="btn btn-success" data-dismiss="modal">Potvrdi</p>
+	            	<p class="btn btn-danger" data-dismiss="modal">Odustani</p>
 	            </div>
 	        </div>
 	        </div>
 	    </div>
         
         <div class="row align-items-center">
-            <div class="card mx-auto text-white bg-dark">
+            <div class="card mx-auto text-white bg-dark" style="width: 400px;">
                 <div class="card-header">
-                    <h3 class="title">Projekcija</h3>
+                    <h3 class="title">Kupovina karte</h3>
                 </div>
                 <div class="card-body">
                                 
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item bg-dark"><p class="card-text"><b>Film:</b> <a class="badge badge-dark text-white" style="font-size: medium;" :href="'Movie.html?id=' + projection.movie.id" > {{ projection.movie.title }} </a> </p></li>
-                        <li class="list-group-item bg-dark"><p class="card-text"><b>Datum:</b> {{ projection.time.dayOfMonth }}.{{ projection.time.monthValue }}.{{ projection.time.year }}.</p></li>
-                        <li class="list-group-item bg-dark"><p class="card-text"><b>Vreme:</b> {{ projection.time.hour }} : {{ projection.time.minute }} </p></li>
+                        <li class="list-group-item bg-dark"><p class="card-text"><b>Vreme:</b> <a class="badge badge-dark text-white" style="font-size: medium;" :href="'Projection.html?id=' + projection.id" >  {{ projection.time.dayOfMonth }}.{{ projection.time.monthValue }}.{{ projection.time.year }}. {{ projection.time.hour }} : {{ projection.time.minute }} </a> </p></li>
                         <li class="list-group-item bg-dark"><p class="card-text"><b>Tip projekcije:</b> {{ projection.projectionType.name }} </p></li>
                         <li class="list-group-item bg-dark"><p class="card-text"><b>Sala:</b> {{ projection.hall.name }} </p></li>
                         <li class="list-group-item bg-dark"><p class="card-text"><b>Cena:</b> {{ projection.price }} </p></li>
-                        <li class="list-group-item bg-dark"><p class="card-text"><b>Preostalo karata:</b> {{ remainingTickets }} </p></li>
+                        <li class="list-group-item bg-dark">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                        <span class="input-group-text">Sedišta</span>
+                                        </div>
+                                        <select v-on:change="selectionChanged" v-model="selectedSeats" id="seatsInput" class="selectpicker form-control" 
+                                        style="background: #22262a !important; color: #fff; border: 1px #FFF;" multiple data-selected-text-format="count > 5" title="Izaberi...">
+                                            <option v-for="seatOption in seatOptions" v-bind:value="seatOption.number" style="background: #22262a; color: #FFF;">{{ seatOption.number }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                     <div class="card-body">
-                        <a v-if="!inPast && loggedInUser.userRole == 'USER' && remainingTickets > 0" :href="'BuyTicket.html?projection=' + projection.id" class="btn btn-danger text-white">Kupi kartu</a>
+                    	<p v-if="!inPast && loggedInUser.userRole == 'USER' && seatOptions.length > 0" v-on:click.prevent="buyTicket" class="btn btn-danger text-white">Kupi kartu</p>
                         <p v-else-if="inPast"><b class="list-group-item list-group-item-info" style=" font-size: large;">Projekcija je već održana</b></p>
-                        <p v-else-if="remainingTickets < 1"><b class="list-group-item list-group-item-info" style=" font-size: large;">Sve karte su prodate</b></p>
-                        <a v-if="loggedInUser.userRole == 'ADMIN'" v-on:click.prevent="deleteProjection" class="btn btn-danger text-white">Obriši</a>
-                        <p v-if="loggedInUser.userRole == ''"><b class="list-group-item list-group-item-info" style=" font-size: large;">Prijavite se da bi mogli kupiti karte</b></p>
+                        <p v-else-if="seatOptions.length < 1"><b class="list-group-item list-group-item-info" style=" font-size: large;">Sve karte su prodate</b></p>
+                        <div v-if="showMessage" class="alert alert-danger" role="alert" id="messageDiv">
+                                <p style="color: red;" id="messageParagraph">{{ message }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -176,6 +213,7 @@
     <script src="js/jquery-3.4.1.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <script src="js/Projection.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+    <script src="js/BuyTicket.js"></script>
 </body>
 </html>

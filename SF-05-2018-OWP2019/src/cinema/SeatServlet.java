@@ -17,37 +17,45 @@ import cinema.dao.HallDAO;
 import cinema.dao.MovieDAO;
 import cinema.dao.ProjectionDAO;
 import cinema.dao.ProjectionTypeDAO;
+import cinema.dao.SeatDAO;
 import cinema.dao.UserDAO;
 import cinema.model.Hall;
 import cinema.model.Movie;
 import cinema.model.Projection;
 import cinema.model.ProjectionType;
+import cinema.model.Seat;
 import cinema.model.User;
 import cinema.model.User.UserRole;
 import cinema.util.DateTimeUtil;
 
 @SuppressWarnings("serial")
-public class ProjectionServlet extends HttpServlet {
+public class SeatServlet extends HttpServlet {
        
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			String stringID = request.getParameter("id");
-			int id = Integer.parseInt(stringID);
-			Projection projection = ProjectionDAO.getProjectionByID(id);
+			String action = request.getParameter("action");
 			
-			Map<String, Object> data = new LinkedHashMap<String, Object>();
-			data.put("projection", projection);
+			switch (action) {
+				case "remainingSeats": {
+					
+					int projectionID = Integer.parseInt(request.getParameter("projectionID"));
+					int hallID = Integer.parseInt(request.getParameter("hallID"));
+					List<Seat> seats = SeatDAO.getRemainingSeatsByProjectionIdAndHallID(projectionID, hallID);
+					
+					Map<String, Object> data = new LinkedHashMap<String, Object>();
+					data.put("seats", seats);
+					
+					request.setAttribute("data", data);
+					break;
+				}
+			}
 			
-			if (projection.getTime().isBefore(LocalDateTime.now()))
-				data.put("inPast", true);
-			else
-				data.put("inPast", false);
-			
-			request.setAttribute("data", data);
 			request.getRequestDispatcher("./SuccessServlet").forward(request, response);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.getRequestDispatcher("./FailureServlet").forward(request, response);
 		}
 	}
 
@@ -101,15 +109,15 @@ public class ProjectionServlet extends HttpServlet {
 								throw new Exception("Greška prilikom dodavanja projekcije u bazu");
 						}
 						else {
-							Map<String, Object> data = new LinkedHashMap<String, Object>();
-							
+							Map<String, Object> data = (Map<String, Object>) request.getAttribute("data");
+							if (data == null) {
+								data = new LinkedHashMap<String, Object>();
+								request.setAttribute("data", data);
+							}
 							if (!projection.getTime().isAfter(LocalDateTime.now()))
 								data.put("message", "timeInPast");
 							if (Projection.timeOverlaps(projection))
 								data.put("message", "timeOverlaps");
-							
-							request.setAttribute("data", data);
-							
 							throw new Exception("Nije moguće dodati projekciju u ovo vreme!");
 						}
 						

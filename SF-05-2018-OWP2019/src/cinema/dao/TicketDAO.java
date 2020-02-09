@@ -152,5 +152,44 @@ public class TicketDAO {
 		
 		return null;
 	}
+	
+	public static boolean addTicket (Ticket ticket) throws Exception {
+		Connection connection = ConnectionManager.getConnection();
+		
+		PreparedStatement pstmt = null;
+		try {
+			String query = "insert into Tickets (Projection, SeatNumber, Hall, Time, User, Active) values (?, ?, ?, ?, ?, 1) ";
+			pstmt = connection.prepareStatement(query);
+			int index = 1;
+			pstmt.setInt(index++, ticket.getProjection().getId());
+			pstmt.setInt(index++, ticket.getSeat().getNumber());
+			pstmt.setInt(index++, ticket.getHall().getId());
+			pstmt.setInt(index++, DateTimeUtil.LocalDateTimeToUnixTimeStamp(ticket.getTime()));
+			pstmt.setString(index++, ticket.getUser().getUsername());
+			
+			return pstmt.executeUpdate() == 1;
+			
+		} finally {
+			try { pstmt.close(); } catch (Exception e1) { e1.printStackTrace(); }
+			try { connection.close(); } catch (Exception e1) { e1.printStackTrace(); }
+		}
+	}
+	
+	public static boolean deleteTicket (Ticket ticket) throws Exception {
+		Connection connection = ConnectionManager.getConnection();
+		
+		PreparedStatement pstmt = null;
+		try {
+			String query = "update Tickets set Active = 0 where ID = ?";
+			pstmt = connection.prepareStatement(query);
+			pstmt.setInt(1, ticket.getId());
+			
+			return pstmt.executeUpdate() == 1;
+			
+		} finally {
+			try { pstmt.close(); } catch (Exception e1) { e1.printStackTrace(); }
+			try { connection.close(); } catch (Exception e1) { e1.printStackTrace(); }
+		}
+	}
 
 }
