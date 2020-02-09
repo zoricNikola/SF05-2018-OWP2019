@@ -9,9 +9,16 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
     <link rel="stylesheet" href="css/darkInputs.css">
     <link rel="stylesheet" href="css/loading.css">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+         button {
+            background-color: #22262a !important;
+            color: #FFF !important;
+         }
+    </style>
     <title>Projekcija</title>
 </head>
 <body style="height: 100vh; background-image: url('cover.jpg'); 
@@ -99,7 +106,7 @@
             </div>
             
         </div>
-        <div style="height: 15%;" class="row d-none d-lg-block"></div>
+        <div style="height: 10%;" class="row d-none d-lg-block"></div>
         <div style="height: 2%;" class="row d-lg-none"></div>
         <!-- KRAJ NAVIGACIJE -->
         
@@ -162,8 +169,38 @@
                         <a v-if="!inPast && loggedInUser.userRole == 'USER' && remainingTickets > 0" :href="'BuyTicket.html?projection=' + projection.id" class="btn btn-danger text-white">Kupi kartu</a>
                         <p v-else-if="inPast"><b class="list-group-item list-group-item-info" style=" font-size: large;">Projekcija je već održana</b></p>
                         <p v-else-if="remainingTickets < 1"><b class="list-group-item list-group-item-info" style=" font-size: large;">Sve karte su prodate</b></p>
-                        <a v-if="loggedInUser.userRole == 'ADMIN'" v-on:click.prevent="deleteProjection" class="btn btn-danger text-white">Obriši</a>
+                        <p v-if="loggedInUser.userRole == 'ADMIN'" v-on:click.prevent="deleteProjection" class="btn btn-danger text-white">Obriši</p>
                         <p v-if="loggedInUser.userRole == ''"><b class="list-group-item list-group-item-info" style=" font-size: large;">Prijavite se da bi mogli kupiti karte</b></p>
+                    </div>
+                </div>
+            </div>
+
+            <div v-if="loggedInUser.userRole == 'ADMIN'" class="card mx-auto text-white bg-dark mt-2" style="width: 70%;">
+                <div class="card-header">
+                    <h3 class="title">Prodate karte</h3>
+                </div>
+                <div v-if="orderedTickets.length < 1" class="card-body"><h2>Nema prodatih karata za ovu projekciju</h2></div>
+                <div v-else class="card-body">
+                	<div class="row mb-2">
+                		<div class="col col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+                			<select v-model="selectedSort" title="Sortiraj..." id="sortInput" class="selectpicker form-control" style="border: 1px #FFF;">
+	                    		<option v-for="sortOption in sortOptions" v-bind:value="sortOption" style="background: #22262a; color: #FFF;">{{ sortOption }}</option>
+	                    	</select>
+                		</div>
+                	</div>
+                	<div class="container">
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4" style="height: 500px; overflow-y: auto;">
+                            <div v-for="ticket in orderedTickets" class="col mt-2 mb-2" style="">
+                                <div class="card text-white bg-dark border-danger" style="text-align: center;">
+                                    <div class="card-body" style="text-align: center; padding-left: 5px; padding-right: 5px;">
+                                        <p class="card-text"><b>Korisnik:</b></p>
+                                        <p class="card-text"><a class="badge badge-dark text-white" style="font-size: medium;" :href="'User.html?username=' + ticket.user.username" > {{ ticket.user.username }} </a></p>
+                                        <p class="card-text"><b>Vreme prodaje:</b></p>
+                                        <p class="card-text"><a class="badge badge-dark text-white" style="font-size: medium;" :href="'Ticket.html?id=' + ticket.id" > {{ ticket.time.dayOfMonth }}.{{ ticket.time.monthValue  }}.{{ ticket.time.year }}. {{ ticket.time.hour }}:{{ ticket.time.minute }} </a></p>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
                     </div>
                 </div>
             </div>
@@ -176,6 +213,21 @@
     <script src="js/jquery-3.4.1.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src='https://cdn.jsdelivr.net/g/lodash@4(lodash.min.js+lodash.fp.min.js)'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+    <script>
+		// Loading `lodash.fp.js` converts `_` to its fp variant.
+		_.defaults({ 'a': 2, 'b': 2 })({ 'a': 1 });
+		// ➜ { 'a': 1, 'b': 2 }
+		
+		// Use `noConflict` to restore the pre-fp variant.
+		var fp = _.noConflict();
+		
+		_.defaults({ 'a': 1 }, { 'a': 2, 'b': 2 });
+		// ➜ { 'a': 1, 'b': 2 }
+		fp.defaults({ 'a': 2, 'b': 2 })({ 'a': 1 });
+		// ➜ { 'a': 1, 'b': 2 }
+    </script>
     <script src="js/Projection.js"></script>
 </body>
 </html>

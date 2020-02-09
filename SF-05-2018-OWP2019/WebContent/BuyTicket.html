@@ -186,7 +186,7 @@
                                         <span class="input-group-text">Sedišta</span>
                                         </div>
                                         <select v-on:change="selectionChanged" v-model="selectedSeats" id="seatsInput" class="selectpicker form-control" 
-                                        style="background: #22262a !important; color: #fff; border: 1px #FFF;" multiple data-selected-text-format="count > 5" title="Izaberi...">
+                                        style="background: #22262a !important; color: #fff; border: 1px #FFF;" multiple data-selected-text-format="count > 5" title="Izaberi..." data-dropup-auto="false">
                                             <option v-for="seatOption in seatOptions" v-bind:value="seatOption.number" style="background: #22262a; color: #FFF;">{{ seatOption.number }}</option>
                                         </select>
                                     </div>

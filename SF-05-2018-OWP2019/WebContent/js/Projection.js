@@ -10,7 +10,12 @@ $(document).ready(function() {
             projection: { movie: {}, time: {}, hall: {}, projectionType: {} },
             remainingTickets: 0,
             inPast: true,
-            message: ''
+            message: '',
+            tickets: [],
+            ticket: { id: 0, time: {}, user: {} },
+            sortOptions: ['Automatski', 'Korisnik rastuće', 'Korisnik opadajuće', 'Vreme rastuće', 'Vreme opadajuće'],
+            selectedSort: 'Automatski',
+            sortOption: ''
         },
         methods: {
         	getLoggedInUser: function() {
@@ -33,6 +38,17 @@ $(document).ready(function() {
                         app.projection = data.projection;
                         app.inPast = data.inPast;
                         app.getSeats();
+                    }
+                    
+                });
+            },
+            getTickets: function() {
+
+                $.get('TicketServlet', {'action': 'projectionID', 'projectionID': id}, function(data) {
+                    console.log(data);
+                    
+                    if (data.status == 'success') {
+                        app.tickets = data.tickets;
                     }
                     
                 });
@@ -76,11 +92,29 @@ $(document).ready(function() {
                 });
 	        },
         },
+        computed: {
+			orderedTickets: function() {
+			            	
+                if (this.selectedSort === 'Automatski')
+            		return this.tickets;
+            	else if (this.selectedSort === 'Korisnik rastuće')
+            		return _.orderBy(this.tickets, 'user.username');
+            	else if (this.selectedSort === 'Korisnik opadajuće')
+            		return _.orderBy(this.tickets, 'user.username').reverse();
+            	else if (this.selectedSort === 'Vreme rastuće')
+        			return _.sortBy(this.tickets, ['time.year', 'time.monthValue', 'time.dayOfMonth', 'time.hour', 'time.minute']);
+        		else if (this.selectedSort === 'Vreme opadajuće')
+        			return _.sortBy(this.tickets, ['time.year', 'time.monthValue', 'time.dayOfMonth', 'time.hour', 'time.minute']).reverse();
+        		else
+        			return this.tickets;
+            },
+        }
 
     })
     
     app.getLoggedInUser();
     app.getProjection();
+    app.getTickets();
 
     setTimeout(function(){ $("#staticBackdrop").modal('hide'); }, 1000);
 });

@@ -140,5 +140,6 @@ $(document).ready(function() {
     
     app.getLoggedInUser();
     app.getUser();
+    app.getTickets();
     setTimeout(function(){ $("#staticBackdrop").modal('hide'); }, 1000);
 });

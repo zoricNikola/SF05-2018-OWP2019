@@ -102,6 +102,46 @@
         <div style="height: 10%;" class="row d-none d-lg-block"></div>
         <div style="height: 5%;" class="row d-lg-none"></div>
         <!-- KRAJ NAVIGACIJE -->
+        
+        <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-hidden="true">
+	        <div class="modal-dialog" role="document">
+	        <div class="modal-content text-white bg-dark">
+	            <div class="modal-header">
+	            <h5 class="modal-title">Brisanje filma</h5>
+	            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                <span aria-hidden="true">&times;</span>
+	            </button>
+	            </div>
+	            <div class="modal-body">
+	            Uspešno ste obrisali film!
+	            </div>
+	            <div class="modal-footer">
+	            	<p class="btn btn-primary" data-dismiss="modal">Zatvori</p>
+	            </div>
+	        </div>
+	        </div>
+	    </div>
+	    
+	    <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-hidden="true">
+	        <div class="modal-dialog" role="document">
+	        <div class="modal-content text-white bg-dark">
+	            <div class="modal-header">
+	            <h5 class="modal-title">Brisanje filma</h5>
+	            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                <span aria-hidden="true">&times;</span>
+	            </button>
+	            </div>
+	            <div class="modal-body">
+	            	Da li ste sigurni da želite da obrišete ovaj film?
+	            </div>
+	            <div class="modal-footer">
+	            	<p v-on:click.prevent="deleteMovieSubmit" class="btn btn-danger" data-dismiss="modal">Da</p>
+	            	<p class="btn btn-success" data-dismiss="modal">Ne</p>
+	            </div>
+	        </div>
+	        </div>
+	    </div>
+        
         <div class="row">
             <div class="col">
                 <div class="card text-white bg-dark mb-3">
@@ -125,7 +165,14 @@
                                     <li class="list-group-item bg-dark"><p class="card-text"><b>Opis:</b> {{ movie.description }}</p></li>
                                 </ul>
                                 <div v-if="loggedInUser.userRole == 'ADMIN'" class="card-body">
-                            		<a :href="'UpdateMovie.html?id=' + movie.id" class="btn btn-danger">Izmeni</a>
+	                                <div class="row justify-content-between">
+				                        <div class="col-4">
+				                            <a :href="'UpdateMovie.html?id=' + movie.id" class="btn btn-danger">Izmeni</a>
+				                        </div>
+				                        <div class="col-4">
+				                            <p v-if="loggedInUser.userRole == 'ADMIN'" v-on:click.prevent="deleteMovie" class="btn btn-danger text-white">Obriši</p>
+				                        </div>
+				                    </div>
                          		</div>
                             </div>
                         </div>

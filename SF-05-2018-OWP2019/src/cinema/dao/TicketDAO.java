@@ -31,8 +31,8 @@ public class TicketDAO {
 			
 			rset = pstmt.executeQuery();
 			
-			int index = 1;
 			while (rset.next()) {
+				int index = 1;
 				int id = rset.getInt(index++);
 				Projection projection = ProjectionDAO.getProjectionByID(rset.getInt(index++));
 				Seat seat = SeatDAO.getByNumberAndHallID(rset.getInt(index++), rset.getInt(index++));
@@ -101,8 +101,43 @@ public class TicketDAO {
 			
 			rset = pstmt.executeQuery();
 			
-			int index = 1;
 			while (rset.next()) {
+				int index = 1;
+				int id = rset.getInt(index++);
+				Projection projection = ProjectionDAO.getProjectionByID(rset.getInt(index++));
+				Seat seat = SeatDAO.getByNumberAndHallID(rset.getInt(index++), rset.getInt(index++));
+				LocalDateTime time = DateTimeUtil.UnixTimeStampToLocalDateTime(rset.getInt(index++));
+				User user = UserDAO.getUserByUsername(rset.getString(index++));
+				boolean active = rset.getInt(index++) == 1;
+				tickets.add(new Ticket(id, projection, seat, time, user, active));
+			}
+		} finally {
+			try { pstmt.close(); } catch (Exception e1) { e1.printStackTrace(); }
+			try { rset.close(); } catch (Exception e1) { e1.printStackTrace(); }
+			try { connection.close(); } catch (Exception e1) { e1.printStackTrace(); }
+		}
+		
+		return tickets;
+	}
+	
+	public static List<Ticket> getByUserUsername(String username) throws Exception {
+		List<Ticket> tickets = new ArrayList<Ticket>();
+		
+		Connection connection = ConnectionManager.getConnection();
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		try {
+			String query = "select * from Tickets where User = ? ";
+			
+			pstmt = connection.prepareStatement(query);
+			pstmt.setString(1, username);
+			
+			rset = pstmt.executeQuery();
+			
+			while (rset.next()) {
+				int index = 1;
 				int id = rset.getInt(index++);
 				Projection projection = ProjectionDAO.getProjectionByID(rset.getInt(index++));
 				Seat seat = SeatDAO.getByNumberAndHallID(rset.getInt(index++), rset.getInt(index++));

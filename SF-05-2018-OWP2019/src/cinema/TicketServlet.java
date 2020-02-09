@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -26,8 +28,34 @@ import cinema.model.User;
 public class TicketServlet extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		try {
+			String action = request.getParameter("action");
+			
+			switch (action) {
+				case "projectionID": {
+					int projectionID = Integer.parseInt(request.getParameter("projectionID"));
+					List<Ticket> tickets = TicketDAO.getByProjectionID(projectionID);
+					Map<String, Object> data = new LinkedHashMap<String, Object>();
+					data.put("tickets", tickets);
+					
+					request.setAttribute("data", data);
+					break; 
+				}
+				case "user": {
+					List<Ticket> tickets = TicketDAO.getByUserUsername(request.getParameter("username"));
+					Map<String, Object> data = new LinkedHashMap<String, Object>();
+					data.put("tickets", tickets);
+					
+					request.setAttribute("data", data);
+					break; 
+				}
+			}			
+			request.getRequestDispatcher("./SuccessServlet").forward(request, response);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.getRequestDispatcher("./FailureServlet").forward(request, response);
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -99,7 +99,34 @@ $(document).ready(function() {
                     minutes = '0' + minutes;
                 
                 app.timeLow = dateLow.getFullYear().toString() + '-' + months + '-' + days + ' ' + hours + ':' + minutes;          
-            }
+            },
+            deleteMovie: function(event) {
+	        	$('#confirmDelete').modal('show');
+	        },
+	        deleteMovieSubmit: function(event) {
+	        	console.log('ID: ' + id);
+	        	
+	        	var params = {
+                        'action': 'delete',
+                        'id': id,
+                }
+                
+                $.post('MovieServlet', params, function(data) {
+                    console.log(data);
+                    
+                    if (data.status == 'failure') {
+                        app.message = data.message;
+                        $('#messageModal').modal('show');
+                    }
+                    else if (data.status == 'success') {
+                    	app.action = 'obrisali';
+                        $('#messageModal').modal('show');
+                        $('#messageModal').on('hidden.bs.modal', function (e) {
+                            window.location.replace('FilterMovies.html');
+                        });
+                    }
+                });
+	        },
         },
 
     })
