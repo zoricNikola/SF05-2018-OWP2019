@@ -41,5 +41,12 @@ public class DateTimeUtil {
 		System.out.println(dateTime);
 		return dateTime;
 	}
+	
+	public static LocalDate StringToLocalDate(String stringDate) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate date = LocalDate.parse(stringDate, formatter);
+		System.out.println(date);
+		return date;
+	}
 
 }

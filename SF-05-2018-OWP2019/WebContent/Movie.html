@@ -49,15 +49,18 @@
                         <li v-if="loggedInUser.userRole == 'ADMIN'" class="nav-item active mr-5">
                             <a class="nav-link font-weight-bold" href="FilterUsers.html">Korisnici</a>
                         </li>
+                        <li v-if="loggedInUser.userRole == 'ADMIN'" class="nav-item active mr-5">
+                            <a class="nav-link font-weight-bold" href="Reports.html">Izveštaj</a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle font-weight-bold text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Moj nalog
                             </a>
                             <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
                                 <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Login.html">Prijava</a>
-                                <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Registration.html">Registracija</a v-if="loggedInUserRole == ''">
-                                <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" :href="'User.html?username=' + loggedInUser.username">Moj nalog</a v-if="loggedInUserRole == ''">
-                                <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" href="Logout.html">Odjava</a v-if="loggedInUserRole != ''">
+                                <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Registration.html">Registracija</a>
+                                <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" :href="'User.html?username=' + loggedInUser.username">Moj nalog</a>
+                                <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" href="Logout.html">Odjava</a>
                             </div>
                         </li>
                     </ul>
@@ -82,15 +85,18 @@
                             <li v-if="loggedInUser.userRole == 'ADMIN'" class="nav-item active mr-5">
                                 <a class="nav-link font-weight-bold" href="FilterUsers.html">Korisnici</a>
                             </li>
+                            <li v-if="loggedInUser.userRole == 'ADMIN'" class="nav-item active mr-5">
+                            	<a class="nav-link font-weight-bold" href="Reports.html">Izveštaj</a>
+                        	</li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle font-weight-bold text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Moj nalog
                                 </a>
                                 <div class="dropdown-menu bg-dark w-50" aria-labelledby="navbarDropdown">
                                     <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Login.html">Prijava</a>
-                                    <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Registration.html">Registracija</a v-if="loggedInUserRole == ''">
-                                    <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" :href="'User.html?username=' + loggedInUser.username">Moj nalog</a v-if="loggedInUserRole == ''">
-                                    <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" href="Logout.html">Odjava</a v-if="loggedInUserRole != ''">
+                                    <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Registration.html">Registracija</a>
+                                    <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" :href="'User.html?username=' + loggedInUser.username">Moj nalog</a>
+                                    <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" href="Logout.html">Odjava</a>
                                 </div>
                             </li>
                         </ul>

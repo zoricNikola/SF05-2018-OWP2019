@@ -13,6 +13,12 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <link rel="stylesheet" href="css/darkInputs.css">
     <link rel="stylesheet" href="css/loading.css">
+    <style>
+         button {
+            background-color: #22262a !important;
+            color: #FFF !important;
+         }
+    </style>
     <title>Korisnici</title>
 </head>
 <body style=" background-image: url('cover.jpg'); 
@@ -50,15 +56,18 @@
                         <li v-if="loggedInUser.userRole == 'ADMIN'" class="nav-item active mr-5">
                             <a class="nav-link font-weight-bold" href="FilterUsers.html">Korisnici</a>
                         </li>
+                        <li v-if="loggedInUser.userRole == 'ADMIN'" class="nav-item active mr-5">
+                            <a class="nav-link font-weight-bold" href="Reports.html">Izveštaj</a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle font-weight-bold text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Moj nalog
                             </a>
                             <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
                                 <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Login.html">Prijava</a>
-                                <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Registration.html">Registracija</a v-if="loggedInUserRole == ''">
-                                <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" :href="'User.html?username=' + loggedInUser.username">Moj nalog</a v-if="loggedInUserRole == ''">
-                                <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" href="Logout.html">Odjava</a v-if="loggedInUserRole != ''">
+                                <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Registration.html">Registracija</a>
+                                <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" :href="'User.html?username=' + loggedInUser.username">Moj nalog</a>
+                                <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" href="Logout.html">Odjava</a>
                             </div>
                         </li>
                     </ul>
@@ -83,15 +92,18 @@
                             <li v-if="loggedInUser.userRole == 'ADMIN'" class="nav-item active mr-5">
                                 <a class="nav-link font-weight-bold" href="FilterUsers.html">Korisnici</a>
                             </li>
+                            <li v-if="loggedInUser.userRole == 'ADMIN'" class="nav-item active mr-5">
+                            	<a class="nav-link font-weight-bold" href="Reports.html">Izveštaj</a>
+                        	</li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle font-weight-bold text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Moj nalog
                                 </a>
                                 <div class="dropdown-menu bg-dark w-50" aria-labelledby="navbarDropdown">
                                     <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Login.html">Prijava</a>
-                                    <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Registration.html">Registracija</a v-if="loggedInUserRole == ''">
-                                    <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" :href="'User.html?username=' + loggedInUser.username">Moj nalog</a v-if="loggedInUserRole == ''">
-                                    <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" href="Logout.html">Odjava</a v-if="loggedInUserRole != ''">
+                                    <a v-if="loggedInUser.userRole == ''" class="dropdown-item text-white" href="Registration.html">Registracija</a>
+                                    <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" :href="'User.html?username=' + loggedInUser.username">Moj nalog</a>
+                                    <a v-if="loggedInUser.userRole != ''" class="dropdown-item text-white" href="Logout.html">Odjava</a>
                                 </div>
                             </li>
                         </ul>
@@ -110,13 +122,13 @@
                         <tr>
                             <th style="width: 40%"><input v-model="username" v-on:keyup="refreshUsers" debounce="500" type="text" class="form-control" id="usernameInput" placeholder="Korisničko ime" /></th>
                             <th style="width: 25%">
-                                <select v-model="selectedSort" id="sortInput" class="custom-select">
-                                    <option v-for="option in sortOptions" v-bind:value="option.value">{{ option.text }}</option>
+                                <select v-model="selectedSort" id="sortInput" class="selectpicker" style="border: 1px #FFF">
+                                    <option v-for="option in sortOptions" v-bind:value="option.value" style="background: #22262a; color: #FFF;">{{ option.text }}</option>
                                 </select>
                             </th>
                             <th style="width: 35%">
-                            	<select v-model="selectedUserRole"  v-on:change="refreshUsers" id="userRoleInput" class="custom-select">
-									<option v-for="option in userRoleOptions" v-bind:value="option.value">{{ option.text }}</option>
+                            	<select v-model="selectedUserRole"  v-on:change="refreshUsers" id="userRoleInput" class="selectpicker" style="border: 1px #FFF">
+									<option v-for="option in userRoleOptions" v-bind:value="option.value" style="background: #22262a; color: #FFF;">{{ option.text }}</option>
 								</select>
                             </th>
                         </tr>
