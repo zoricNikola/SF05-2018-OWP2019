@@ -11,9 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cinema.dao.HallDAO;
-import cinema.dao.ProjectionTypeDAO;
 import cinema.model.Hall;
-import cinema.model.ProjectionType;
 
 @SuppressWarnings("serial")
 public class HallServlet extends HttpServlet {
@@ -30,15 +28,6 @@ public class HallServlet extends HttpServlet {
 				request.setAttribute("data", data);
 				request.getRequestDispatcher("./SuccessServlet").forward(request, response);
 			}
-//			else if (searchType.equals("movie")) {
-//				int id = 0;
-//				id = Integer.parseInt(request.getParameter("movie"));
-//				List<String> genres = GenreDAO.getByMovieID(id);
-//				data = new LinkedHashMap<String, Object>();
-//				data.put("genres", genres);
-//				request.setAttribute("data", data);
-//				request.getRequestDispatcher("./SuccessServlet").forward(request, response);
-//			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();

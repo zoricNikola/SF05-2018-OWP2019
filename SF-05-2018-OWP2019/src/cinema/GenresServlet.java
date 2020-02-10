@@ -10,12 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cinema.dao.ActorDAO;
 import cinema.dao.GenreDAO;
-import cinema.dao.UserDAO;
-import cinema.model.User;
-import cinema.searchModels.UsersSearchModel;
 
+@SuppressWarnings("serial")
 public class GenresServlet extends HttpServlet {
 
 

@@ -1,7 +1,6 @@
 package cinema;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -10,14 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cinema.dao.ProjectionDAO;
-import cinema.dao.SeatDAO;
-import cinema.dao.TicketDAO;
 import cinema.dao.UserDAO;
-import cinema.model.Projection;
-import cinema.model.Seat;
-import cinema.model.Ticket;
 import cinema.model.User;
+import cinema.model.User.UserRole;
 
 @SuppressWarnings("serial")
 public class UserServlet extends HttpServlet {
@@ -25,6 +19,27 @@ public class UserServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
+			String loggedInUsername = (String) request.getSession().getAttribute("loggedInUsername");
+			if (loggedInUsername == null) {
+				request.getRequestDispatcher("./UnauthorizedServlet").forward(request, response);
+				return;
+			}
+			User loggedInUser = UserDAO.getUserByUsername(loggedInUsername);
+			if (loggedInUser == null) {
+				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+				return;
+			}
+			
+			if (!loggedInUser.isLoggedIn()) {
+				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+				return;
+			}
+			
+			if (loggedInUser.getUserRole() != UserRole.ADMIN && !loggedInUser.getUsername().equals(request.getParameter("username"))) {
+				request.getRequestDispatcher("./UnauthorizedServlet").forward(request, response);
+				return;
+			}
+			
 			String username = request.getParameter("username");
 			User user = UserDAO.getUserByUsername(username);
 			
@@ -42,14 +57,39 @@ public class UserServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
+			String loggedInUsername = (String) request.getSession().getAttribute("loggedInUsername");
+			if (loggedInUsername == null) {
+				request.getRequestDispatcher("./UnauthorizedServlet").forward(request, response);
+				return;
+			}
+			User loggedInUser = UserDAO.getUserByUsername(loggedInUsername);
+			if (loggedInUser == null) {
+				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+				return;
+			}
+			
+			if (!loggedInUser.isLoggedIn()) {
+				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+				return;
+			}
+			
+			
 			String action = request.getParameter("action");
 			
 			switch (action) {
 				case "update": {
+					if (loggedInUser.getUserRole() != UserRole.ADMIN && !loggedInUser.getUsername().equals(request.getParameter("username"))) {
+						request.getRequestDispatcher("./UnauthorizedServlet").forward(request, response);
+						return;
+					}
+					
 					User user = UserDAO.getUserByUsername(request.getParameter("username"));
+					String realPassword = UserDAO.getPasswordByUsername(request.getParameter("username"));
 					String newPassword = request.getParameter("newPassword");
-					if (!user.getPassword().equals(newPassword))
+					if (!realPassword.equals(newPassword))
 						user.setPassword(newPassword);
+					else
+						user.setPassword(realPassword);
 					
 					User.UserRole newUserRole = User.UserRole.valueOf(request.getParameter("newUserRole"));
 					if (user.getUserRole() != newUserRole)
@@ -64,6 +104,11 @@ public class UserServlet extends HttpServlet {
 					break;
 				}
 				case "delete": {
+					if (loggedInUser.getUserRole() != UserRole.ADMIN) {
+						request.getRequestDispatcher("./UnauthorizedServlet").forward(request, response);
+						return;
+					}
+					
 					User user = UserDAO.getUserByUsername(request.getParameter("username"));
 					
 					if (user != null) {

@@ -2,8 +2,6 @@ package cinema;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,16 +11,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cinema.dao.HallDAO;
 import cinema.dao.MovieDAO;
 import cinema.dao.ProjectionDAO;
-import cinema.dao.ProjectionTypeDAO;
 import cinema.dao.TicketDAO;
-import cinema.model.Hall;
+import cinema.dao.UserDAO;
 import cinema.model.Movie;
 import cinema.model.Projection;
-import cinema.model.ProjectionType;
 import cinema.model.Ticket;
+import cinema.model.User;
+import cinema.model.User.UserRole;
 import cinema.searchModels.ProjectionsSearchModel;
 import cinema.util.DateTimeUtil;
 
@@ -31,6 +28,26 @@ public class ReportServlet extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
+			String loggedInUsername = (String) request.getSession().getAttribute("loggedInUsername");
+			if (loggedInUsername == null) {
+				request.getRequestDispatcher("./UnauthorizedServlet").forward(request, response);
+				return;
+			}
+			User loggedInUser = UserDAO.getUserByUsername(loggedInUsername);
+			if (loggedInUser == null) {
+				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+				return;
+			}
+			
+			if (!loggedInUser.isLoggedIn()) {
+				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+				return;
+			}
+			
+			if (loggedInUser.getUserRole() != UserRole.ADMIN) {
+				request.getRequestDispatcher("./UnauthorizedServlet").forward(request, response);
+				return;
+			}
 			
 			ProjectionsSearchModel model = new ProjectionsSearchModel();
 			LocalDate timeLow = LocalDate.now();
@@ -87,7 +104,6 @@ public class ReportServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

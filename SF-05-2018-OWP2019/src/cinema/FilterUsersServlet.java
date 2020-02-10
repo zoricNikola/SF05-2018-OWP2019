@@ -19,20 +19,24 @@ import cinema.searchModels.UsersSearchModel;
 public class FilterUsersServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		String loggedInUsername = (String) request.getSession().getAttribute("loggedInUsername");
-		if (loggedInUsername == null) {
-			request.getRequestDispatcher("./UnauthorizedServlet").forward(request, response);
-			return;
-		}
 		try {
-			
+			String loggedInUsername = (String) request.getSession().getAttribute("loggedInUsername");
+			if (loggedInUsername == null) {
+				request.getRequestDispatcher("./UnauthorizedServlet").forward(request, response);
+				return;
+			}
 			User loggedInUser = UserDAO.getUserByUsername(loggedInUsername);
 			if (loggedInUser == null) {
 				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
 				return;
 			}
-			else if (loggedInUser.getUserRole() != UserRole.ADMIN) {
+			
+			if (!loggedInUser.isLoggedIn()) {
+				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+				return;
+			}
+			
+			if (loggedInUser.getUserRole() != UserRole.ADMIN) {
 				request.getRequestDispatcher("./UnauthorizedServlet").forward(request, response);
 				return;
 			}

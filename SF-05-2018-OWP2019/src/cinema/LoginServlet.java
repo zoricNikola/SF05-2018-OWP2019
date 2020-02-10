@@ -26,11 +26,12 @@ public class LoginServlet extends HttpServlet {
 		
 		try {
 			User user = UserDAO.getUserByUsername(username);
+			String realPassword = UserDAO.getPasswordByUsername(username);
 			
 			if (user == null) {
 				throw new Exception("username");
 			}
-			if (!user.getPassword().equals(password)) {
+			if (!realPassword.equals(password)) {
 				throw new Exception("password");
 			}
 			if (!user.isActive())

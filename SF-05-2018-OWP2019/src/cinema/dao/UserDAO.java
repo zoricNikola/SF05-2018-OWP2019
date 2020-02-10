@@ -49,7 +49,7 @@ public class UserDAO {
 				boolean active = rset.getInt(index++) == 1;
 				boolean loggedIn = rset.getInt(index++) == 1;
 				
-				User user = new User(username, password, registrationDate, userRole, active, loggedIn);
+				User user = new User(username, "", registrationDate, userRole, active, loggedIn);
 				
 				users.add(user);
 			}
@@ -88,7 +88,33 @@ public class UserDAO {
 				boolean active = rset.getInt(index++) == 1;
 				boolean loggedIn = rset.getInt(index++) == 1;
 				
-				return new User(username, password, registrationDate, userRole, active, loggedIn);
+				return new User(username, "", registrationDate, userRole, active, loggedIn);
+			}
+		} finally {
+			try { pstmt.close(); } catch (Exception e1) { e1.printStackTrace(); }
+			try { rset.close(); } catch (Exception e1) { e1.printStackTrace(); }
+			try { connection.close(); } catch (Exception e1) { e1.printStackTrace(); }
+		}
+		
+		return null;
+	}
+	
+	public static String getPasswordByUsername (String UUsername) throws Exception {
+		Connection connection = ConnectionManager.getConnection();
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		try {
+			String query = "select Password from Users where Username = ?";
+			pstmt = connection.prepareStatement(query);
+			pstmt.setString(1, UUsername);
+			
+			rset = pstmt.executeQuery();
+			
+			if (rset.next()) {
+				return rset.getString(1);
+				
 			}
 		} finally {
 			try { pstmt.close(); } catch (Exception e1) { e1.printStackTrace(); }

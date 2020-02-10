@@ -3,7 +3,6 @@ package cinema;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,14 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cinema.dao.HallDAO;
-import cinema.dao.MovieDAO;
 import cinema.dao.ProjectionDAO;
 import cinema.dao.ProjectionTypeDAO;
 import cinema.model.Hall;
-import cinema.model.Movie;
 import cinema.model.Projection;
 import cinema.model.ProjectionType;
-import cinema.searchModels.MoviesSearchModel;
 import cinema.searchModels.ProjectionsSearchModel;
 import cinema.util.DateTimeUtil;
 

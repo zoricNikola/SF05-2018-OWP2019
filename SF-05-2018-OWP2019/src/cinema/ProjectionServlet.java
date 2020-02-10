@@ -54,30 +54,28 @@ public class ProjectionServlet extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
+			String loggedInUsername = (String) request.getSession().getAttribute("loggedInUsername");
+			if (loggedInUsername == null) {
+				request.getRequestDispatcher("./UnauthorizedServlet").forward(request, response);
+				return;
+			}
+			User loggedInUser = UserDAO.getUserByUsername(loggedInUsername);
+			if (loggedInUser == null) {
+				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+				return;
+			}
+			
+			if (!loggedInUser.isLoggedIn()) {
+				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+				return;
+			}
+			
+			if (loggedInUser.getUserRole() != UserRole.ADMIN) {
+				request.getRequestDispatcher("./UnauthorizedServlet").forward(request, response);
+				return;
+			}
+			
 			String action = request.getParameter("action");
-			
-			String title = request.getParameter("title");
-			String director = request.getParameter("director");
-			List<String> genres = new ArrayList<String>();
-			if (request.getParameterValues("genres[]") != null)
-				genres = new ArrayList<String>(Arrays.asList(request.getParameterValues("genres[]")));
-			List<String> actors = new ArrayList<String>();
-			if (request.getParameterValues("actors[]") != null)
-				actors = new ArrayList<String>(Arrays.asList(request.getParameterValues("actors[]")));
-			int duration = 0;
-			try {
-				String stringDuration = request.getParameter("duration");
-				duration = Integer.parseInt(stringDuration);
-			} catch (Exception e) {}
-			int year = 0;
-			try {
-				String stringYear = request.getParameter("year");
-				year = Integer.parseInt(stringYear);
-			} catch (Exception e) {}
-			String country = request.getParameter("country");
-			String distributor = request.getParameter("distributor");
-			String description = request.getParameter("description");
-			
 			
 			switch (action) {
 				case "add": {
@@ -85,13 +83,12 @@ public class ProjectionServlet extends HttpServlet {
 					int movieID = Integer.parseInt(request.getParameter("movieID"));
 					Movie movie = MovieDAO.getMovieByID(movieID);
 					LocalDateTime time = DateTimeUtil.StringToLocalDateTime(request.getParameter("time"));
-					double priceHigh = 0;
 					double price = Double.parseDouble(request.getParameter("price"));
 					int projectionTypeID = Integer.parseInt(request.getParameter("projectionTypeID"));
 					ProjectionType projectionType = ProjectionTypeDAO.getByID(projectionTypeID);
 					int hallID = Integer.parseInt(request.getParameter("hallID"));
 					Hall hall = HallDAO.getHallByID(hallID);
-					User admin = UserDAO.getUserByUsername((String) request.getSession().getAttribute("loggedInUsername"));
+					User admin = loggedInUser;
 					
 					if (admin.getUserRole() == UserRole.ADMIN) {
 						Projection projection = new Projection(0, movie, projectionType, hall, time, price, admin, true);
@@ -112,8 +109,6 @@ public class ProjectionServlet extends HttpServlet {
 							
 							throw new Exception("Nije moguće dodati projekciju u ovo vreme!");
 						}
-						
-						
 					}
 					
 					break;
@@ -127,9 +122,6 @@ public class ProjectionServlet extends HttpServlet {
 					break;
 				}
 			}
-			
-			
-			
 			request.getRequestDispatcher("./SuccessServlet").forward(request, response);
 			
 		} catch (Exception e) {

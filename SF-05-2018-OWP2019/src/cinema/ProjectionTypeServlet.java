@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cinema.dao.GenreDAO;
-import cinema.dao.ProjectionDAO;
 import cinema.dao.ProjectionTypeDAO;
 import cinema.model.ProjectionType;
 
@@ -30,15 +28,6 @@ public class ProjectionTypeServlet extends HttpServlet {
 				request.setAttribute("data", data);
 				request.getRequestDispatcher("./SuccessServlet").forward(request, response);
 			}
-//			else if (searchType.equals("movie")) {
-//				int id = 0;
-//				id = Integer.parseInt(request.getParameter("movie"));
-//				List<String> genres = GenreDAO.getByMovieID(id);
-//				data = new LinkedHashMap<String, Object>();
-//				data.put("genres", genres);
-//				request.setAttribute("data", data);
-//				request.getRequestDispatcher("./SuccessServlet").forward(request, response);
-//			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();

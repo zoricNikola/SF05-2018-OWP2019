@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cinema.dao.ActorDAO;
-import cinema.dao.GenreDAO;
 
 @SuppressWarnings("serial")
 public class ActorServlet extends HttpServlet {

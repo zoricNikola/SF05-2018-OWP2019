@@ -13,8 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cinema.dao.MovieDAO;
+import cinema.dao.UserDAO;
 import cinema.model.Movie;
-import cinema.searchModels.MoviesSearchModel;
+import cinema.model.User;
+import cinema.model.User.UserRole;
 
 @SuppressWarnings("serial")
 public class MovieServlet extends HttpServlet {
@@ -38,8 +40,28 @@ public class MovieServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		try {
+			String loggedInUsername = (String) request.getSession().getAttribute("loggedInUsername");
+			if (loggedInUsername == null) {
+				request.getRequestDispatcher("./UnauthorizedServlet").forward(request, response);
+				return;
+			}
+			User loggedInUser = UserDAO.getUserByUsername(loggedInUsername);
+			if (loggedInUser == null) {
+				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+				return;
+			}
+			
+			if (!loggedInUser.isLoggedIn()) {
+				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+				return;
+			}
+			
+			if (loggedInUser.getUserRole() != UserRole.ADMIN) {
+				request.getRequestDispatcher("./UnauthorizedServlet").forward(request, response);
+				return;
+			}
+			
 			String action = request.getParameter("action");
 			
 			String title = request.getParameter("title");
@@ -102,9 +124,6 @@ public class MovieServlet extends HttpServlet {
 					break;
 				}
 			}
-			
-			
-			
 			request.getRequestDispatcher("./SuccessServlet").forward(request, response);
 			
 		} catch (Exception e) {
