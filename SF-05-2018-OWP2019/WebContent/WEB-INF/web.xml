@@ -207,4 +207,24 @@
     <servlet-name>ReportServlet</servlet-name>
     <url-pattern>/ReportServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Unauthenticated</display-name>
+    <servlet-name>Unauthenticated</servlet-name>
+    <servlet-class>cinema.status.Unauthenticated</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Unauthenticated</servlet-name>
+    <url-pattern>/Unauthenticated</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>UnauthenticatedServlet</display-name>
+    <servlet-name>UnauthenticatedServlet</servlet-name>
+    <servlet-class>cinema.status.UnauthenticatedServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UnauthenticatedServlet</servlet-name>
+    <url-pattern>/UnauthenticatedServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

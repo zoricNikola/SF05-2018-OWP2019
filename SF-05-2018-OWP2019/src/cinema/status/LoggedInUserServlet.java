@@ -21,14 +21,21 @@ public class LoggedInUserServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String loggedInUsername = (String) request.getSession().getAttribute("loggedInUsername");
 		if (loggedInUsername == null) {
-			request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+			request.getRequestDispatcher("./UnauthenticatedServlet").forward(request, response);
 			return;
 		}
 		try {
 			
 			User user = UserDAO.getUserByUsername(loggedInUsername);
 			if (user == null) {
-				request.getRequestDispatcher("./LogoutServlet").forward(request, response);
+				request.getSession().invalidate();
+				request.getRequestDispatcher("./UnauthenticatedServlet").forward(request, response);
+				return;
+			}
+			
+			if (!user.isLoggedIn()) {
+				request.getSession().invalidate();
+				request.getRequestDispatcher("./UnauthenticatedServlet").forward(request, response);
 				return;
 			}
 			

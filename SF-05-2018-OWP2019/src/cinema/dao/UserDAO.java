@@ -47,8 +47,9 @@ public class UserDAO {
 				
 				User.UserRole userRole = User.UserRole.valueOf(rset.getString(index++));
 				boolean active = rset.getInt(index++) == 1;
+				boolean loggedIn = rset.getInt(index++) == 1;
 				
-				User user = new User(username, password, registrationDate, userRole, active);
+				User user = new User(username, password, registrationDate, userRole, active, loggedIn);
 				
 				users.add(user);
 			}
@@ -85,8 +86,9 @@ public class UserDAO {
 				
 				User.UserRole userRole = User.UserRole.valueOf(rset.getString(index++));
 				boolean active = rset.getInt(index++) == 1;
+				boolean loggedIn = rset.getInt(index++) == 1;
 				
-				return new User(username, password, registrationDate, userRole, active);
+				return new User(username, password, registrationDate, userRole, active, loggedIn);
 			}
 		} finally {
 			try { pstmt.close(); } catch (Exception e1) { e1.printStackTrace(); }
@@ -146,6 +148,40 @@ public class UserDAO {
 		PreparedStatement pstmt = null;
 		try {
 			String query = "update Users set Active = 0 where Username = ?";
+			pstmt = connection.prepareStatement(query);
+			pstmt.setString(1, user.getUsername());
+			
+			return pstmt.executeUpdate() == 1;
+			
+		} finally {
+			try { pstmt.close(); } catch (Exception e1) { e1.printStackTrace(); }
+			try { connection.close(); } catch (Exception e1) { e1.printStackTrace(); }
+		}
+	}
+	
+	public static boolean loginUser (User user) throws Exception {
+		Connection connection = ConnectionManager.getConnection();
+		
+		PreparedStatement pstmt = null;
+		try {
+			String query = "update Users set LoggedIn = 1 where Username = ?";
+			pstmt = connection.prepareStatement(query);
+			pstmt.setString(1, user.getUsername());
+			
+			return pstmt.executeUpdate() == 1;
+			
+		} finally {
+			try { pstmt.close(); } catch (Exception e1) { e1.printStackTrace(); }
+			try { connection.close(); } catch (Exception e1) { e1.printStackTrace(); }
+		}
+	}
+	
+	public static boolean logoutUser (User user) throws Exception {
+		Connection connection = ConnectionManager.getConnection();
+		
+		PreparedStatement pstmt = null;
+		try {
+			String query = "update Users set LoggedIn = 0 where Username = ?";
 			pstmt = connection.prepareStatement(query);
 			pstmt.setString(1, user.getUsername());
 			

@@ -1,36 +1,42 @@
 package cinema.status;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import cinema.dao.UserDAO;
+import cinema.model.User;
 
 @SuppressWarnings("serial")
 public class LogoutServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getSession().invalidate();
-
-		Map<String, Object> data = new LinkedHashMap<>();
-		data.put("status", "unauthenticated");
-
-		ObjectMapper objectMapper = new ObjectMapper();
-		String jsonData = objectMapper.writeValueAsString(data);
-		System.out.println(jsonData);
-
-		response.setHeader("Cache-Control", "private, no-cache, no-store, must-revalidate");
-		response.setHeader("Pragma", "no-cache");
-		response.setDateHeader("Expires", 0);
-		
-		response.setContentType("application/json");
-		response.getWriter().write(jsonData);
-//		response.sendRedirect("Welcome.html");
+		String loggedInUsername = (String) request.getSession().getAttribute("loggedInUsername");
+		if (loggedInUsername == null) {
+			request.getRequestDispatcher("./UnauthenticatedServlet").forward(request, response);
+			return;
+		}
+		try {
+			
+			User user = UserDAO.getUserByUsername(loggedInUsername);
+			if (user == null) {
+				request.getSession().invalidate();
+				request.getRequestDispatcher("./UnauthenticatedServlet").forward(request, response);
+				return;
+			}
+			
+			UserDAO.logoutUser(user);
+			request.getSession().invalidate();
+			request.getRequestDispatcher("./UnauthenticatedServlet").forward(request, response);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.getSession().invalidate();
+			request.getRequestDispatcher("./FailureServlet").forward(request, response);
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

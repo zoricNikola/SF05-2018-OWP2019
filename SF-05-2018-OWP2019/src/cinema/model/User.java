@@ -11,16 +11,18 @@ public class User {
 	private LocalDate registrationDate;
 	private UserRole userRole;
 	private boolean active;
+	private boolean loggedIn;
 	
 	public User () {}
 
 	public User(String username, String password, LocalDate registrationDate, 
-					UserRole userRole, boolean active) {
+					UserRole userRole, boolean active, boolean loggedIn) {
 		this.username = username;
 		this.password = password;
 		this.registrationDate = registrationDate;
 		this.userRole = userRole;
 		this.active = active;
+		this.loggedIn = loggedIn;
 	}
 
 	public String getUsername() {
@@ -61,6 +63,14 @@ public class User {
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	public boolean isLoggedIn() {
+		return loggedIn;
+	}
+
+	public void setLoggedIn(boolean loggedIn) {
+		this.loggedIn = loggedIn;
 	}
 
 }

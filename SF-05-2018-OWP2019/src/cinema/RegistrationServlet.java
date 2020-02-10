@@ -29,7 +29,7 @@ public class RegistrationServlet extends HttpServlet {
 			if (UserDAO.getUserByUsername(username) != null) {
 				throw new Exception("Korisnicko ime je zauzeto!");
 			}
-			User user = new User(username, password, LocalDate.now(), User.UserRole.USER, true);
+			User user = new User(username, password, LocalDate.now(), User.UserRole.USER, true, false);
 			
 			if (UserDAO.addUser(user)) {
 				request.getRequestDispatcher("./SuccessServlet").forward(request, response);

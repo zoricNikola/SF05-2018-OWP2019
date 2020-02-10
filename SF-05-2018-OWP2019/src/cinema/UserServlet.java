@@ -58,6 +58,8 @@ public class UserServlet extends HttpServlet {
 					if (user != null) {
 						if (!UserDAO.updateUser(user))
 							throw new Exception("Greška prilikom izmene korisnika u bazi");
+						else
+							UserDAO.logoutUser(user);
 					}
 					break;
 				}
@@ -67,6 +69,8 @@ public class UserServlet extends HttpServlet {
 					if (user != null) {
 						if (!UserDAO.deleteUser(user))
 							throw new Exception("Greška prilikom brisanja korisnika iz baze");
+						else
+							UserDAO.logoutUser(user);
 					}
 					break;
 				}

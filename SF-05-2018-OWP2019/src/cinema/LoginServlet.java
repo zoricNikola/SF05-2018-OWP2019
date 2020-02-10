@@ -36,6 +36,7 @@ public class LoginServlet extends HttpServlet {
 			if (!user.isActive())
 				throw new Exception("deactivated");
 			
+			UserDAO.loginUser(user);
 			request.getSession().setAttribute("loggedInUsername", user.getUsername());
 			request.getRequestDispatcher("./SuccessServlet").forward(request, response);
 			
