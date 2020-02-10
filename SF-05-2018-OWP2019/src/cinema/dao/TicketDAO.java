@@ -94,7 +94,7 @@ public class TicketDAO {
 		ResultSet rset = null;
 		
 		try {
-			String query = "select * from Tickets where Projection = ? ";
+			String query = "select * from Tickets where Projection = ? and Active = 1 ";
 			
 			pstmt = connection.prepareStatement(query);
 			pstmt.setInt(1, pID);
@@ -129,7 +129,7 @@ public class TicketDAO {
 		ResultSet rset = null;
 		
 		try {
-			String query = "select * from Tickets where User = ? ";
+			String query = "select * from Tickets where User = ? and Active = 1";
 			
 			pstmt = connection.prepareStatement(query);
 			pstmt.setString(1, username);
@@ -162,7 +162,7 @@ public class TicketDAO {
 		ResultSet rset = null;
 		
 		try {
-			String query = "select * from Tickets where Projection = ? and SeatNumber = ? and Hall = ? ";
+			String query = "select * from Tickets where Projection = ? and SeatNumber = ? and Hall = ? and Active = 1";
 			
 			pstmt = connection.prepareStatement(query);
 			pstmt.setInt(1, pID);

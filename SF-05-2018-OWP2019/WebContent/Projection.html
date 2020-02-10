@@ -159,7 +159,7 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item bg-dark"><p class="card-text"><b>Film:</b> <a class="badge badge-dark text-white" style="font-size: medium;" :href="'Movie.html?id=' + projection.movie.id" > {{ projection.movie.title }} </a> </p></li>
                         <li class="list-group-item bg-dark"><p class="card-text"><b>Datum:</b> {{ projection.time.dayOfMonth }}.{{ projection.time.monthValue }}.{{ projection.time.year }}.</p></li>
-                        <li class="list-group-item bg-dark"><p class="card-text"><b>Vreme:</b> {{ projection.time.hour }} : {{ projection.time.minute }} </p></li>
+                        <li class="list-group-item bg-dark"><p class="card-text"><b>Vreme:</b> {{ projection.time.hour }}:{{ projection.time.minute }} </p></li>
                         <li class="list-group-item bg-dark"><p class="card-text"><b>Tip projekcije:</b> {{ projection.projectionType.name }} </p></li>
                         <li class="list-group-item bg-dark"><p class="card-text"><b>Sala:</b> {{ projection.hall.name }} </p></li>
                         <li class="list-group-item bg-dark"><p class="card-text"><b>Cena:</b> {{ projection.price }} </p></li>
@@ -190,7 +190,7 @@
                 	</div>
                 	<div class="container">
                         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4" style="height: 500px; overflow-y: auto;">
-                            <div v-for="ticket in orderedTickets" class="col mt-2 mb-2" style="">
+                            <div v-for="ticket in orderedTickets" class="col mt-2 mb-2">
                                 <div class="card text-white bg-dark border-danger" style="text-align: center;">
                                     <div class="card-body" style="text-align: center; padding-left: 5px; padding-right: 5px;">
                                         <p class="card-text"><b>Korisnik:</b></p>

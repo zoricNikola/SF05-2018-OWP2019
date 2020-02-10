@@ -32,6 +32,20 @@ public class TicketServlet extends HttpServlet {
 			String action = request.getParameter("action");
 			
 			switch (action) {
+				case "ticketID": {
+					Ticket ticket = TicketDAO.getTicketByID(Integer.parseInt(request.getParameter("id")));
+					
+					Map<String, Object> data = new LinkedHashMap<String, Object>();
+					data.put("ticket", ticket);
+					
+					if (ticket.getProjection().getTime().isBefore(LocalDateTime.now()))
+						data.put("inPast", true);
+					else
+						data.put("inPast", false);
+					
+					request.setAttribute("data", data);
+					break;
+				}
 				case "projectionID": {
 					int projectionID = Integer.parseInt(request.getParameter("projectionID"));
 					List<Ticket> tickets = TicketDAO.getByProjectionID(projectionID);

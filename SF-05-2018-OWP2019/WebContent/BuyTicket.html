@@ -147,7 +147,7 @@
                                 
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item bg-dark"><p class="card-text"><b>Film:</b> <a class="badge badge-dark text-white" style="font-size: medium;" :href="'Movie.html?id=' + projection.movie.id" > {{ projection.movie.title }} </a> </p></li>
-                        <li class="list-group-item bg-dark"><p class="card-text"><b>Vreme:</b> <a class="badge badge-dark text-white" style="font-size: medium;" :href="'Projection.html?id=' + projection.id" >  {{ projection.time.dayOfMonth }}.{{ projection.time.monthValue }}.{{ projection.time.year }}. {{ projection.time.hour }} : {{ projection.time.minute }} </a> </p></li>
+                        <li class="list-group-item bg-dark"><p class="card-text"><b>Vreme:</b> <a class="badge badge-dark text-white" style="font-size: medium;" :href="'Projection.html?id=' + projection.id" >  {{ projection.time.dayOfMonth }}.{{ projection.time.monthValue }}.{{ projection.time.year }}. {{ projection.time.hour }}:{{ projection.time.minute }} </a> </p></li>
                         <li class="list-group-item bg-dark"><p class="card-text"><b>Tip projekcije:</b> {{ projection.projectionType.name }} </p></li>
                         <li class="list-group-item bg-dark"><p class="card-text"><b>Sala:</b> {{ projection.hall.name }} </p></li>
                         <li class="list-group-item bg-dark"><p class="card-text"><b>Cena:</b> {{ projection.price }} </p></li>
@@ -174,7 +174,7 @@
                                 
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item bg-dark"><p class="card-text"><b>Film:</b> <a class="badge badge-dark text-white" style="font-size: medium;" :href="'Movie.html?id=' + projection.movie.id" > {{ projection.movie.title }} </a> </p></li>
-                        <li class="list-group-item bg-dark"><p class="card-text"><b>Vreme:</b> <a class="badge badge-dark text-white" style="font-size: medium;" :href="'Projection.html?id=' + projection.id" >  {{ projection.time.dayOfMonth }}.{{ projection.time.monthValue }}.{{ projection.time.year }}. {{ projection.time.hour }} : {{ projection.time.minute }} </a> </p></li>
+                        <li class="list-group-item bg-dark"><p class="card-text"><b>Vreme:</b> <a class="badge badge-dark text-white" style="font-size: medium;" :href="'Projection.html?id=' + projection.id" >  {{ projection.time.dayOfMonth }}.{{ projection.time.monthValue }}.{{ projection.time.year }}. {{ projection.time.hour }}:{{ projection.time.minute }} </a> </p></li>
                         <li class="list-group-item bg-dark"><p class="card-text"><b>Tip projekcije:</b> {{ projection.projectionType.name }} </p></li>
                         <li class="list-group-item bg-dark"><p class="card-text"><b>Sala:</b> {{ projection.hall.name }} </p></li>
                         <li class="list-group-item bg-dark"><p class="card-text"><b>Cena:</b> {{ projection.price }} </p></li>
