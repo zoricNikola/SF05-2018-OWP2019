@@ -114,6 +114,13 @@ $(document).ready(function() {
 	        		console.log(data);
                     
 	        		if (data.status == 'failure') {
+	        			if (data.message == 'seatReserved') {
+	        				app.message = 'Jedno ili više odabranih sedišta je već rezervisano...';
+	        				$('#messageModal').on('hidden.bs.modal', function (e) {
+	                            window.location.replace('BuyTicket.html?projection=' + projectionID);
+	                            return;
+	                        });
+	        			}
                         app.message = 'Greška prilikom dodavanja karte u bazu';
                         $('#messageModal').modal('show');
                     }

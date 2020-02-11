@@ -2,6 +2,7 @@ package cinema;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,6 +102,7 @@ public class TicketServlet extends HttpServlet {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			String loggedInUsername = (String) request.getSession().getAttribute("loggedInUsername");
@@ -132,6 +134,32 @@ public class TicketServlet extends HttpServlet {
 					String[] stringSeatNumbers = request.getParameterValues("seatNumbers[]");
 					int hallID = Integer.parseInt(request.getParameter("hallID"));
 					User user = loggedInUser;
+					
+					List<Seat> remainingSeats = SeatDAO.getRemainingSeatsByProjectionIdAndHallID(projection.getId(), hallID);
+					List<Integer> remainingSeatsNumbers = new ArrayList<Integer>();
+					for (Seat seat : remainingSeats) {
+						remainingSeatsNumbers.add(seat.getNumber());
+					}
+					
+					List<Integer> seatNumbers = new ArrayList<Integer>();
+					for (String number : stringSeatNumbers) {
+						seatNumbers.add(Integer.parseInt(number));
+					}
+					
+					List<Integer> reservedSeats = new ArrayList<Integer>(seatNumbers);
+					reservedSeats.removeAll(remainingSeatsNumbers);
+					
+					if (reservedSeats.size() > 0) {
+						Map<String, Object> data = (Map<String, Object>) request.getAttribute("data");
+						if (data == null) {
+							data = new LinkedHashMap<String, Object>();
+							request.setAttribute("data", data);
+						}
+						
+						data.put("message", "seatReserved");
+						
+						throw new Exception("Jedno ili više izabranih sedišta je već rezervisano");
+					}
 					
 					for (String number : stringSeatNumbers) {
 						int seatNumber = Integer.parseInt(number);
