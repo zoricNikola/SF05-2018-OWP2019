@@ -131,6 +131,11 @@ public class TicketServlet extends HttpServlet {
 					}
 					
 					Projection projection = ProjectionDAO.getProjectionByID(Integer.parseInt(request.getParameter("projectionID")));
+					
+					if (projection.getTime().isBefore(LocalDateTime.now())) {
+						throw new Exception("Projekcija je u prošlosti.");
+					}
+					
 					String[] stringSeatNumbers = request.getParameterValues("seatNumbers[]");
 					int hallID = Integer.parseInt(request.getParameter("hallID"));
 					User user = loggedInUser;
@@ -180,6 +185,9 @@ public class TicketServlet extends HttpServlet {
 					
 					Ticket ticket = TicketDAO.getTicketByID((Integer.parseInt(request.getParameter("id"))));
 					if (ticket != null) {
+						if (ticket.getProjection().getTime().isBefore(LocalDateTime.now())) {
+							throw new Exception("Projekcija je u prošlosti.");
+						}
 						if (!TicketDAO.deleteTicket(ticket))
 							throw new Exception("Greška prilikom brisanja karte iz baze");
 					}

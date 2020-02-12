@@ -1,0 +1,219 @@
+drop table if exists Users;
+
+create table Users(
+    Username varchar(30) primary key,
+    Password varchar(30) not null,
+    RegistrationDate integer not null,
+    Role varchar(10) not null,
+    Active integer not null,
+    LoggedIn integer not null
+);
+
+insert into Users values('admin', 'admin', strftime('%s','now'), 'ADMIN', 1, 0);
+insert into Users values('marko', 'marko', strftime('%s','now'), 'USER', 1, 0);
+insert into Users values('david', 'david', strftime('%s','now'), 'USER', 1, 0);
+insert into Users values('milan', 'milan', strftime('%s','now'), 'USER', 1, 0);
+
+select * from Users;
+
+drop table if exists Movies;
+
+create table Movies (
+    ID integer primary key,
+    Title varchar(80) not null,
+    Director varchar(80),
+    Duration int check(Duration > 0) not null,
+    Distributor varchar(80) not null,
+    Country varchar(80) not null,
+    Year int check(Year > 0) not null,
+    Description varchar(200),
+    Active integer not null
+);
+
+insert into Movies (Title, Director, Duration, Distributor, Country, Year, Description, Active) values('The Godfather', 'Francis Ford Copola', 175, 'Paramount Pictures', 'USA', 1972, 'The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.', 1);
+insert into Movies (Title, Director, Duration, Distributor, Country, Year, Description, Active) values('Preruseni spijuni', 'Nick Bruno, Troy Quane', 102, 'MegaCom Film', 'USA', 2019, '...', 1);
+insert into Movies (Title, Director, Duration, Distributor, Country, Year, Description, Active) values('Dulitl 3D', 'Stephen Gaghan', 101, 'Taramount', 'USA', 2020, '...', 1);
+
+select * from Movies;
+
+drop table if exists Actors;
+
+create table Actors (
+    Movie int not null,
+    Actor varchar(80) not null,
+    foreign key(Movie) references Movies(ID)
+);
+
+insert into Actors values(1, 'Marlon Brando');
+insert into Actors values(1, 'Al Pacino');
+
+select * from Actors;
+
+drop table if exists Genres;
+
+create table Genres (
+    Movie int not null,
+    Genre varchar(50) not null,
+    foreign key(Movie) references Movies(ID)
+);
+
+insert into Genres values (1, 'Crime'), (1, 'Historical');
+insert into Genres values (2, 'Animirani');
+insert into Genres values (3, 'Komedija'), (3, 'Avantura');
+
+select * from Genres;
+
+drop table if exists ProjectionTypes;
+
+create table ProjectionTypes (
+    ID integer primary key,
+    Name varchar(5) not null
+);
+
+insert into ProjectionTypes (Name) values ('2D');
+insert into ProjectionTypes (Name) values ('3D');
+insert into ProjectionTypes (Name) values ('4D');
+
+select * from ProjectionTypes;
+
+drop table if exists Halls;
+
+create table Halls (
+    ID integer primary key,
+    Name varchar(80) not null
+);
+
+insert into Halls (Name) values ('Hall 1');
+insert into Halls (Name) values ('Hall 2');
+insert into Halls (Name) values ('Hall 3');
+insert into Halls (Name) values ('Hall 4');
+
+select * from Halls;
+
+drop table if exists HallTypes;
+
+create table HallTypes (
+    Hall int not null,
+    ProjectionType int not null,
+    foreign key(Hall) references Halls(ID),
+    foreign key(ProjectionType) references ProjectionTypes(ID),
+    primary key (Hall, ProjectionType)
+);
+
+insert into HallTypes (Hall, ProjectionType) values (1, 1);
+insert into HallTypes (Hall, ProjectionType) values (1, 2);
+
+insert into HallTypes (Hall, ProjectionType) values (2, 1);
+insert into HallTypes (Hall, ProjectionType) values (2, 3);
+
+insert into HallTypes (Hall, ProjectionType) values (3, 2);
+insert into HallTypes (Hall, ProjectionType) values (3, 3);
+
+insert into HallTypes (Hall, ProjectionType) values (4, 1);
+insert into HallTypes (Hall, ProjectionType) values (4, 2);
+insert into HallTypes (Hall, ProjectionType) values (4, 3);
+
+select * from HallTypes;
+
+drop table if exists Seats;
+
+create table Seats (
+    Number integer not null,
+    Hall int not null,
+    foreign key(Hall) references Halls(ID),
+    primary key (Number, Hall)
+);
+
+insert into Seats (Number, Hall) values (1, 1);
+insert into Seats (Number, Hall) values (2, 1);
+insert into Seats (Number, Hall) values (3, 1);
+insert into Seats (Number, Hall) values (4, 1);
+insert into Seats (Number, Hall) values (5, 1);
+insert into Seats (Number, Hall) values (6, 1);
+insert into Seats (Number, Hall) values (7, 1);
+insert into Seats (Number, Hall) values (8, 1);
+insert into Seats (Number, Hall) values (9, 1);
+insert into Seats (Number, Hall) values (10, 1);
+insert into Seats (Number, Hall) values (11, 1);
+insert into Seats (Number, Hall) values (12, 1);
+insert into Seats (Number, Hall) values (13, 1);
+insert into Seats (Number, Hall) values (14, 1);
+insert into Seats (Number, Hall) values (15, 1);
+insert into Seats (Number, Hall) values (16, 1);
+insert into Seats (Number, Hall) values (17, 1);
+insert into Seats (Number, Hall) values (18, 1);
+
+insert into Seats (Number, Hall) values (1, 2);
+insert into Seats (Number, Hall) values (2, 2);
+insert into Seats (Number, Hall) values (3, 2);
+insert into Seats (Number, Hall) values (4, 2);
+insert into Seats (Number, Hall) values (5, 2);
+insert into Seats (Number, Hall) values (6, 2);
+insert into Seats (Number, Hall) values (7, 2);
+insert into Seats (Number, Hall) values (8, 2);
+insert into Seats (Number, Hall) values (9, 2);
+insert into Seats (Number, Hall) values (10, 2);
+insert into Seats (Number, Hall) values (11, 2);
+insert into Seats (Number, Hall) values (12, 2);
+insert into Seats (Number, Hall) values (13, 2);
+insert into Seats (Number, Hall) values (14, 2);
+insert into Seats (Number, Hall) values (15, 2);
+
+insert into Seats (Number, Hall) values (1, 3);
+insert into Seats (Number, Hall) values (2, 3);
+insert into Seats (Number, Hall) values (3, 3);
+insert into Seats (Number, Hall) values (4, 3);
+insert into Seats (Number, Hall) values (5, 3);
+
+insert into Seats (Number, Hall) values (1, 4);
+insert into Seats (Number, Hall) values (2, 4);
+insert into Seats (Number, Hall) values (3, 4);
+insert into Seats (Number, Hall) values (4, 4);
+insert into Seats (Number, Hall) values (5, 4);
+insert into Seats (Number, Hall) values (6, 4);
+insert into Seats (Number, Hall) values (7, 4);
+insert into Seats (Number, Hall) values (8, 4);
+insert into Seats (Number, Hall) values (9, 4);
+insert into Seats (Number, Hall) values (10, 4);
+insert into Seats (Number, Hall) values (11, 4);
+insert into Seats (Number, Hall) values (12, 4);
+
+select * from Seats;
+
+drop table if Exists Projections;
+
+create table Projections (
+    ID integer primary key,
+    Movie int not null,
+    ProjectionType int not null,
+    Hall int not null,
+    Time integer not null,
+    Price real not null,
+    Admin varchar(30) not null,
+    Active integer not null,
+    foreign key(Movie) references Movies(ID),
+    foreign key(ProjectionType) references ProjectionTypes(ID),
+    foreign key(Hall) references Halls(ID),
+    foreign key(Admin) references Users(Username),
+    check ( Price > 0 )
+);
+
+select * from Projections;
+
+drop table if exists Tickets;
+
+create table Tickets (
+    ID integer primary key,
+    Projection int not null,
+    SeatNumber int not null,
+    Hall int not null,
+    Time integer not null,
+    User varchar(30) not null,
+    Active integer not null,
+    foreign key(Projection) references Projections(ID),
+    foreign key(SeatNumber) references Seats(Number),
+    foreign key(Hall) references Seats(Hall),
+    foreign key(User) references Users(Username)
+);
+
+select * from Tickets;

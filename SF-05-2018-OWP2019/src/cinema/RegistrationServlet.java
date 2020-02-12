@@ -26,6 +26,12 @@ public class RegistrationServlet extends HttpServlet {
 		String password = request.getParameter("password");
 		
 		try {
+			if (username == null || username.equals(""))
+				throw new Exception("Morate uneti korisničko ime");
+			if (password == null || password.equals(""))
+				throw new Exception("Morate uneti lozinku");
+			
+			
 			if (UserDAO.getUserByUsername(username) != null) {
 				throw new Exception("Korisnicko ime je zauzeto!");
 			}

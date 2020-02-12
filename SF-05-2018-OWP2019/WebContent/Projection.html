@@ -172,11 +172,12 @@
                         <li class="list-group-item bg-dark"><p class="card-text"><b>Preostalo karata:</b> {{ remainingTickets }} </p></li>
                     </ul>
                     <div class="card-body">
-                        <a v-if="!inPast && loggedInUser.userRole == 'USER' && remainingTickets > 0" :href="'BuyTicket.html?projection=' + projection.id" class="btn btn-danger text-white">Kupi kartu</a>
+                        <a v-if="!inPast && loggedInUser.userRole == 'USER' && remainingTickets > 0 && projection.active" :href="'BuyTicket.html?projection=' + projection.id" class="btn btn-danger text-white">Kupi kartu</a>
                         <p v-else-if="inPast"><b class="list-group-item list-group-item-info" style=" font-size: large;">Projekcija je već održana</b></p>
                         <p v-else-if="remainingTickets < 1"><b class="list-group-item list-group-item-info" style=" font-size: large;">Sve karte su prodate</b></p>
                         <p v-else-if="loggedInUser.userRole == ''"><b class="list-group-item list-group-item-info" style=" font-size: large;">Prijavite se da bi mogli kupiti karte</b></p>
-                        <p v-if="loggedInUser.userRole == 'ADMIN'" v-on:click.prevent="deleteProjection" class="btn btn-danger text-white">Obriši</p>
+                        <p v-if="!projection.active"><b class="list-group-item list-group-item-info" style=" font-size: large;">Projekcija je obrisana</b></p>
+                        <p v-if="loggedInUser.userRole == 'ADMIN' && projection.active" v-on:click.prevent="deleteProjection" class="btn btn-danger text-white">Obriši</p>
                     </div>
                 </div>
             </div>

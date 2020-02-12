@@ -201,9 +201,10 @@
                         </li>
                     </ul>
                     <div class="card-body">
-                    	<p v-if="!inPast && loggedInUser.userRole == 'USER' && seatOptions.length > 0" v-on:click.prevent="buyTicket" class="btn btn-danger text-white">Kupi kartu</p>
+                    	<p v-if="!inPast && loggedInUser.userRole == 'USER' && seatOptions.length > 0 && projection.active" v-on:click.prevent="buyTicket" class="btn btn-danger text-white">Kupi kartu</p>
                         <p v-else-if="inPast"><b class="list-group-item list-group-item-info" style=" font-size: large;">Projekcija je već održana</b></p>
                         <p v-else-if="seatOptions.length < 1"><b class="list-group-item list-group-item-info" style=" font-size: large;">Sve karte su prodate</b></p>
+                        <p v-else-if="!projection.active"><b class="list-group-item list-group-item-info" style=" font-size: large;">Projekcija je obrisana</b></p>
                         <div v-if="showMessage" class="alert alert-danger" role="alert" id="messageDiv">
                                 <p style="color: red;" id="messageParagraph">{{ message }}</p>
                         </div>
